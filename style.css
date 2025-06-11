@@ -74,6 +74,8 @@ body {
 @media (max-width: 768px) {
     .app {
         gap: 10px;
+        height: 100dvh;
+        max-width: 95dvw;
     }
 
     .info {
@@ -85,10 +87,11 @@ body {
     }
 
     .subtitle {
-        top: calc(50% + 50px);
+        top: calc(50dvh + 50px);
         font-size: 1.3rem;
         line-height: 25px;
         min-height: 25px;
+        width: 90dvw;
     }
 
     .box {
