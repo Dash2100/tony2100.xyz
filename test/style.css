@@ -1,0 +1,416 @@
+/**
+ * 部落格系統樣式表
+ * 包含響應式設計、動畫效果、文章顯示等樣式
+ * 作者：Tony2100
+ * 最後更新：2025-06-15
+ */
+
+/* ===== 全域樣式重置 ===== */
+
+/**
+ * 全域盒模型設定
+ * 確保 padding 和 border 包含在元素寬高內
+ */
+* {
+    box-sizing: border-box;
+}
+
+/**
+ * 頁面基本樣式設定
+ * 設定字體、背景色和基本佈局屬性
+ */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    user-select: none; /* 防止文字被選取，提升使用體驗 */
+    background-color: #1a325f; /* 深藍色背景 */
+    overflow-x: hidden; /* 隱藏水平滾動條 */
+}
+
+/* 隱藏滾動條但保持滾動功能 */
+body::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 和 Edge */
+}
+
+/* ===== 主要佈局容器 ===== */
+
+/**
+ * 應用程式主容器
+ * 設定最大寬度和居中對齊
+ */
+.app {
+    max-width: 80%;
+    min-height: 100vh; /* 確保至少佔滿整個視窗高度 */
+    margin: 0 auto;
+    position: relative;
+}
+
+/**
+ * 文章區域容器
+ * 包含文章列表和標題卡片的主要區域
+ */
+.post-area {
+    width: 100%;
+    padding-top: 100px; /* 列表模式的頂部間距 */
+    position: relative;
+}
+
+/**
+ * 文章模式時的樣式調整
+ * 減少頂部間距以適配文章顯示
+ */
+.post-area.article-mode {
+    padding-top: 50px;
+}
+
+/**
+ * 文章列表容器
+ * 使用 Flexbox 垂直排列文章卡片
+ */
+.post-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* 卡片之間的間距 */
+    position: relative;
+}
+
+/**
+ * 標題卡片容器
+ * 用於在文章模式時顯示選中的卡片
+ */
+.title-card-container {
+    display: none; /* 預設隱藏 */
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 30px;
+}
+
+/* ===== 文章卡片樣式 ===== */
+
+/**
+ * 文章卡片基本樣式
+ * 包含佈局、顏色、動畫等屬性
+ */
+.post-card {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: #FFFFFF; /* 白色文字 */
+    background-color: #101f3e; /* 深藍色背景 */
+    padding: 20px 30px;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 20px; /* 圓角邊框 */
+    cursor: pointer;
+    transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); /* 流暢的過渡動畫 */
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 1;
+}
+
+/**
+ * 卡片淡出動畫樣式
+ * 用於隱藏非選中的卡片
+ */
+.post-card.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none; /* 禁用滑鼠事件 */
+}
+
+/**
+ * 卡片移動到頂部的樣式
+ * 用於文章開啟動畫
+ */
+.post-card.slide-to-top {
+    position: fixed;
+    top: 50px;
+    z-index: 100;
+    cursor: default;
+}
+
+/**
+ * 返回動畫支援
+ * 確保返回時的動畫效果流暢
+ */
+.post-card.returning {
+    transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+/**
+ * 卡片淡入動畫樣式
+ * 用於文章列表重新顯示時的入場效果
+ */
+.post-card.fade-in {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/**
+ * 向上淡入的關鍵幀動畫
+ * 從下方滑入並逐漸顯示
+ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== 文章卡片內容樣式 ===== *//* ===== 文章卡片內容樣式 ===== */
+
+/**
+ * 文章標籤容器
+ * 使用 Flexbox 排列標籤，支援自動換行
+ */
+.post-tags {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    flex-wrap: wrap;
+}
+
+/**
+ * 單個文章標籤樣式
+ * 設定背景色、文字顏色和圓角效果
+ */
+.post-tag {
+    background-color: #afe1f5; /* 淺藍色背景 */
+    color: #101f3e; /* 深藍色文字 */
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    line-height: 14px;
+    white-space: nowrap; /* 防止文字換行 */
+}
+
+/**
+ * 文章發布日期樣式
+ */
+.post-date {
+    font-size: 15px;
+    color: #afe1f5;
+    margin: 0;
+}
+
+/**
+ * 文章標題樣式
+ */
+.post-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+    padding-right: 120px; /* 預留標籤空間 */
+}
+
+/**
+ * 文章副標題樣式
+ */
+.post-subtitle {
+    font-size: 18px;
+    color: #d1e6f2; /* 淺藍灰色 */
+    margin: 0;
+    padding-right: 120px; /* 預留標籤空間 */
+}
+
+/* ===== 返回按鈕樣式 ===== */
+
+/**
+ * 返回按鈕基本樣式
+ * 固定定位在左上角，包含動畫效果
+ */
+.back-button {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background-color: #101f3e;
+    color: #afe1f5;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    border: 2px solid #afe1f5;
+    opacity: 0; /* 預設隱藏 */
+    transform: translateX(-50px); /* 初始位置偏左 */
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 200; /* 確保在最上層 */
+}
+
+/**
+ * 返回按鈕顯示狀態
+ */
+.back-button.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/**
+ * 返回按鈕懸停效果
+ */
+.back-button:hover {
+    background-color: #afe1f5;
+    color: #101f3e;
+    transform: translateX(0) scale(1.05); /* 輕微放大效果 */
+}
+
+/* ===== 文章內容區域樣式 ===== */
+
+/**
+ * 文章內容顯示區域
+ * 包含排版、動畫等樣式
+ */
+.content-area {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 30px 50px;
+    font-size: 18px;
+    color: #d1e6f2;
+    line-height: 1.6; /* 適當的行距提升可讀性 */
+    opacity: 0; /* 預設隱藏 */
+    transform: translateY(30px); /* 初始位置向下偏移 */
+    transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/**
+ * 文章內容顯示狀態
+ */
+.content-area.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/**
+ * 文章內容中的主標題樣式
+ */
+.content-area h2 {
+    color: #afe1f5;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+/**
+ * 文章內容中的次標題樣式
+ */
+.content-area h3 {
+    color: #FFFFFF;
+    margin-top: 35px;
+    margin-bottom: 18px;
+    font-size: 22px;
+}
+
+/**
+ * 文章內容中的段落樣式
+ */
+.content-area p {
+    margin-bottom: 22px;
+    text-align: justify; /* 兩端對齊，提升閱讀體驗 */
+}
+
+/* ===== 工具類別樣式 ===== */
+
+/**
+ * 隱藏元素的工具類別
+ */
+.hidden {
+    display: none !important;
+}
+
+/* ===== 響應式設計 ===== */
+
+/**
+ * 平板和手機裝置的響應式調整
+ * 針對螢幕寬度小於 768px 的裝置
+ */
+@media (max-width: 768px) {
+    /**
+     * 縮小主容器寬度，適配小螢幕
+     */
+    .app {
+        max-width: 95%;
+    }
+
+    /**
+     * 調整文章模式的頂部間距
+     */
+    .post-area.article-mode {
+        padding-top: 40px;
+    }
+
+    /**
+     * 縮小文章卡片的內邊距
+     */
+    .post-card {
+        padding: 15px 20px;
+    }
+
+    /**
+     * 調整標籤容器位置
+     */
+    .post-tags {
+        right: 20px;
+        top: 15px;
+    }
+
+    /**
+     * 縮小文章標題字體大小
+     */
+    .post-title {
+        font-size: 22px;
+        padding-right: 100px;
+    }
+
+    /**
+     * 縮小文章副標題字體大小
+     */
+    .post-subtitle {
+        font-size: 16px;
+        padding-right: 100px;
+    }
+
+    /**
+     * 調整文章內容區域樣式
+     */
+    .content-area {
+        padding: 0 20px 50px;
+        font-size: 16px;
+    }
+
+    /**
+     * 調整返回按鈕位置和大小
+     */
+    .back-button {
+        top: 20px;
+        left: 20px;
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+
+    /**
+     * 調整文章內容標題字體大小
+     */
+    .content-area h2 {
+        font-size: 24px;
+    }
+
+    .content-area h3 {
+        font-size: 20px;
+    }
+}

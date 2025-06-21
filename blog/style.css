@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    user-select: none;
+    background-color: #1a325f;
+}
+
+.app {
+    display: flex;
+    max-width: 80%;
+    height: 100vh;
+    justify-content: center;
+    position: relative;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.post-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 100px;
+    gap: 30px;
+}
+
+.post-card {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: #FFFFFF;
+    background-color: #101f3e;
+    padding: 20px 30px;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 20px;
+    position: relative;
+    /* transition: all 0.1s ease; */
+    cursor: pointer;
+}
+
+/* .post-card:hover {
+    transform: scale(1.01);
+} */
+
+.content-area {
+    font-size: 18px;
+    color: #d1e6f2;
+    line-height: 1.6;
+}
+
+.post-tags {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}
+
+.post-tag {
+    background-color: #afe1f5;
+    color: #101f3e;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+.post-date {
+    font-size: 15px;
+    color: #afe1f5;
+    margin: 0;
+}
+
+.post-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.post-subtitle {
+    font-size: 18px;
+    color: #d1e6f2;
+    margin: 0;
+}

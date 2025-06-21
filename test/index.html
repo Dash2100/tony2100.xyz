@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <!-- 網頁編碼設定，支援中文顯示 -->
+    <meta charset="UTF-8">
+    <!-- 響應式設計視窗設定，確保在行動裝置上正確顯示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入主要樣式表 -->
+    <link rel="stylesheet" href="style.css">
+    <!-- 頁面標題 -->
+    <title>!Tony2100 | About</title>
+</head>
+
+<body>
+    <!-- 返回按鈕：用於從文章詳細頁面返回列表頁面 -->
+    <div class="back-button" onclick="goBack()">← 返回列表</div>
+
+    <!-- 主應用容器 -->
+    <div class="app">
+        <!-- 文章區域：包含文章列表和標題卡片 -->
+        <div class="post-area" id="postArea">
+            <!-- 選中的標題卡片容器：文章被選中時會移動到這裡 -->
+            <div class="title-card-container" id="titleCardContainer">
+                <!-- 選中的卡片將被移動到這裡 -->
+            </div>
+            <!-- 文章卡片列表容器：顯示所有文章的預覽卡片 -->
+            <div class="post-container" id="postContainer">
+                <!-- 文章卡片將透過 JavaScript 動態生成並插入這裡 -->
+            </div>
+        </div>
+        <!-- 內容顯示區域：顯示選中文章的完整內容 -->
+        <div class="content-area" id="contentArea">
+            <!-- 文章內容將在此顯示 -->
+        </div>
+    </div>
+</body>
+
+<!-- 載入文章資料檔案 -->
+<script src="data.js"></script>
+<!-- 延遲載入 JavaScript 文件，確保 DOM 完全載入後再執行 -->
+<script src="script.js" defer></script>
+
+</html>
