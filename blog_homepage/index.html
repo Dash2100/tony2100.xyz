@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- style -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- tailwind css -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <title>Document</title>
+</head>
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                boxShadow: {
+                    'nav': '0 4px 60px 0 rgba(45, 115, 154, 0.5)',
+                    'inner': 'inset 5px 5px 10px 0 rgba(118, 145, 175, 0.2)'
+                },
+                fontFamily: {
+                    'noto': ['"Noto Sans"', '"Noto Sans TC"', 'sans-serif']
+                }
+            }
+        }
+    }
+</script>
+
+<body class="m-0 bg-[#EDF5FA] flex font-noto">
+    <!-- side nav -->
+    <div class="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex flex-col items-center sticky top-0 left-0">
+
+        <!-- profile -->
+        <div class="flex items-center justify-center">
+            <img src="./imgs/profile.png" alt="Profile Picture" class="h-12 w-12 rounded-full">
+        </div>
+
+        <!-- nav item -->
+        <div class="flex flex-col gap-10 my-16">
+            <a href="#" class="flex items-center justify-center p-2 rounded-full bg-[#DBECF8] shadow-inner">
+                <img src="./imgs/icon/home.svg" alt="Home Icon" class="h-7 w-7">
+            </a>
+            <a href="#" class="flex items-center justify-center p-2 rounded-full">
+                <img src="./imgs/icon/blog.svg" alt="Home Icon" class="h-7 w-7">
+            </a>
+            <a href="#" class="flex items-center justify-center p-2 rounded-full">
+                <img src="./imgs/icon/note.svg" alt="Home Icon" class="h-7 w-7">
+            </a>
+        </div>
+
+        <!-- settings button -->
+        <a href="#" class="flex items-center justify-center p-2 rounded-full mt-auto">
+            <img src="./imgs/icon/settings.svg" alt="Home Icon" class="h-7 w-7">
+        </a>
+    </div>
+
+    <!-- main content -->
+    <div class="w-full items-center p-16 max-w-[1200px] mx-auto flex flex-col gap-8">
+
+        <!-- Cover Image (or text) -->
+        <div
+            class="w-full px-10 py-20 rounded-[35px] mx-auto bg-[#DBECF8] text-[#4E5969] text-[40px] leading-[55px] font-bold shadow-inner text-center noto-font">
+            <h1>Tony2100's Life Log
+                <br />
+                Cover Image Placeholder
+            </h1>
+        </div>
+
+        <!-- Posts and SideInfo -->
+        <div class="w-full flex gap-5">
+
+            <!-- Posts Grid -->
+            <div class="grid grid-cols-2 gap-5">
+
+                <!-- Post Card -->
+                <div
+                    class="w-[365px] h-[345px] bg-[#F3FAFF] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer">
+                    <!-- Cover Image -->
+                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner"></div>
+
+                    <!-- Tags -->
+                    <div class="flex gap-2 w-full">
+                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                            <img src="./imgs/icon/pin.svg" alt="Tag Icon" class="inline my-auto" />
+                            置頂
+                        </span>
+                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                            競賽
+                        </span>
+                    </div>
+
+                    <!-- Title and Date -->
+                    <div class="flex flex-col gap-2 w-full">
+                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
+                        <div class="flex gap-2">
+                            <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
+                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="w-[365px] h-[345px] bg-[#F3FAFF] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer">
+                    <!-- Cover Image -->
+                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner"></div>
+
+                    <!-- Tags -->
+                    <div class="flex gap-2 w-full">
+                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                            競賽
+                        </span>
+                    </div>
+
+                    <!-- Title and Date -->
+                    <div class="flex flex-col gap-2 w-full">
+                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
+                        <div class="flex gap-2">
+                            <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
+                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="w-[365px] h-[345px] bg-[#F3FAFF] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer">
+                    <!-- Cover Image -->
+                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner"></div>
+
+                    <!-- Tags -->
+                    <div class="flex gap-2 w-full">
+                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                            競賽
+                        </span>
+                    </div>
+
+                    <!-- Title and Date -->
+                    <div class="flex flex-col gap-2 w-full">
+                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
+                        <div class="flex gap-2">
+                            <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
+                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="w-[365px] h-[345px] bg-[#F3FAFF] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer">
+                    <!-- Cover Image -->
+                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner"></div>
+
+                    <!-- Tags -->
+                    <div class="flex gap-2 w-full">
+                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                            競賽
+                        </span>
+                    </div>
+
+                    <!-- Title and Date -->
+                    <div class="flex flex-col gap-2 w-full">
+                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
+                        <div class="flex gap-2">
+                            <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
+                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Side Info Section -->
+            <div class="flex flex-col gap-10">
+                <!-- Side Featured Posts List -->
+                <div
+                    class="w-[300px] h-fit bg-[#F3FAFF] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
+                    <div class="flex justify-between">
+                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">熱門文章</h2>
+                        <button
+                            class="text-[#4E5969] text-[14px] font-semibold noto-font border-[1px] border-[#4E5969]/20 px-4 rounded-[10px] shadow-inner h-8">更多</button>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-4 items-center">
+
+                            <!-- Featured Posts Card -->
+                            <div
+                                class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] select-none cursor-pointer">
+                                <p class="text-[#4E5969] text-[15px] noto-font truncate">全國技能競賽 網頁技術職種參賽心得</p>
+                                <div class="flex gap-1">
+                                    <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-4 w-4 my-auto">
+                                    <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] select-none cursor-pointer">
+                                <p class="text-[#4E5969] text-[15px] noto-font truncate">Lorem ipsum dolor sit amet
+                                    consectetur, adipisicing elit. Rerum, natus?</p>
+                                <div class="flex gap-1">
+                                    <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-4 w-4 my-auto">
+                                    <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] select-none cursor-pointer">
+                                <p class="text-[#4E5969] text-[15px] noto-font truncate">全國技能競賽 網頁技術職種參賽心得</p>
+                                <div class="flex gap-1">
+                                    <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-4 w-4 my-auto">
+                                    <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Info Tags List -->
+                <div
+                    class="w-[300px] h-fit bg-[#F3FAFF] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
+                    <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">文章標籤</h2>
+                    <div class="flex flex-wrap gap-3">
+                        <button
+                            class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit">競賽</button>
+
+                        <button
+                            class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit">北極熊</button>
+
+                        <button
+                            class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit">競賽</button>
+
+                        <button
+                            class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit">程式開發</button>
+
+                        <button
+                            class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit">競賽</button>
+
+                        <button
+                            class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit">北極</button>
+
+                        <button
+                            class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit">競賽</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
