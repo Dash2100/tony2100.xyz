@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- style -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- tailwind css -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <title>Document</title>
+</head>
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                boxShadow: {
+                    'nav': '0 4px 60px 0 rgba(45, 115, 154, 0.5)',
+                    'inner': 'inset 5px 5px 10px 0 rgba(118, 145, 175, 0.2)'
+                },
+                fontFamily: {
+                    'noto': ['"Noto Sans"', '"Noto Sans TC"', 'sans-serif']
+                }
+            }
+        }
+    }
+</script>
+
+<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen">
+    <!-- side nav -->
+    <div class="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex flex-col items-center sticky top-0 left-0">
+
+        <!-- profile -->
+        <div class="flex items-center justify-center">
+            <img src="./imgs/profile.png" alt="Profile Picture" class="h-12 w-12 rounded-full">
+        </div>
+
+        <!-- nav item -->
+        <div class="flex flex-col gap-10 my-16">
+            <a href="#"
+                class="flex items-center justify-center p-2 rounded-full hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+                <img src="./imgs/icon/home.svg" alt="Home Icon" class="h-7 w-7">
+            </a>
+            <a href="#" class="flex items-center justify-center p-2 rounded-full bg-[#DBECF8] shadow-inner">
+                <img src="./imgs/icon/blog.svg" alt="Home Icon" class="h-7 w-7">
+            </a>
+            <a href="#"
+                class="flex items-center justify-center p-2 rounded-full hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+                <img src="./imgs/icon/note.svg" alt="Home Icon" class="h-7 w-7">
+            </a>
+        </div>
+
+        <!-- settings button -->
+        <a href="#"
+            class="flex items-center justify-center p-2 rounded-full mt-auto hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+            <img src="./imgs/icon/settings.svg" alt="Home Icon" class="h-7 w-7">
+        </a>
+    </div>
+
+    <!-- main content -->
+    <div class="w-full p-16 max-w-[1400px] mx-auto flex flex-col gap-8">
+        <!-- Post Info -->
+        <div class="w-full flex flex-col gap-3">
+            <!-- Post Tags -->
+            <div class="flex gap-3">
+                <span
+                    class="bg-[#DBECF8] text-[#4E5969] px-5 py-1 rounded-xl text-lg shadow-inner font-medium">競賽</span>
+                <span
+                    class="bg-[#DBECF8] text-[#4E5969] px-5 py-1 rounded-xl text-lg shadow-inner font-medium">程式開發</span>
+            </div>
+            <div class="flex flex-col gap-1">
+                <!-- Post Title -->
+                <h1 class="text-[45px] font-medium text-[#4E5969]">全國技能競賽 網頁技術職種參賽心得</h1>
+                <!-- Post Date -->
+                <div class="flex gap-2">
+                    <img src="./imgs/icon/date-inpost.svg" alt="Calendar Icon">
+                    <span class="text-[#4E5969] text-md font-semibold leading-5">2025年07月30日</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Content -->
+        <div class="grid grid-cols-[1fr_300px] gap-6 max-w-full">
+            <!-- Main Content Area -->
+            <div class="flex flex-col gap-6 max-w-[1000px]">
+                <!-- Cover Image -->
+                <div class="w-full h-[550px] bg-[#DBECF8] rounded-[35px] mb-2 shadow-inner overflow-hidden">
+                    <img src="./imgs/post-placeholder.png" alt="Post Cover Image" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Post Content -->
+                <div class="w-full bg-[#f7fafd] shadow-inner min-h-96 rounded-[35px] px-10 py-8 flex flex-col gap-6">
+                    <h2 class="text-[35px] font-semibold text-[#4E5969]">
+                        第一段落標題
+                    </h2>
+                    <p class="text-[#4E5969] text-[22px]">
+                        段落文字內容。這裡可以放置一些關於競賽的背景資訊、參賽動機或是相關的經歷分享。可以使用多種格式來強調重要的點，例如粗體、斜體或是列表等。
+                    </p>
+                    <p class="text-[#4E5969] text-[22px]">
+                        段落文字內容。這裡可以放置一些關於競賽的背景資訊、參賽動機或是相關的經歷分享。可以使用多種格式來強調重要的點，例如粗體、斜體或是列表等。
+                    </p>
+                    <p class="text-[#4E5969] text-[22px]">
+                        段落文字內容。這裡可以放置一些關於競賽的背景資訊、參賽動機或是相關的經歷分享。可以使用多種格式來強調重要的點，例如粗體、斜體或是列表等。
+                    </p>
+                    <h2 class="text-[35px] font-semibold text-[#4E5969]">
+                        第二段落標題
+                    </h2>
+                    <p class="text-[#4E5969] text-[22px]">
+                        段落文字內容。這裡可以放置一些關於競賽的背景資訊、參賽動機或是相關的經歷分享。可以使用多種格式來強調重要的點，例如粗體、斜體或是列表等。
+                    </p>
+                    <p class="text-[#4E5969] text-[22px]">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima commodi consequuntur unde,
+                        distinctio debitis architecto eos quos? Atque reiciendis eligendi officiis recusandae, facere
+                        laboriosam molestias veritatis error illum suscipit maxime ullam adipisci molestiae praesentium
+                        culpa temporibus voluptates tempora tenetur amet cupiditate veniam expedita illo quidem. Aliquam
+                        veritatis, accusantium maiores magnam tenetur tempore exercitationem rerum. Recusandae impedit
+                        blanditiis fugit minus, sunt quas libero animi harum aliquid vel? Quae ullam, corporis ad
+                        quaerat totam sint minus commodi neque, animi assumenda quo vitae illum adipisci aliquam enim
+                        reprehenderit necessitatibus consequuntur. Alias totam, laborum assumenda molestias corrupti
+                        error nihil mollitia, quae, illo praesentium cupiditate rerum repellendus. Sed architecto, autem
+                        possimus repellat reiciendis soluta omnis est iure, quia consequuntur perspiciatis libero
+                        officiis perferendis distinctio, nihil fugit exercitationem iusto ullam laboriosam. Assumenda,
+                        ducimus doloribus non reiciendis ab id ullam distinctio dolor minima perspiciatis cum, unde
+                        quidem facere doloremque harum qui maxime consectetur hic asperiores possimus accusamus nulla?
+                        Magnam non porro corporis magni laborum earum quos dicta. Iure quo maiores temporibus eveniet
+                        soluta quam autem vitae? Dolorem fugiat cupiditate vitae nostrum. At molestiae, quasi odit fuga
+                        ad repellendus optio illo deserunt perspiciatis praesentium maxime, eius sed! A at alias saepe
+                        vero unde reprehenderit, autem minus corrupti ut quaerat. Modi, aperiam esse! Culpa commodi
+                        corporis ad ab aspernatur. Id, minima totam? Distinctio, beatae repudiandae alias, sint corrupti
+                        quia non voluptate quaerat voluptatum labore harum! Voluptates consectetur expedita earum soluta
+                        sint esse molestias impedit deleniti quasi tempora, eaque natus, fugiat aliquam totam ab maiores
+                        odio laboriosam neque quos nemo! Maxime facere deserunt veritatis aspernatur accusamus a magni
+                        reiciendis, quasi, quaerat cum voluptatum doloremque maiores recusandae suscipit eveniet!
+                        Veritatis et quibusdam ipsa fuga exercitationem distinctio hic mollitia placeat ratione saepe
+                        nam, quas animi a, deserunt doloremque nulla laudantium deleniti! Hic veniam eaque, itaque
+                        pariatur natus ab beatae? Numquam cumque atque non placeat, tempora praesentium necessitatibus,
+                        minus quam maiores vitae corporis, velit ut ducimus eligendi nobis repellendus pariatur! Minus
+                        quaerat necessitatibus, sed fugiat distinctio, vitae qui doloremque nihil veniam, maxime sint
+                        quidem illo. Aliquam beatae, voluptatibus minus quia alias explicabo at voluptatum earum ea ad
+                        architecto illum dignissimos consequatur nemo dolores perferendis. Corporis, quo explicabo
+                        reprehenderit ab aspernatur omnis quasi debitis assumenda fugiat. Veritatis, aspernatur nihil et
+                        itaque quia autem neque pariatur eos provident accusantium quo. Tenetur corporis, harum culpa
+                        perspiciatis porro voluptates perferendis fugiat est quae et! Accusantium nemo provident impedit
+                        veritatis vel animi quia omnis aliquam debitis magni rerum architecto dignissimos, repellat
+                        natus pariatur rem vitae! Facere nesciunt a dolorum veritatis optio! Dicta sunt at accusamus
+                        quam omnis, dignissimos corrupti! Dolorem, quo quisquam exercitationem a iure optio vero dolor
+                        doloribus eaque, quaerat iusto culpa accusamus inventore quos ipsum hic suscipit nostrum?
+                        Repellendus incidunt debitis dolorem adipisci, ipsum aut magnam non minus alias assumenda illum
+                        architecto consectetur perspiciatis accusantium aperiam modi autem ducimus suscipit, numquam
+                        reprehenderit repellat! Incidunt repellendus nostrum alias? Porro provident asperiores corrupti
+                        unde corporis dolores molestias natus harum voluptates at eligendi, accusamus eius iure nobis,
+                        cum, adipisci illum veritatis culpa tenetur ad quidem. Quas deleniti corporis provident!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Sidebar Table of Contents -->
+            <div class="flex flex-col">
+                <!-- 空的占位區域，對應封面圖片的高度 -->
+                <div class="h-[550px] mb-8"></div>
+                <!-- Sidebar Container with proper sticky positioning -->
+                <div class="flex flex-col gap-8 sticky top-8">
+                    <!-- Table of Contents -->
+                    <div class="bg-[#f7fafd] shadow-inner rounded-[35px] px-8 py-6 flex flex-col gap-4">
+                        <h2 class="text-[28px] font-semibold text-[#4E5969]">目錄</h2>
+                        <div class="flex flex-col gap-5">
+                            <div class="flex flex-col gap-2">
+                                <a href="#section1"
+                                    class="text-[#4E5969] text-lg font-bold hover:text-[#2D739A] flex items-center">
+                                    <img src="./imgs/icon/list-arrow.svg" alt="Section 1 Icon" class="mr-2">
+                                    第一段落標題
+                                </a>
+                                <a href="#section2"
+                                    class="text-[#4E5969] text-lg font-medium hover:text-[#2D739A] ml-8">
+                                    第二段落標題
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Side Featured Posts List -->
+                    <div
+                        class="w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
+                        <div class="flex justify-between">
+                            <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">熱門文章</h2>
+                            <button
+                                class="text-[#4E5969] text-[14px] font-semibold noto-font border-[1px] border-[#4E5969]/20 px-4 rounded-[10px] shadow-inner h-8 hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">更多</button>
+                        </div>
+                        <div class="flex flex-col gap-4">
+                            <div class="flex flex-col gap-4 items-center">
+
+                                <!-- Featured Posts Card -->
+                                <div
+                                    class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] select-none cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">
+                                    <p class="text-[#4E5969] text-[15px] noto-font truncate">全國技能競賽 網頁技術職種參賽心得</p>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-4 w-4 my-auto">
+                                        <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] select-none cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">
+                                    <p class="text-[#4E5969] text-[15px] noto-font truncate">Lorem ipsum dolor sit amet
+                                        consectetur, adipisicing elit. Rerum, natus?</p>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-4 w-4 my-auto">
+                                        <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] select-none cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">
+                                    <p class="text-[#4E5969] text-[15px] noto-font truncate">全國技能競賽 網頁技術職種參賽心得</p>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-4 w-4 my-auto">
+                                        <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Side Info Tags List -->
+                    <div
+                        class="w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
+                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">文章標籤</h2>
+                        <div class="flex flex-wrap gap-3">
+                            <button
+                                class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">競賽</button>
+
+                            <button
+                                class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">北極熊</button>
+
+                            <button
+                                class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">競賽</button>
+
+                            <button
+                                class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">程式開發</button>
+
+                            <button
+                                class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">競賽</button>
+
+                            <button
+                                class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">北極</button>
+
+                            <button
+                                class="text-[#4E5969] text-[16px] px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">競賽</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="w-full rounded-[35px] bg-[#DBECF8] shadow-inner select-none mt-auto">
+            <div class="flex justify-between items-center gap-8 p-8 px-12">
+                <div class="flex gap-8">
+                    <img src="./imgs/profile.png" alt="My Profile Picture" class="h-24 rounded-[20px]">
+                    <div class="flex flex-col gap-1 text-[18px] my-auto">
+                        <h2 class="font-semibold text-[#4E5969]">© 2025 Tony2100. All rights reserved.</h2>
+                        <h2 class="font-semibold text-[#4E5969]">
+                            本部落格所有文章除特別聲明外，均採用 <span class="text-[#538AD9] cursor-pointer">CC BY-NC-SA4.0</span> 許可協議
+                        </h2>
+                        <h2 class="font-semibold text-[#4E5969]">轉載請註明來自本網站！</h2>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-5">
+                    <div class="w-full flex justify-between">
+                        <div
+                            class="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
+                            <img src="./imgs/icon/world.svg" alt="World Icon" class="h-7 w-7 inline-block">
+                        </div>
+                        <div
+                            class="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
+                            <img src="./imgs/icon/github.svg" alt="World Icon" class="h-7 w-7 inline-block">
+                        </div>
+                        <div
+                            class="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
+                            <img src="./imgs/icon/mail.svg" alt="World Icon" class="h-7 w-7 inline-block">
+                        </div>
+                    </div>
+                    <img src="./imgs/not-by-ai.png" alt="Not by AI" class="w-48">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
