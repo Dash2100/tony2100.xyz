@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --primary-bg: #EDF5FA;
+  --card-bg: #f7fafd;
+  --accent-bg: #DBECF8;
+  --text-primary: #4E5969;
+  --text-link: #538AD9;
+  --border-color: rgba(78, 89, 105, 0.2);
+}
+
+@theme inline {
+  --font-noto: var(--font-noto);
+  --shadow-nav: 0 4px 60px 0 rgba(45, 115, 154, 0.5);
+  --shadow-inner: inset 5px 5px 10px 0 rgba(118, 145, 175, 0.2);
+}
+
+body {
+  background-color: var(--primary-bg);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Custom shadow utilities */
+.shadow-nav {
+  box-shadow: var(--shadow-nav);
+}
+
+.shadow-inner {
+  box-shadow: var(--shadow-inner);
+}
+

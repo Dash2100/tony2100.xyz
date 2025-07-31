@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <title>Markdown Editor</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    boxShadow: {
+                        'nav': '0 4px 60px 0 rgba(45, 115, 154, 0.5)',
+                        'inner': 'inset 5px 5px 10px 0 rgba(118, 145, 175, 0.2)'
+                    },
+                    fontFamily: {
+                        'noto': ['"Noto Sans"', '"Noto Sans TC"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen">
+    <!-- side nav -->
+    <div class="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex flex-col items-center sticky top-0 left-0">
+        <!-- profile -->
+        <div class="flex items-center justify-center">
+            <img src="./imgs/profile.png" alt="Profile Picture" class="h-12 w-12 rounded-full">
+        </div>
+
+        <!-- nav item -->
+        <div class="flex flex-col gap-10 my-16">
+            <a href="index.html"
+                class="flex items-center justify-center p-2 rounded-full hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+                <img src="./imgs/icon/home.svg" alt="Home Icon" class="h-7 w-7">
+            </a>
+            <a href="post.html" class="flex items-center justify-center p-2 rounded-full bg-[#DBECF8] shadow-inner">
+                <img src="./imgs/icon/blog.svg" alt="Blog Icon" class="h-7 w-7">
+            </a>
+            <a href="note.html"
+                class="flex items-center justify-center p-2 rounded-full hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+                <img src="./imgs/icon/note.svg" alt="Note Icon" class="h-7 w-7">
+            </a>
+        </div>
+
+        <!-- settings button -->
+        <a href="#"
+            class="flex items-center justify-center p-2 rounded-full mt-auto hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+            <img src="./imgs/icon/settings.svg" alt="Settings Icon" class="h-7 w-7">
+        </a>
+    </div>
+
+    <!-- main content -->
+    <div class="w-full p-4 lg:p-16 flex flex-col gap-8">
+        <!-- Editor Header -->
+        <div class="w-full flex flex-col gap-3">
+            <h1 class="text-[28px] lg:text-[45px] font-medium text-[#4E5969]">Markdown 編輯器</h1>
+        </div>
+
+        <!-- Editor Container -->
+        <div class="w-full flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-6 h-full">
+            <!-- Left Panel - Editor -->
+            <div class="flex flex-col gap-4 h-full">
+                <!-- Toolbar -->
+                <div class="bg-[#f7fafd] shadow-inner rounded-[25px] p-4 flex flex-wrap gap-2">
+                    <button onclick="insertText('# ')" class="toolbar-btn" title="標題 1">
+                        <span class="text-lg font-bold">H1</span>
+                    </button>
+                    <button onclick="insertText('## ')" class="toolbar-btn" title="標題 2">
+                        <span class="text-md font-bold">H2</span>
+                    </button>
+                    <button onclick="insertText('### ')" class="toolbar-btn" title="標題 3">
+                        <span class="text-sm font-bold">H3</span>
+                    </button>
+                    <div class="w-px bg-[#4E5969]/20 mx-2"></div>
+                    <button onclick="insertText('**', '**')" class="toolbar-btn" title="粗體">
+                        <span class="font-bold">B</span>
+                    </button>
+                    <button onclick="insertText('*', '*')" class="toolbar-btn" title="斜體">
+                        <span class="italic">I</span>
+                    </button>
+                    <button onclick="insertText('~~', '~~')" class="toolbar-btn" title="刪除線">
+                        <span class="line-through">S</span>
+                    </button>
+                    <div class="w-px bg-[#4E5969]/20 mx-2"></div>
+                    <button onclick="insertText('`', '`')" class="toolbar-btn" title="行內代碼">
+                        <span class="font-mono text-sm">&lt;/&gt;</span>
+                    </button>
+                    <button onclick="insertText('```\n', '\n```')" class="toolbar-btn" title="代碼塊">
+                        <span class="font-mono text-xs">{ }</span>
+                    </button>
+                    <div class="w-px bg-[#4E5969]/20 mx-2"></div>
+                    <button onclick="insertText('- ')" class="toolbar-btn" title="無序列表">
+                        <span>•</span>
+                    </button>
+                    <button onclick="insertText('1. ')" class="toolbar-btn" title="有序列表">
+                        <span>1.</span>
+                    </button>
+                    <button onclick="insertText('> ')" class="toolbar-btn" title="引用">
+                        <span>"</span>
+                    </button>
+                    <div class="w-px bg-[#4E5969]/20 mx-2"></div>
+                    <button onclick="insertText('[]()')" class="toolbar-btn" title="連結">
+                        <span>Link</span>
+                    </button>
+                    <button onclick="insertText('![]()')" class="toolbar-btn" title="圖片">
+                        <span>Img</span>
+                    </button>
+                    <div class="w-px bg-[#4E5969]/20 mx-2"></div>
+                    <button onclick="insertCustomComponent('quote')" class="toolbar-btn bg-[#e8f6ff]" title="引用框">
+                        <span class="text-sm">Quote</span>
+                    </button>
+                    <button onclick="insertCustomComponent('tldr')" class="toolbar-btn bg-[#e8f6ff]" title="TLDR">
+                        <span class="text-sm">TLDR</span>
+                    </button>
+                    <button onclick="insertCustomComponent('warning')" class="toolbar-btn bg-[#e8f6ff]" title="警告">
+                        <span class="text-sm">Warn</span>
+                    </button>
+                    <button onclick="insertCustomComponent('info')" class="toolbar-btn bg-[#e8f6ff]" title="提示">
+                        <span class="text-sm">Info</span>
+                    </button>
+                </div>
+
+                <!-- Editor Textarea -->
+                <div class="flex-1 min-h-[400px] lg:min-h-[600px]">
+                    <textarea id="editor"
+                        class="w-full h-full bg-[#f7fafd] shadow-inner rounded-[25px] p-6 text-[#4E5969] text-lg resize-none outline-none font-mono"
+                        placeholder="在這裡輸入 Markdown 內容..." oninput="updatePreview()"></textarea>
+                </div>
+            </div>
+
+            <!-- Right Panel - Preview -->
+            <div class="flex flex-col gap-4 h-full">
+                <div class="bg-[#f7fafd] shadow-inner rounded-[25px] p-4 flex justify-between items-center">
+                    <h2 class="text-[22px] font-semibold text-[#4E5969]">預覽</h2>
+                    <div class="flex gap-2">
+                        <button onclick="togglePreviewMode('desktop')" id="desktop-btn" class="preview-mode-btn active">
+                            桌面
+                        </button>
+                        <button onclick="togglePreviewMode('mobile')" id="mobile-btn" class="preview-mode-btn">
+                            手機
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Container -->
+                <div class="flex-1 min-h-[400px] lg:min-h-[600px]">
+                    <div id="preview"
+                        class="w-full h-full bg-[#f7fafd] shadow-inner rounded-[25px] p-6 overflow-y-auto markdown-content">
+                        <!-- Preview content will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Options -->
+        <div class="w-full bg-[#f7fafd] shadow-inner rounded-[25px] p-6">
+            <h2 class="text-[22px] font-semibold text-[#4E5969] mb-4">匯出選項</h2>
+            <div class="flex flex-wrap gap-4">
+                <button onclick="exportMarkdown()" class="export-btn">
+                    匯出 Markdown (.md)
+                </button>
+                <button onclick="exportHTML()" class="export-btn">
+                    匯出 HTML (.html)
+                </button>
+                <button onclick="copyToClipboard()" class="export-btn">
+                    複製到剪貼板
+                </button>
+                <button onclick="loadFromFile()" class="export-btn">
+                    載入檔案
+                </button>
+                <input type="file" id="fileInput" accept=".md,.txt" style="display: none;"
+                    onchange="handleFileLoad(event)">
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .toolbar-btn {
+            @apply px-3 py-2 bg-[#DBECF8] text-[#4E5969] rounded-lg shadow-inner hover:bg-[#e8f6ff] transition-all duration-200 ease-in-out text-sm font-medium border border-[#4E5969]/20;
+        }
+
+        .preview-mode-btn {
+            @apply px-4 py-2 text-[#4E5969] rounded-lg border border-[#4E5969]/20 transition-all duration-200 ease-in-out text-sm font-medium;
+        }
+
+        .preview-mode-btn.active {
+            @apply bg-[#DBECF8] shadow-inner;
+        }
+
+        .preview-mode-btn:not(.active) {
+            @apply hover:bg-[#e8f6ff];
+        }
+
+        .export-btn {
+            @apply px-6 py-3 bg-[#DBECF8] text-[#4E5969] rounded-xl shadow-inner hover:bg-[#e8f6ff] transition-all duration-200 ease-in-out font-medium border border-[#4E5969]/20;
+        }
+
+        .markdown-content h1 {
+            @apply text-[35px] font-semibold text-[#4E5969] mb-4;
+        }
+
+        .markdown-content h2 {
+            @apply text-[28px] font-semibold text-[#4E5969] mb-3 mt-6;
+        }
+
+        .markdown-content h3 {
+            @apply text-[24px] font-semibold text-[#4E5969] mb-2 mt-5;
+        }
+
+        .markdown-content p {
+            @apply text-[#4E5969] text-[18px] mb-4 leading-relaxed;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            @apply text-[#4E5969] text-[18px] mb-4 ml-6;
+        }
+
+        .markdown-content li {
+            @apply mb-2;
+        }
+
+        .markdown-content blockquote {
+            @apply border-l-4 border-[#4E5969]/30 bg-[#DBECF8] pl-4 py-2 my-4 italic text-[#4E5969];
+        }
+
+        .markdown-content code {
+            @apply bg-[#DBECF8] px-2 py-1 rounded font-mono text-sm text-[#4E5969];
+        }
+
+        .markdown-content pre {
+            @apply bg-[#DBECF8] p-4 rounded-lg my-4 overflow-x-auto;
+        }
+
+        .markdown-content pre code {
+            @apply bg-transparent p-0;
+        }
+
+        .markdown-content strong {
+            @apply font-bold;
+        }
+
+        .markdown-content em {
+            @apply italic;
+        }
+
+        .markdown-content del {
+            @apply line-through;
+        }
+
+        .markdown-content a {
+            @apply text-[#538AD9] hover:underline;
+        }
+
+        .markdown-content img {
+            @apply max-w-full h-auto rounded-lg my-4;
+        }
+
+        /* Custom Components */
+        .custom-quote {
+            @apply bg-[#e8f6ff] border-l-4 border-[#538AD9] p-4 my-4 rounded-r-lg;
+        }
+
+        .custom-tldr {
+            @apply bg-[#f0f9ff] border border-[#538AD9] p-4 my-4 rounded-lg;
+        }
+
+        .custom-warning {
+            @apply bg-[#fef3cd] border border-[#f0ad4e] p-4 my-4 rounded-lg;
+        }
+
+        .custom-info {
+            @apply bg-[#d1ecf1] border border-[#5bc0de] p-4 my-4 rounded-lg;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 1024px) {
+            .markdown-content h1 {
+                @apply text-[28px];
+            }
+
+            .markdown-content h2 {
+                @apply text-[24px];
+            }
+
+            .markdown-content h3 {
+                @apply text-[20px];
+            }
+
+            .markdown-content p,
+            .markdown-content li {
+                @apply text-[16px];
+            }
+        }
+    </style>
+
+    <script>
+        let currentPreviewMode = 'desktop';
+
+        // Default content
+        const defaultContent = `# 我的文章標題
+
+這是一個段落。您可以在這裡輸入文章內容。
+
+## 副標題
+
+這是另一個段落，包含 **粗體文字** 和 *斜體文字*。
+
+### 列表範例
+
+- 項目 1
+- 項目 2
+- 項目 3
+
+### 代碼範例
+
+\`\`\`javascript
+function hello() {
+    console.log("Hello, World!");
+}
+\`\`\`
+
+### 引用範例
+
+> 這是一個引用文字。
+
+### 自定義元件範例
+
+:::quote
+這是一個自定義引用框，使用特殊語法來創建。
+:::
+
+:::tldr
+**快速總結：** 這篇文章主要介紹了如何使用 Markdown 編輯器。
+:::
+
+:::warning
+**注意：** 這是一個警告訊息，請注意相關事項。
+:::
+
+:::info
+**提示：** 這是一個資訊提示框，提供額外的說明。
+:::`;
+
+        // Initialize the editor
+        document.addEventListener('DOMContentLoaded', function () {
+            const editor = document.getElementById('editor');
+            const savedContent = localStorage.getItem('markdown-editor-content');
+
+            if (savedContent) {
+                editor.value = savedContent;
+            } else {
+                editor.value = defaultContent;
+            }
+
+            updatePreview();
+        });
+
+        // Insert text at cursor position
+        function insertText(before, after = '') {
+            const editor = document.getElementById('editor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const selectedText = editor.value.substring(start, end);
+            const beforeText = editor.value.substring(0, start);
+            const afterText = editor.value.substring(end);
+
+            editor.value = beforeText + before + selectedText + after + afterText;
+
+            // Set cursor position
+            const newCursorPos = start + before.length + selectedText.length;
+            editor.setSelectionRange(newCursorPos, newCursorPos);
+            editor.focus();
+
+            updatePreview();
+        }
+
+        // Insert custom components
+        function insertCustomComponent(type) {
+            const templates = {
+                quote: '\n:::quote\n在這裡輸入引用內容\n:::\n\n',
+                tldr: '\n:::tldr\n**快速總結：** 在這裡輸入總結內容\n:::\n\n',
+                warning: '\n:::warning\n**注意：** 在這裡輸入警告內容\n:::\n\n',
+                info: '\n:::info\n**提示：** 在這裡輸入提示內容\n:::\n\n'
+            };
+
+            insertText(templates[type] || '');
+        }
+
+        // Process custom components
+        function processCustomComponents(html) {
+            // Quote component
+            html = html.replace(/:::quote\s*\n?([\s\S]*?)\n?:::/g,
+                '<div class="custom-quote">$1</div>');
+
+            // TLDR component
+            html = html.replace(/:::tldr\s*\n?([\s\S]*?)\n?:::/g,
+                '<div class="custom-tldr">$1</div>');
+
+            // Warning component
+            html = html.replace(/:::warning\s*\n?([\s\S]*?)\n?:::/g,
+                '<div class="custom-warning">$1</div>');
+
+            // Info component
+            html = html.replace(/:::info\s*\n?([\s\S]*?)\n?:::/g,
+                '<div class="custom-info">$1</div>');
+
+            return html;
+        }
+
+        // Update preview
+        function updatePreview() {
+            const editor = document.getElementById('editor');
+            const preview = document.getElementById('preview');
+
+            let html = marked.parse(editor.value);
+            html = processCustomComponents(html);
+
+            preview.innerHTML = html;
+
+            // Highlight code blocks
+            preview.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        }
+
+        // Toggle preview mode
+        function togglePreviewMode(mode) {
+            currentPreviewMode = mode;
+            const desktopBtn = document.getElementById('desktop-btn');
+            const mobileBtn = document.getElementById('mobile-btn');
+            const preview = document.getElementById('preview');
+
+            if (mode === 'mobile') {
+                desktopBtn.classList.remove('active');
+                mobileBtn.classList.add('active');
+                preview.style.maxWidth = '375px';
+                preview.style.margin = '0 auto';
+            } else {
+                mobileBtn.classList.remove('active');
+                desktopBtn.classList.add('active');
+                preview.style.maxWidth = '';
+                preview.style.margin = '';
+            }
+        }
+
+        // Export functions
+        function exportMarkdown() {
+            const content = document.getElementById('editor').value;
+            const blob = new Blob([content], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'article.md';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportHTML() {
+            const content = document.getElementById('editor').value;
+            let html = marked.parse(content);
+            html = processCustomComponents(html);
+
+            const styles = document.querySelector('style').textContent;
+            const fullHTML = '<!DOCTYPE html>\n<html lang="zh-TW">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Exported Article</title>\n    <link rel="stylesheet" href="style.css">\n    <script src="https://cdn.tailwindcss.com"><\/script>\n    <style>\n        ' + styles + '\n    </style>\n</head>\n<body class="bg-[#EDF5FA] font-noto p-8">\n    <div class="max-w-4xl mx-auto bg-[#f7fafd] shadow-inner rounded-[35px] p-10">\n        <div class="markdown-content">\n            ' + html + '\n        </div>\n    </div>\n</body>\n</html>';
+
+            const blob = new Blob([fullHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'article.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function copyToClipboard() {
+            const content = document.getElementById('editor').value;
+            navigator.clipboard.writeText(content).then(() => {
+                alert('內容已複製到剪貼板！');
+            });
+        }
+
+        function loadFromFile() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileLoad(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('editor').value = e.target.result;
+                    updatePreview();
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Auto-save functionality
+        setInterval(() => {
+            const content = document.getElementById('editor').value;
+            localStorage.setItem('markdown-editor-content', content);
+        }, 30000); // Save every 30 seconds
+    </script>
+</body>
+
+</html>
