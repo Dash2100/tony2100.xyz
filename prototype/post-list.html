@@ -4,9 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- style -->
-    <link rel="stylesheet" href="style.css">
-
     <!-- tailwind css -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -18,31 +15,6 @@
         rel="stylesheet">
 
     <title>Document</title>
-
-    <style>
-        /* Completely hide scrollbar on all platforms */
-        .scrollbar-custom {
-            /* Hide scrollbar in Firefox */
-            scrollbar-width: none;
-            /* Hide scrollbar in IE/Edge */
-            -ms-overflow-style: none;
-        }
-
-        /* Hide scrollbar in WebKit browsers (Chrome, Safari, Edge) */
-        .scrollbar-custom::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Focus styles for tag buttons */
-        button[data-tag]:focus {
-            outline: 2px solid #4E5969;
-            outline-offset: 2px;
-        }
-
-        button[data-tag]:focus:not(:focus-visible) {
-            outline: none;
-        }
-    </style>
 </head>
 
 <script>
@@ -61,9 +33,9 @@
     }
 </script>
 
-<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen">
+<body class="m-0 bg-blue-50 flex font-noto min-h-screen">
     <!-- side nav -->
-    <div class="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex flex-col items-center sticky top-0 left-0">
+    <div class="h-dvh w-[70px] px-2 py-10 bg-blue-50 shadow-nav flex flex-col items-center sticky top-0 left-0">
 
         <!-- profile -->
         <div class="flex items-center justify-center">
@@ -72,22 +44,22 @@
 
         <!-- nav item -->
         <div class="flex flex-col gap-10 my-16">
-            <a href="#" class="flex items-center justify-center p-2 rounded-full bg-[#DBECF8] shadow-inner">
+            <a href="#" class="flex items-center justify-center p-2 rounded-full bg-blue-100 shadow-inner">
                 <img src="./imgs/icon/home.svg" alt="Home Icon" class="h-7 w-7">
             </a>
             <a href="#"
-                class="flex items-center justify-center p-2 rounded-full hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+                class="flex items-center justify-center p-2 rounded-full hover:bg-blue-50 hover:shadow-inner ease-in-out duration-200">
                 <img src="./imgs/icon/blog.svg" alt="Home Icon" class="h-7 w-7">
             </a>
             <a href="#"
-                class="flex items-center justify-center p-2 rounded-full hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+                class="flex items-center justify-center p-2 rounded-full hover:bg-blue-50 hover:shadow-inner ease-in-out duration-200">
                 <img src="./imgs/icon/note.svg" alt="Home Icon" class="h-7 w-7">
             </a>
         </div>
 
         <!-- settings button -->
         <a href="#"
-            class="flex items-center justify-center p-2 rounded-full mt-auto hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+            class="flex items-center justify-center p-2 rounded-full mt-auto hover:bg-blue-50 hover:shadow-inner ease-in-out duration-200">
             <img src="./imgs/icon/settings.svg" alt="Home Icon" class="h-7 w-7">
         </a>
     </div>
@@ -97,85 +69,111 @@
 
         <!-- title area -->
         <div class="flex flex-col gap-4 text-center">
-            <h1 class="text-4xl font-bold text-[#4E5969]">文章列表</h1>
-            <h2 class="text-3xl font text-[#4E5969]">我覺得這件事撇除不好玩的部分，其實都蠻好玩的</h2>
+            <h1 class="text-4xl font-bold text-slate-600">文章列表</h1>
+            <h2 class="text-3xl font text-slate-600">我覺得這件事撇除不好玩的部分，其實都蠻好玩的</h2>
         </div>
 
         <div class="flex flex-col gap-5">
 
             <!-- tags list -->
-            <div class="h-14 mx-2 bg-white shadow-inner border-[1px] border-[#4E5969]/20 rounded-[20px] flex items-center px-8 relative overflow-hidden"
+            <div class="h-14 mx-2 bg-white shadow-inner border border-slate-400/20 rounded-[20px] flex items-center px-2 relative overflow-hidden"
                 id="tagContainer">
+
+                <!-- Left Arrow Button -->
+                <button id="leftArrow" 
+                    class="absolute left-3 z-20 p-1 opacity-0 transition-all duration-300 hover:scale-110 disabled:opacity-20 disabled:cursor-not-allowed"
+                    onclick="scrollTags('left')">
+                    <svg class="w-6 h-6 text-slate-500 hover:text-slate-700" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <!-- Right Arrow Button -->
+                <button id="rightArrow" 
+                    class="absolute right-3 z-20 p-1 opacity-0 transition-all duration-300 hover:scale-110 disabled:opacity-20 disabled:cursor-not-allowed"
+                    onclick="scrollTags('right')">
+                    <svg class="w-6 h-6 text-slate-500 hover:text-slate-700" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
 
                 <!-- Scrollable tag buttons container -->
                 <div id="tagScrollContainer"
-                    class="flex gap-5 relative z-10 overflow-x-auto overflow-y-hidden scrollbar-custom w-full scroll-smooth h-full items-center">
+                    class="flex gap-5 relative z-10 overflow-x-auto overflow-y-hidden w-full scroll-smooth h-full items-center mx-8"
+                    style="scrollbar-width: none; -ms-overflow-style: none;">
 
                     <!-- Background slider -->
                     <div id="tagSlider"
-                        class="absolute top-1/2 -translate-y-1/2 bg-[#DBECF8] shadow-inner rounded-[10px] transition-all duration-300 ease-in-out h-8 pointer-events-none z-0"
+                        class="absolute top-1/2 -translate-y-1/2 bg-blue-100 shadow-inner rounded-lg transition-all duration-300 ease-in-out h-8 pointer-events-none z-0"
                         style="width: 48px; left: 0px;"></div>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 active flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 active flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="all">
                         全部
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="competition">
                         競賽
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="development">
                         程式開發
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="test">
                         測試
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="history">
                         秦始皇
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="animal">
                         北極熊
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="travel">
                         旅遊
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="food">
                         美食
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="tech">
                         科技
                     </button>
 
                     <button
-                        class="cursor-pointer whitespace-nowrap text-[#4E5969] px-4 py-1 rounded-[10px] text-[15px] font-semibold transition-all duration-300 flex-shrink-0 relative z-10"
+                        class="cursor-pointer whitespace-nowrap text-slate-600 px-4 py-1 rounded-lg text-sm font-semibold transition-all duration-300 flex-shrink-0 relative z-10 focus:outline-2 focus:outline-slate-600 focus:outline-offset-2 focus-visible:outline-2"
                         data-tag="life">
                         生活
                     </button>
                 </div>
+
+                <!-- Add hidden scrollbar styles for WebKit browsers -->
+                <style>
+                    #tagScrollContainer::-webkit-scrollbar {
+                        display: none;
+                    }
+                </style>
             </div>
 
             <!-- Posts Grid -->
@@ -183,105 +181,105 @@
 
                 <!-- Post Card -->
                 <div
-                    class="w-[365px] h-[345px] mx-auto bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
+                    class="w-[365px] h-[345px] mx-auto bg-slate-50 border border-slate-400/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
                     <!-- Cover Image -->
-                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
+                    <div class="w-full h-[200px] bg-blue-100 rounded-[20px] mb-2 shadow-inner overflow-hidden">
                         <img src="./imgs/post-placeholder.png" alt="Post Cover Image"
                             class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105">
                     </div>
 
                     <!-- Tags -->
                     <div class="flex gap-2 w-full">
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                        <span class="bg-blue-100 text-slate-600 px-3 py-1 rounded-lg text-sm shadow-inner">
                             <img src="./imgs/icon/pin.svg" alt="Tag Icon" class="inline my-auto" />
                             置頂
                         </span>
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                        <span class="bg-blue-100 text-slate-600 px-3 py-1 rounded-lg text-sm shadow-inner">
                             競賽
                         </span>
                     </div>
 
                     <!-- Title and Date -->
                     <div class="flex flex-col gap-2 w-full">
-                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
+                        <h2 class="text-slate-600 text-[22px] font-semibold font-noto">這是一段文章的標題文字</h2>
                         <div class="flex gap-2">
                             <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
-                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                            <p class="text-slate-600 text-sm font-noto font-semibold my-auto">2025 年 07 月 24 日</p>
                         </div>
                     </div>
                 </div>
 
                 <div
-                    class="w-[365px] h-[345px] mx-auto bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
+                    class="w-[365px] h-[345px] mx-auto bg-slate-50 border border-slate-400/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
                     <!-- Cover Image -->
-                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
+                    <div class="w-full h-[200px] bg-blue-100 rounded-[20px] mb-2 shadow-inner overflow-hidden">
                         <img src="./imgs/post-placeholder.png" alt="Post Cover Image"
                             class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105">
                     </div>
 
                     <!-- Tags -->
                     <div class="flex gap-2 w-full">
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                        <span class="bg-blue-100 text-slate-600 px-3 py-1 rounded-lg text-sm shadow-inner">
                             競賽
                         </span>
                     </div>
 
                     <!-- Title and Date -->
                     <div class="flex flex-col gap-2 w-full">
-                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
+                        <h2 class="text-slate-600 text-[22px] font-semibold font-noto">這是一段文章的標題文字</h2>
                         <div class="flex gap-2">
                             <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
-                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                            <p class="text-slate-600 text-sm font-noto font-semibold my-auto">2025 年 07 月 24 日</p>
                         </div>
                     </div>
                 </div>
 
                 <div
-                    class="w-[365px] h-[345px] mx-auto bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
+                    class="w-[365px] h-[345px] mx-auto bg-slate-50 border border-slate-400/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
                     <!-- Cover Image -->
-                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
+                    <div class="w-full h-[200px] bg-blue-100 rounded-[20px] mb-2 shadow-inner overflow-hidden">
                         <img src="./imgs/post-placeholder.png" alt="Post Cover Image"
                             class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105">
                     </div>
 
                     <!-- Tags -->
                     <div class="flex gap-2 w-full">
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                        <span class="bg-blue-100 text-slate-600 px-3 py-1 rounded-lg text-sm shadow-inner">
                             競賽
                         </span>
                     </div>
 
                     <!-- Title and Date -->
                     <div class="flex flex-col gap-2 w-full">
-                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
+                        <h2 class="text-slate-600 text-[22px] font-semibold font-noto">這是一段文章的標題文字</h2>
                         <div class="flex gap-2">
                             <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
-                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                            <p class="text-slate-600 text-sm font-noto font-semibold my-auto">2025 年 07 月 24 日</p>
                         </div>
                     </div>
                 </div>
 
                 <div
-                    class="w-[365px] h-[345px] mx-auto bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
+                    class="w-[365px] h-[345px] mx-auto bg-slate-50 border border-slate-400/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
                     <!-- Cover Image -->
-                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
+                    <div class="w-full h-[200px] bg-blue-100 rounded-[20px] mb-2 shadow-inner overflow-hidden">
                         <img src="./imgs/post-placeholder.png" alt="Post Cover Image"
                             class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105">
                     </div>
 
                     <!-- Tags -->
                     <div class="flex gap-2 w-full">
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                        <span class="bg-blue-100 text-slate-600 px-3 py-1 rounded-lg text-sm shadow-inner">
                             競賽
                         </span>
                     </div>
 
                     <!-- Title and Date -->
                     <div class="flex flex-col gap-2 w-full">
-                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
+                        <h2 class="text-slate-600 text-[22px] font-semibold font-noto">這是一段文章的標題文字</h2>
                         <div class="flex gap-2">
                             <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
-                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                            <p class="text-slate-600 text-sm font-noto font-semibold my-auto">2025 年 07 月 24 日</p>
                         </div>
                     </div>
                 </div>
@@ -294,6 +292,35 @@
             const tagButtons = document.querySelectorAll('button[data-tag]');
             const tagSlider = document.getElementById('tagSlider');
             const tagScrollContainer = document.getElementById('tagScrollContainer');
+            const leftArrow = document.getElementById('leftArrow');
+            const rightArrow = document.getElementById('rightArrow');
+
+            // Arrow scroll function
+            window.scrollTags = function(direction) {
+                const scrollAmount = 200;
+                if (direction === 'left') {
+                    tagScrollContainer.scrollLeft -= scrollAmount;
+                } else {
+                    tagScrollContainer.scrollLeft += scrollAmount;
+                }
+            };
+
+            // Check if arrows should be visible
+            function updateArrowVisibility() {
+                const isScrollable = tagScrollContainer.scrollWidth > tagScrollContainer.clientWidth;
+                const isAtStart = tagScrollContainer.scrollLeft <= 0;
+                const isAtEnd = tagScrollContainer.scrollLeft >= tagScrollContainer.scrollWidth - tagScrollContainer.clientWidth - 1;
+
+                if (isScrollable) {
+                    // Show/hide arrows based on scroll position
+                    leftArrow.style.opacity = isAtStart ? '0' : '1';
+                    rightArrow.style.opacity = isAtEnd ? '0' : '1';
+                } else {
+                    // Hide arrows completely when scrolling is not needed
+                    leftArrow.style.opacity = '0';
+                    rightArrow.style.opacity = '0';
+                }
+            }
 
             function updateSlider(activeButton) {
                 if (!activeButton) return;
@@ -313,12 +340,13 @@
                 updateSlider(activeButton);
             }
 
-            // Scroll event listener to update slider position
+            // Scroll event listener to update slider position and arrow visibility
             tagScrollContainer.addEventListener('scroll', function () {
                 const activeButton = document.querySelector('button[data-tag].active');
                 if (activeButton) {
                     updateSlider(activeButton);
                 }
+                updateArrowVisibility();
             });
 
             // Tag button click handlers
@@ -352,7 +380,11 @@
                 if (activeButton) {
                     updateSlider(activeButton);
                 }
+                updateArrowVisibility();
             });
+
+            // Initial setup
+            updateArrowVisibility();
         });
     </script>
 </body>
