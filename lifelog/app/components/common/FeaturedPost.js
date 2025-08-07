@@ -1,5 +1,3 @@
-'use client';
-
 const FeaturedPostCard = ({ title, date }) => {
     return (
         <div className="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] select-none cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">

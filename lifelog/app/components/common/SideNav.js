@@ -5,7 +5,6 @@ import Image from 'next/image'
 const SideNav = () => {
     return (
         <div className="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex flex-col items-center sticky top-0 left-0">
-
             {/* profile */}
             <div className="flex items-center justify-center">
                 <Image src="/imgs/profile.png" alt="Profile Picture" width={48} height={48} className="h-12 w-12 rounded-full" />

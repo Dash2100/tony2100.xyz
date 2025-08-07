@@ -1,5 +1,3 @@
-'use client';
-
 const Footer = () => {
     return (
         <div className="w-full rounded-[35px] bg-[#DBECF8] shadow-inner select-none mt-auto">

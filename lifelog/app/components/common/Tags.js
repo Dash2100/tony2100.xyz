@@ -1,5 +1,3 @@
-'use client';
-
 const Tags = ({ tags = ['競賽', '北極熊', '旅遊', '體驗', '秦始皇', '程式開發'] }) => {
     return (
         <div className="w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
