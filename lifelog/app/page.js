@@ -18,22 +18,27 @@ import Footer from './components/common/Footer'
 import useMobileDetection from './hooks/useMobileDetection'
 
 const page = () => {
-    const isMobile = useMobileDetection()
+    const { isMobile, isTablet, isDesktop } = useMobileDetection()
 
     return (
         <div className='bg-base flex min-h-screen'>
             {isMobile ? <MobileNav /> : <SideNav />}
 
-            <div className={`w-full items-center ${isMobile ? 'p-4' : 'p-16'} max-w-[1200px] mx-auto flex flex-col gap-8`}>
+            <div className={`w-full items-center ${isMobile ? 'p-4 pb-24' : isTablet ? 'p-8' : 'p-16'} max-w-[1200px] mx-auto flex flex-col gap-8`}>
 
                 {/* Home Cover */}
                 <Cover />
 
                 {/* Posts and SideInfo */}
-                <div className={`w-full flex ${isMobile ? 'flex-col' : 'gap-5'} ${isMobile ? 'gap-8' : ''}`}>
+                <div className={`w-full flex ${isMobile || isTablet ? 'flex-col' : 'gap-5'} ${isMobile || isTablet ? 'gap-8' : ''}`}>
 
                     {/* Posts Grid */}
-                    <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-5`}>
+                    <div className={`
+                        ${isMobile ? 'flex flex-col items-center gap-5' :
+                            isTablet ? 'grid grid-cols-2 gap-5 justify-items-center' :
+                                'grid grid-cols-2 gap-5'}
+                        ${isDesktop ? 'flex-1' : 'w-full'}
+                    `}>
                         {[...Array(4)].map((_, i) => (
                             <PostCard
                                 key={i}
@@ -45,11 +50,13 @@ const page = () => {
                         ))}
                     </div>
 
-                    {/* Side Information */}
-                    <div className='flex flex-col gap-10'>
-                        <FeaturedPost />
-                        <Tags />
-                    </div>
+                    {/* Side Information - 只在桌面版顯示 */}
+                    {isDesktop && (
+                        <div className='flex flex-col gap-10 w-[300px] flex-shrink-0'>
+                            <FeaturedPost />
+                            <Tags />
+                        </div>
+                    )}
                 </div>
 
                 {/* Footer */}

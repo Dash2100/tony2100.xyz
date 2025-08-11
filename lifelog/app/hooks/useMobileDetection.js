@@ -3,20 +3,29 @@
 import { useState, useEffect } from 'react'
 
 const useMobileDetection = () => {
-    const [isMobile, setIsMobile] = useState(false)
+    const [screenSize, setScreenSize] = useState({
+        isMobile: false,
+        isTablet: false,
+        isDesktop: true
+    })
 
     useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 768)
+        const checkScreenSize = () => {
+            const width = window.innerWidth
+            setScreenSize({
+                isMobile: width < 768,
+                isTablet: width >= 768 && width < 1200,
+                isDesktop: width >= 1200
+            })
         }
 
-        checkMobile()
-        window.addEventListener('resize', checkMobile)
+        checkScreenSize()
+        window.addEventListener('resize', checkScreenSize)
 
-        return () => window.removeEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkScreenSize)
     }, [])
 
-    return isMobile
+    return screenSize
 }
 
 export default useMobileDetection

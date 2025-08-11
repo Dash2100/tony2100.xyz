@@ -11,7 +11,7 @@ const formatUnixToChineseDate = (unixTimestamp) => {
 const PostCard = ({ tags = [], title, date, image = "/imgs/post-placeholder.png", isPinned = false }) => {
     return (
         <div
-            className="w-[365px] h-[345px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
+            className="w-full max-w-[365px] h-[345px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group mx-auto">
             {/* Cover Image */}
             <div className="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
                 <Image src={image} alt="Post Cover Image" width={365} height={200}
@@ -19,7 +19,7 @@ const PostCard = ({ tags = [], title, date, image = "/imgs/post-placeholder.png"
             </div>
 
             {/* Tags */}
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-2 w-full flex-wrap">
                 {isPinned && (
                     <span className="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
                         <Image src="/imgs/icon/pin.svg" alt="Tag Icon" width={16} height={16} className="inline my-auto" />
