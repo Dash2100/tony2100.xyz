@@ -8,18 +8,14 @@ const Footer = () => {
     return (
         <div className="w-full rounded-[35px] bg-[#DBECF8] shadow-inner select-none mt-auto">
             <div className={`
-                flex gap-8 p-8
-                ${isMobile || isTablet ? 'flex-col px-6' : 'justify-between items-center px-12'}
+                flex p-8
+                ${isMobile || isTablet ? 'flex-col px-6' : 'justify-between px-12 gap-8'}
             `}>
-                {/* First Row: Profile Image and Text */}
-                <div className={`
-                    flex gap-8 items-center
-                    ${isMobile ? 'flex-col text-center' : 'flex-row'}
-                `}>
-                    <img 
-                        src="./imgs/profile.png" 
-                        alt="My Profile Picture" 
-                        className={`rounded-[20px] ${isMobile ? 'h-20' : 'h-24'}`} 
+                <div className="flex gap-6 items-center">
+                    <img
+                        src="./imgs/profile.png"
+                        alt="My Profile Picture"
+                        className={`rounded-[20px] ${isMobile ? 'h-20' : 'h-24'}`}
                     />
                     <div className={`
                         flex flex-col gap-1 my-auto
@@ -27,9 +23,8 @@ const Footer = () => {
                     `}>
                         <h2 className="font-semibold text-[#4E5969]">© 2025 Tony2100. All rights reserved.</h2>
                         <h2 className="font-semibold text-[#4E5969]">
-                            本部落格所有文章除特別聲明外，均採用 <span className="text-[#538AD9] cursor-pointer hover:underline">CC BY-NC-SA4.0</span> 許可協議
+                            本部落格所有文章除特別聲明外，均採用 <span className="text-[#538AD9] cursor-pointer hover:underline">CC BY-NC-SA4.0</span> 許可協議，轉載請註明來自本網站
                         </h2>
-                        <h2 className="font-semibold text-[#4E5969]">轉載請註明來自本網站！</h2>
                     </div>
                 </div>
 
@@ -49,10 +44,10 @@ const Footer = () => {
                             <img src="./imgs/icon/mail.svg" alt="Mail Icon" className="h-7 w-7 inline-block" />
                         </div>
                     </div>
-                    <img 
-                        src="./imgs/not-by-ai.png" 
-                        alt="Not by AI" 
-                        className={`${isMobile ? 'w-40' : 'w-48'}`} 
+                    <img
+                        src="./imgs/not-by-ai.png"
+                        alt="Not by AI"
+                        className={`${isMobile ? 'w-40' : 'w-48'}`}
                     />
                 </div>
             </div>

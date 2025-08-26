@@ -22,12 +22,17 @@ const page = () => {
 
     return (
         <div className='bg-base flex min-h-screen'>
-            {isMobile ? <MobileNav /> : <SideNav />}
+            {isMobile || isTablet ? <MobileNav /> : <SideNav />}
 
             <div className={`w-full items-center ${isMobile ? 'p-4 pb-24' : isTablet ? 'p-8' : 'p-16'} max-w-[1200px] mx-auto flex flex-col gap-8`}>
 
                 {/* Home Cover */}
                 <Cover />
+
+                {/* Category */}
+                <h2 className={`w-fit mx-auto font-bold text-[#4E5969] text-2xl px-4 py-2 border-b-2 border-[#4E5969]/20 ${isMobile ? 'block' : 'hidden'}`}>
+                    推薦文章
+                </h2>
 
                 {/* Posts and SideInfo */}
                 <div className={`w-full flex ${isMobile || isTablet ? 'flex-col' : 'gap-5'} ${isMobile || isTablet ? 'gap-8' : ''}`}>
