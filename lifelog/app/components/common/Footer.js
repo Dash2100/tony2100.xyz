@@ -1,26 +1,20 @@
 "use client"
 
-import useMobileDetection from '../../hooks/useMobileDetection'
+import Image from 'next/image'
 
 const Footer = () => {
-    const { isMobile, isTablet } = useMobileDetection()
-
     return (
         <div className="w-full rounded-[35px] bg-[#DBECF8] shadow-inner select-none mt-auto">
-            <div className={`
-                flex p-8
-                ${isMobile || isTablet ? 'flex-col px-6' : 'justify-between px-12 gap-8'}
-            `}>
+            <div className="flex p-8 flex-col px-6 xl:justify-between xl:px-12 xl:gap-8 xl:flex-row">
                 <div className="flex gap-6 items-center">
-                    <img
-                        src="./imgs/profile.png"
+                    <Image
+                        src="/imgs/profile.png"
                         alt="My Profile Picture"
-                        className={`rounded-[20px] ${isMobile ? 'h-20' : 'h-24'}`}
+                        width={80}
+                        height={80}
+                        className="rounded-[20px] h-20 md:w-24 md:h-24"
                     />
-                    <div className={`
-                        flex flex-col gap-1 my-auto
-                        ${isMobile ? 'text-[16px] items-center' : 'text-[18px]'}
-                    `}>
+                    <div className="flex flex-col gap-1 my-auto text-[16px] items-center md:text-[18px] md:items-start">
                         <h2 className="font-semibold text-[#4E5969]">© 2025 Tony2100. All rights reserved.</h2>
                         <h2 className="font-semibold text-[#4E5969]">
                             本部落格所有文章除特別聲明外，均採用 <span className="text-[#538AD9] cursor-pointer hover:underline">CC BY-NC-SA4.0</span> 許可協議，轉載請註明來自本網站
@@ -29,25 +23,24 @@ const Footer = () => {
                 </div>
 
                 {/* Second Row: Social Buttons and Not by AI */}
-                <div className={`
-                    flex gap-8 items-center
-                    ${isMobile || isTablet ? 'flex-col' : 'flex-col'}
-                `}>
-                    <div className={`flex gap-4 ${isMobile ? 'justify-center' : 'justify-between'}`}>
+                <div className="flex gap-8 items-center flex-col">
+                    <div className="flex gap-4 justify-center md:justify-between">
                         <div className="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
-                            <img src="./imgs/icon/world.svg" alt="World Icon" className="h-7 w-7 inline-block" />
+                            <Image src="/imgs/icon/world.svg" alt="World Icon" width={28} height={28} className="h-7 w-7 inline-block" />
                         </div>
                         <div className="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
-                            <img src="./imgs/icon/github.svg" alt="GitHub Icon" className="h-7 w-7 inline-block" />
+                            <Image src="/imgs/icon/github.svg" alt="GitHub Icon" width={28} height={28} className="h-7 w-7 inline-block" />
                         </div>
                         <div className="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
-                            <img src="./imgs/icon/mail.svg" alt="Mail Icon" className="h-7 w-7 inline-block" />
+                            <Image src="/imgs/icon/mail.svg" alt="Mail Icon" width={28} height={28} className="h-7 w-7 inline-block" />
                         </div>
                     </div>
-                    <img
-                        src="./imgs/not-by-ai.png"
+                    <Image
+                        src="/imgs/not-by-ai.png"
                         alt="Not by AI"
-                        className={`${isMobile ? 'w-40' : 'w-48'}`}
+                        width={160}
+                        height={40}
+                        className="w-40 md:w-48"
                     />
                 </div>
             </div>
