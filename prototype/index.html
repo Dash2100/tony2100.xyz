@@ -36,9 +36,10 @@
     }
 </script>
 
-<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen">
+<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen select-none">
     <!-- side nav -->
-    <div class="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex flex-col items-center sticky top-0 left-0">
+    <div
+        class="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex-col items-center sticky top-0 left-0 hidden lg:flex">
 
         <!-- profile -->
         <div class="flex items-center justify-center">
@@ -72,128 +73,74 @@
 
         <!-- Cover Image (or text) -->
         <div
-            class="w-full h-[270px] px-10 py-20 rounded-[35px] mx-auto bg-[#DBECF8] text-[#4E5969] text-[40px] leading-[55px] font-bold flex items-center justify-center shadow-inner text-center noto-font">
-            <h1 class="h-fit text-center">Tony2100's Life Log<br />Cover Image Placeholder</h1>
+            class="relative w-full h-[270px] py-20 rounded-[35px] mx-auto bg-[#DBECF8] text-[#4E5969] text-[40px] leading-[55px] font-bold flex flex-col gap-3 items-center justify-center shadow-inner text-center noto-font overflow-hidden">
+            <img src="./imgs/home-cover.png" alt="Cover Image" class="absolute w-full h-full object-cover z-10">
+            <h1 class="text-3xl md:text-4xl h-fit text-center z-10">Tony2100's Life Log</h1>
+            <h1 class="text-2xl md:text-3xl h-fit text-center z-10">每個成功的男人背後，都有一條脊椎</h1>
         </div>
 
         <!-- Posts and SideInfo -->
-        <div class="w-full flex gap-5">
+        <div class="w-full flex xl:flex-row flex-col gap-5">
 
             <!-- Posts Grid -->
-            <div class="grid grid-cols-2 gap-5">
+            <div class="flex flex-col gap-5 w-full">
 
                 <!-- Post Card -->
                 <div
-                    class="w-[365px] h-[345px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
-                    <!-- Cover Image -->
-                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
-                        <img src="./imgs/post-placeholder.png" alt="Post Cover Image"
-                            class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105">
-                    </div>
+                    class="w-full h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] gap-2 py-8 px-9 flex justify-between group cursor-pointer">
+                    <div class="flex flex-col justify-between">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-[#4E5969] text-[25px] font-medium noto-font">
+                                這是一個中文的標題文字
+                            </h1>
 
-                    <!-- Tags -->
-                    <div class="flex gap-2 w-full">
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
-                            <img src="./imgs/icon/pin.svg" alt="Tag Icon" class="inline my-auto" />
-                            置頂
-                        </span>
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
-                            競賽
-                        </span>
-                    </div>
+                            <div class="flex lg:flex-row flex-col gap-3">
 
-                    <!-- Title and Date -->
-                    <div class="flex flex-col gap-2 w-full">
-                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
-                        <div class="flex gap-2">
-                            <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
-                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
+                                <!-- Date -->
+                                <div class="flex gap-1">
+                                    <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
+                                    <p class="text-[#4E5969] text-[15px] noto-font font-medium my-auto">2025 年 07 月
+                                        24日</p>
+                                </div>
+
+                                <!-- Line Between -->
+                                <div class="w-[2px] h-[18px] my-auto bg-[#4E5969] hidden lg:block"></div>
+
+                                <!-- Word count -->
+                                <div class="flex gap-1">
+                                    <img src="./imgs/icon/words.svg" alt="Word Count Icon" class="h-5 w-5 my-auto">
+                                    <p class="text-[#4E5969] text-[15px] noto-font font-medium my-auto">5050 個字</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="flex gap-2 w-full">
+                            <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                                <img src="./imgs/icon/pin.svg" alt="Tag Icon" class="inline my-auto" />
+                                置頂
+                            </span>
+                            <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                                競賽
+                            </span>
                         </div>
                     </div>
-                </div>
 
-                <div
-                    class="w-[365px] h-[345px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
                     <!-- Cover Image -->
-                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
-                        <img src="./imgs/post-placeholder.png" alt="Post Cover Image"
-                            class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105">
-                    </div>
-
-                    <!-- Tags -->
-                    <div class="flex gap-2 w-full">
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
-                            競賽
-                        </span>
-                    </div>
-
-                    <!-- Title and Date -->
-                    <div class="flex flex-col gap-2 w-full">
-                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
-                        <div class="flex gap-2">
-                            <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
-                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="w-[365px] h-[345px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
-                    <!-- Cover Image -->
-                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
-                        <img src="./imgs/post-placeholder.png" alt="Post Cover Image"
-                            class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105">
-                    </div>
-
-                    <!-- Tags -->
-                    <div class="flex gap-2 w-full">
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
-                            競賽
-                        </span>
-                    </div>
-
-                    <!-- Title and Date -->
-                    <div class="flex flex-col gap-2 w-full">
-                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
-                        <div class="flex gap-2">
-                            <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
-                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="w-[365px] h-[345px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] flex flex-col gap-2 items-center p-8 select-none cursor-pointer group">
-                    <!-- Cover Image -->
-                    <div class="w-full h-[200px] bg-[#DBECF8] rounded-[20px] mb-2 shadow-inner overflow-hidden">
-                        <img src="./imgs/post-placeholder.png" alt="Post Cover Image"
-                            class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-105">
-                    </div>
-
-                    <!-- Tags -->
-                    <div class="flex gap-2 w-full">
-                        <span class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
-                            競賽
-                        </span>
-                    </div>
-
-                    <!-- Title and Date -->
-                    <div class="flex flex-col gap-2 w-full">
-                        <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">這是一段文章的標題文字</h2>
-                        <div class="flex gap-2">
-                            <img src="./imgs/icon/date.svg" alt="Calendar Icon" class="h-5 w-5 my-auto">
-                            <p class="text-[#4E5969] text-[14px] noto-font font-semibold my-auto">2025 年 07 月 24 日</p>
-                        </div>
+                    <div class="w-[280px] bg-[#DBECF8] rounded-[20px] shadow-inner overflow-hidden">
+                        <img src="./imgs/cover-default.png" alt="Post Cover Image"
+                            class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 ease-in-out group-hover:scale-[1.02]">
                     </div>
                 </div>
 
             </div>
 
             <!-- Side Info Section -->
-            <div class="flex flex-col gap-10">
+            <div class="flex flex-col gap-6">
                 <!-- Side Featured Posts List -->
                 <div
-                    class="w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
+                    class="w-full xl:w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
                     <div class="flex justify-between">
                         <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">熱門文章</h2>
                         <button
@@ -236,7 +183,7 @@
 
                 <!-- Side Info Tags List -->
                 <div
-                    class="w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
+                    class="w-full xl:w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[35px] p-6 flex flex-col gap-4">
                     <h2 class="text-[#4E5969] text-[22px] font-semibold noto-font">文章標籤</h2>
                     <div class="flex flex-wrap gap-3">
                         <button
@@ -273,7 +220,8 @@
                     <div class="flex flex-col gap-1 text-[18px] my-auto">
                         <h2 class="font-semibold text-[#4E5969]">© 2025 Tony2100. All rights reserved.</h2>
                         <h2 class="font-semibold text-[#4E5969]">
-                            本部落格所有文章除特別聲明外，均採用 <span class="text-[#538AD9] cursor-pointer">CC BY-NC-SA4.0</span> 許可協議
+                            本部落格所有文章除特別聲明外，均採用 <span class="text-[#538AD9] cursor-pointer">CC BY-NC-SA4.0</span>
+                            許可協議
                         </h2>
                         <h2 class="font-semibold text-[#4E5969]">轉載請註明來自本網站！</h2>
                     </div>
