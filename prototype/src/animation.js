@@ -46,10 +46,32 @@ function backToList() {
 };
 
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    const startPosition = window.pageYOffset;
+    const distance = -startPosition;
+    const duration = 500;
+    let startTime = null;
+
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+
+        // 套用 easing 函數
+        const easedProgress = easeOutCubic(progress);
+        const currentPosition = startPosition + distance * easedProgress;
+
+        window.scrollTo(0, currentPosition);
+
+        if (progress < 1) {
+            requestAnimationFrame(animation);
+        }
+    }
+
+    requestAnimationFrame(animation);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -58,5 +80,10 @@ document.addEventListener('DOMContentLoaded', function () {
         card.addEventListener('click', viewPost);
     });
 
-    post_content.addEventListener('click', backToList);
+    // 為 cover image 區域添加點擊返回功能
+    const coverImage = document.querySelector('.relative.w-full.h-\\[200px\\]');
+    if (coverImage) {
+        coverImage.addEventListener('click', backToList);
+        coverImage.style.cursor = 'pointer';
+    }
 });
