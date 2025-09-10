@@ -1,3 +1,14 @@
+const post_list = document.getElementById("post-area");
+const post_content = document.getElementById("post-content");
+
+const cover_title = document.getElementById("cover-title");
+const post_title = document.getElementById("post-title");
+const home_cover_image = document.getElementById("home-cover-image");
+const post_cover_image = document.getElementById("post-cover-image");
+
+const side_info = document.getElementById("side-info");
+const table_of_contents = document.getElementById("table-of-contents");
+
 const texts = [
     "每個成功的男人背後，都有一條脊椎",
     "如果你願意多花一點時間了解我，你會發現你多花了一點時間",
@@ -50,7 +61,109 @@ function typeWriter() {
     setTimeout(typeWriter, delay);
 }
 
+function viewPost() {
+    post_list.classList.add("opacity-0", "left-[-3px]", "pointer-events-none");
+    post_content.classList.remove("opacity-0", "left-3", "pointer-events-none");
+    post_content.classList.add("left-0");
+
+    cover_title.classList.add("transition-all", "duration-300", "ease-in-out");
+    cover_title.classList.add("opacity-0", "pointer-events-none", "left-[-20px]");
+
+    post_title.classList.add("transition-all", "duration-300", "ease-in-out");
+    post_title.classList.remove("opacity-0", "pointer-events-none", "left-[20px]");
+    post_title.classList.add("left-0");
+
+    // cover image fade
+    home_cover_image.style.opacity = "0";
+    post_cover_image.style.opacity = "1";
+
+    // reload side info
+    side_info.classList.add("opacity-0", "pointer-events-none");
+    setTimeout(() => {
+        table_of_contents.classList.remove("hidden");
+        table_of_contents.classList.add("flex");
+        side_info.classList.remove("opacity-0", "pointer-events-none");
+    }, 310);
+
+    scrollToTop();
+};
+
+function backToList() {
+    // 檢查是否在文章模式 (post_content 是否可見)
+    if (post_content.classList.contains("opacity-0") || post_content.classList.contains("pointer-events-none")) {
+        return;
+    }
+
+    post_list.classList.remove("opacity-0", "left-[-3px]", "pointer-events-none");
+    post_content.classList.add("opacity-0", "left-3", "pointer-events-none");
+    post_content.classList.remove("left-0");
+
+    cover_title.classList.add("transition-all", "duration-300", "ease-in-out");
+    cover_title.classList.remove("opacity-0", "pointer-events-none", "left-[-20px]");
+    cover_title.classList.add("left-0");
+
+    post_title.classList.add("transition-all", "duration-300", "ease-in-out");
+    post_title.classList.add("opacity-0", "pointer-events-none", "left-[20px]");
+    post_title.classList.remove("left-0");
+
+    // cover image fade
+    home_cover_image.style.opacity = "1";
+    post_cover_image.style.opacity = "0";
+
+    // reload side info
+    side_info.classList.add("opacity-0", "pointer-events-none");
+    setTimeout(() => {
+        table_of_contents.classList.remove("flex");
+        table_of_contents.classList.add("hidden");
+        side_info.classList.remove("opacity-0", "pointer-events-none");
+    }, 310);
+
+    scrollToTop();
+};
+
+function scrollToTop() {
+    const startPosition = window.pageYOffset;
+    const distance = -startPosition;
+    const duration = 450;
+    let startTime = null;
+
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+
+        // 套用 easing 函數
+        const easedProgress = easeOutCubic(progress);
+        const currentPosition = startPosition + distance * easedProgress;
+
+        window.scrollTo(0, currentPosition);
+
+        if (progress < 1) {
+            requestAnimationFrame(animation);
+        }
+    }
+
+    requestAnimationFrame(animation);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('typewriter').textContent = '';
     typeWriter();
+
+    const postCards = document.querySelectorAll('.group.cursor-pointer');
+
+    postCards.forEach(card => {
+        card.addEventListener('click', viewPost);
+    });
+
+    const coverImage = document.querySelector('.relative.w-full.h-\\[200px\\]');
+
+    if (coverImage) {
+        coverImage.addEventListener('click', backToList);
+        coverImage.style.cursor = 'pointer';
+    }
 });
