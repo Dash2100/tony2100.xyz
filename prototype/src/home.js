@@ -51,7 +51,7 @@ function typeWriter() {
         setTimeout(() => isDeleting = true, pauseTime);
     }
 
-    // 如果是 " " (空格) 就不要延遲
+    // if it's a space character, don't add delay
     let delay = typeSpeed;
     if (isDeleting) {
         const currentChar = currentText.charAt(charIndex);
@@ -77,23 +77,31 @@ function viewPost() {
     home_cover_image.style.opacity = "0";
     post_cover_image.style.opacity = "1";
 
+    // wait for animation to complete before hiding
+    setTimeout(() => {
+        post_list.classList.add("hidden");
+    }, 500);
+
     // reload side info
     side_info.classList.add("opacity-0", "pointer-events-none");
     setTimeout(() => {
         table_of_contents.classList.remove("hidden");
         table_of_contents.classList.add("flex");
         side_info.classList.remove("opacity-0", "pointer-events-none");
-    }, 310);
+        // ensure sideinfo is visible on mobile when viewing post
+        side_info.classList.remove("hidden");
+    }, 200);
 
     scrollToTop();
 };
 
 function backToList() {
-    // 檢查是否在文章模式 (post_content 是否可見)
     if (post_content.classList.contains("opacity-0") || post_content.classList.contains("pointer-events-none")) {
         return;
     }
 
+    // first remove hidden to show element, then start animation
+    post_list.classList.remove("hidden");
     post_list.classList.remove("opacity-0", "left-[-3px]", "pointer-events-none");
     post_content.classList.add("opacity-0", "left-3", "pointer-events-none");
     post_content.classList.remove("left-0");
@@ -116,7 +124,7 @@ function backToList() {
         table_of_contents.classList.remove("flex");
         table_of_contents.classList.add("hidden");
         side_info.classList.remove("opacity-0", "pointer-events-none");
-    }, 310);
+    }, 220);
 
     scrollToTop();
 };
@@ -136,7 +144,7 @@ function scrollToTop() {
         const timeElapsed = currentTime - startTime;
         const progress = Math.min(timeElapsed / duration, 1);
 
-        // 套用 easing 函數
+        // apply easing function
         const easedProgress = easeOutCubic(progress);
         const currentPosition = startPosition + distance * easedProgress;
 
@@ -160,10 +168,5 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', viewPost);
     });
 
-    const coverImage = document.querySelector('.relative.w-full.h-\\[200px\\]');
-
-    if (coverImage) {
-        coverImage.addEventListener('click', backToList);
-        coverImage.style.cursor = 'pointer';
-    }
+    // viewPost();
 });
