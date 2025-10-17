@@ -4,11 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- style -->
-    <link rel="stylesheet" href="style.css">
 
-    <!-- tailwind css -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/src/input.css">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,42 +18,19 @@
     <title>你好我是 !Tony2100</title>
 </head>
 
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                boxShadow: {
-                    'nav': '0 4px 60px 0 rgba(45, 115, 154, 0.5)',
-                    'inner': 'inset 5px 5px 10px 0 rgba(118, 145, 175, 0.2)'
-                },
-                fontFamily: {
-                    'noto': ['"Noto Sans"', '"Noto Sans TC"', 'sans-serif']
-                }
-            }
-        }
-    }
-</script>
-
-<style>
-    /* body {
-        background-image: url('./imgs/bg.png');
-        background-size: cover;
-    } */
-</style>
-
-<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen justify-center">
+<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen justify-center select-none">
 
     <div class="w-11/12 lg:w-9/12 items-center justify-center flex m-auto">
         <div class="w-full flex flex-col lg:flex-row  md:justify-between">
 
             <div class="flex flex-col gap-3 items-center lg:items-start text-center lg:text-left lg:flex-1 lg:min-w-0">
-                <img src="./imgs/profile.png" class="w-40 h-40 lg:w-44 lg:h-44 rounded-full" />
+                <img src="./imgs/profile.webp" class="w-40 h-40 lg:w-44 lg:h-44 rounded-full" />
                 <h1 class="text-3xl lg:text-4xl font-bold text-[#4E5969] mt-3">!Tony2100</h1>
                 <p class="text-xl lg:text-2xl text-[#4E5969] max-w-[400px] break-words h-[120px] lg:h-auto overflow-hidden"
                     id="typewriter"></p>
             </div>
 
-            <div class="grid grid-cols-2 gap-8 w-fit mx-auto lg:mx-0 lg:flex-shrink-0">
+            <div class="grid grid-cols-2 gap-8 w-fit mx-auto lg:mx-0 lg:flex-shrink-0 select-text">
                 <div
                     class="bg-[#DBECF8] py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
 
@@ -115,7 +90,7 @@
                 </div>
             </div>
 
-            <script src="./src/home.js"></script>
+            <script type="module" src="./src/home.js"></script>
 </body>
 
 </html>
