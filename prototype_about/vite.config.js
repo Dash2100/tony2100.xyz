@@ -9,5 +9,10 @@ export default defineConfig({
         manualChunks: undefined,
       }
     }
+  },
+  server: {
+    watch: {
+      usePolling: true,
+    }
   }
 })
