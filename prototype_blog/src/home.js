@@ -5,6 +5,7 @@ const cover_title = document.getElementById("cover-title");
 const post_title = document.getElementById("post-title");
 const home_cover_image = document.getElementById("home-cover-image");
 const post_cover_image = document.getElementById("post-cover-image");
+const post_backtolist = document.getElementById("post-backtolist");
 
 const side_info = document.getElementById("side-info");
 const table_of_contents = document.getElementById("table-of-contents");
@@ -73,6 +74,8 @@ function viewPost() {
     post_title.classList.remove("opacity-0", "pointer-events-none", "left-[20px]");
     post_title.classList.add("left-0");
 
+    post_backtolist.classList.remove("opacity-0", "pointer-events-none");
+
     // cover image fade
     home_cover_image.style.opacity = "0";
     post_cover_image.style.opacity = "1";
@@ -113,6 +116,8 @@ function backToList() {
     post_title.classList.add("transition-all", "duration-300", "ease-in-out");
     post_title.classList.add("opacity-0", "pointer-events-none", "left-[20px]");
     post_title.classList.remove("left-0");
+
+    post_backtolist.classList.add("opacity-0", "pointer-events-none");
 
     // cover image fade
     home_cover_image.style.opacity = "1";
