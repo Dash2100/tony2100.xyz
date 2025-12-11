@@ -18,8 +18,35 @@
 
 <body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen justify-center select-none">
 
+    <!-- Navigation Bar -->
+    <nav class="bg-[#F3F9FF] fixed px-16 py-5 top-16 right-16 z-10 rounded-3xl"
+        style="box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.15);">
+        <ul class="flex gap-14">
+            <li>
+                <a href="https://todev.me" target="_blank" rel="noopener noreferrer"
+                    class="text-[#4E5969] font-bold text-xl hover:opacity-75 transition-opacity duration-200">Home</a>
+            </li>
+            <li>
+                <a href="https://todev.me" target="_blank" rel="noopener noreferrer"
+                    class="text-[#4E5969] font-bold text-xl hover:opacity-75 transition-opacity duration-200">About</a>
+            </li>
+            <li>
+                <a href="https://todev.me" target="_blank" rel="noopener noreferrer"
+                    class="text-[#4E5969] font-bold text-xl hover:opacity-75 transition-opacity duration-200">Projects</a>
+            </li>
+            <li>
+                <a href="https://todev.me" target="_blank" rel="noopener noreferrer"
+                    class="text-[#4E5969] font-bold text-xl hover:opacity-75 transition-opacity duration-200">Blog</a>
+            </li>
+            <li>
+                <a href="https://todev.me" target="_blank" rel="noopener noreferrer"
+                    class="text-[#4E5969] font-bold text-xl hover:opacity-75 transition-opacity duration-200">Contact</a>
+            </li>
+        </ul>
+    </nav>
+
     <div class="w-11/12 lg:w-9/12 items-center justify-center flex m-auto">
-        <div class="w-full flex flex-col lg:flex-row  md:justify-between">
+        <div class="w-full max-w-[1628px] flex flex-col lg:flex-row md:justify-between">
 
             <div class="flex flex-col gap-3 items-center lg:items-start text-center lg:text-left lg:flex-1 lg:min-w-0">
                 <img src="./imgs/profile.webp" class="w-40 h-40 lg:w-44 lg:h-44 rounded-full" />
@@ -28,64 +55,76 @@
                     id="typewriter"></p>
             </div>
 
-            <div class="grid grid-cols-2 gap-8 w-fit mx-auto lg:mx-0 lg:flex-shrink-0 select-text">
-                <div
-                    class="bg-[#DBECF8] py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
+            <div class="flex gap-8">
+                <div class="grid grid-cols-2 gap-8 w-fit mx-auto lg:mx-0 lg:flex-shrink-0 select-text">
+                    <a href="https://github.com/Dash2100" target="_blank" rel="noopener noreferrer"
+                        class="bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] active:[&:not(:has(.inner-btn:active))]:scale-95 select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
 
-                    <div class="flex flex-col gap-2">
-                        <img src="./imgs/icons/GitHub.svg" alt="GitHub" class="w-11 h-11" />
-                        <p class="font-medium text-md">Dash2100</p>
-                    </div>
+                        <div class="flex flex-col gap-2">
+                            <img src="./imgs/icons/GitHub.svg" alt="GitHub" class="w-11 h-11" />
+                            <p class="font-medium text-md">Dash2100</p>
+                        </div>
 
-                    <a href="https://github.com/Dash2100" target="_blank" rel="noopener noreferrer" class="w-fit">
-                        <button
-                            class="bg-[#F3FAFF] text-[#4E5969] text-[14px] px-4 py-[6px] font-semibold noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit cursor-pointer">Follow</button>
+                        <div class="w-fit">
+                            <div
+                                class="inner-btn bg-[#F3FAFF] text-[#4E5969] text-[14px] px-4 py-[6px] font-semibold noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit cursor-pointer">
+                                Follow</div>
+                        </div>
+                    </a>
+
+                    <a href="mailto:tony@todev.me"
+                        class="bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] active:[&:not(:has(.inner-btn:active))]:scale-95 select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
+
+                        <div class="flex flex-col gap-2">
+                            <img src="./imgs/icons/Email.svg" alt="Email" class="w-11 h-11" />
+                            <p class="font-medium">tony@todev.me</p>
+                        </div>
+
+                        <div class="w-fit">
+                            <div
+                                class="inner-btn bg-[#F3FAFF] text-[#4E5969] text-[14px] px-4 py-[6px] font-semibold noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit cursor-pointer">
+                                Send
+                                Email</div>
+                        </div>
+                    </a>
+
+                    <a href="https://discord.com/users/tony2100" target="_blank" rel="noopener noreferrer"
+                        class="bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] active:[&:not(:has(.inner-btn:active))]:scale-95 select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
+
+                        <div class="flex flex-col gap-2">
+                            <img src="./imgs/icons/Discord.svg" alt="Discord" class="w-11 h-11" />
+                            <p class="font-medium">tony2100</p>
+                        </div>
+
+                        <div class="w-fit">
+                            <div
+                                class="inner-btn bg-[#F3FAFF] text-[#4E5969] text-[14px] px-4 py-[6px] font-semibold noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit cursor-pointer">
+                                Add
+                                Friend</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.instagram.com/tony2100.yt" target="_blank" rel="noopener noreferrer"
+                        class="bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] active:[&:not(:has(.inner-btn:active))]:scale-95 select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
+
+                        <div class="flex flex-col gap-2">
+                            <img src="./imgs/icons/Instagram.svg" alt="Instagram" class="w-11 h-11" />
+                            <p class="font-medium">tony2100.yt</p>
+                        </div>
+
+                        <div class="w-fit">
+                            <div
+                                class="inner-btn bg-[#F3FAFF] text-[#4E5969] text-[14px] px-4 py-[6px] font-semibold noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit cursor-pointer">
+                                Follow</div>
+                        </div>
                     </a>
                 </div>
 
                 <div
-                    class="bg-[#DBECF8] py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
-
-                    <div class="flex flex-col gap-2">
-                        <img src="./imgs/icons/Email.svg" alt="Email" class="w-11 h-11" />
-                        <p class="font-medium">tony@todev.me</p>
-                    </div>
-
-                    <a href="mailto:tony@todev.me" class="w-fit">
-                        <button
-                            class="bg-[#F3FAFF] text-[#4E5969] text-[14px] px-4 py-[6px] font-semibold noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit cursor-pointer">Send
-                            Email</button>
-                    </a>
+                    class="hidden lg:block w-48 rounded-[30px] shadow-inner overflow-hidden cursor-pointer transition-all duration-200 active:scale-95">
+                    <img src="./imgs/meow.webp" alt="Meow" class="w-full h-full object-cover rounded-[30px]" />
                 </div>
 
-                <div
-                    class="bg-[#DBECF8] py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
-
-                    <div class="flex flex-col gap-2">
-                        <img src="./imgs/icons/Discord.svg" alt="Discord" class="w-11 h-11" />
-                        <p class="font-medium">tony2100</p>
-                    </div>
-
-                    <a href="https://discord.com/users/tony2100" target="_blank" rel="noopener noreferrer" class="w-fit">
-                        <button
-                            class="bg-[#F3FAFF] text-[#4E5969] text-[14px] px-4 py-[6px] font-semibold noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit cursor-pointer">Add
-                            Friend</button>
-                    </a>
-                </div>
-
-                <div
-                    class="bg-[#DBECF8] py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
-
-                    <div class="flex flex-col gap-2">
-                        <img src="./imgs/icons/Instagram.svg" alt="Instagram" class="w-11 h-11" />
-                        <p class="font-medium">tony2100.yt</p>
-                    </div>
-
-                    <a href="https://www.instagram.com/tony2100.yt" target="_blank" rel="noopener noreferrer" class="w-fit">
-                        <button
-                            class="bg-[#F3FAFF] text-[#4E5969] text-[14px] px-4 py-[6px] font-semibold noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit cursor-pointer">Follow</button>
-                    </a>
-                </div>
             </div>
 
             <script type="module" src="./src/home.js"></script>

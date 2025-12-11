@@ -1,4 +1,5 @@
 import './input.css';
+import { initNavbarIcons } from './icons.js';
 
 const texts = [
     "每個成功的男人背後，都有一條脊椎",
@@ -57,4 +58,5 @@ function typeWriter() {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('typewriter').textContent = '';
     typeWriter();
+    initNavbarIcons();
 });
