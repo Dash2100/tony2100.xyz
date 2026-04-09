@@ -55,8 +55,56 @@ function typeWriter() {
     setTimeout(typeWriter, delay);
 }
 
+let toastTimeout = null;
+
+function showToast() {
+    const toast = document.getElementById('toast');
+
+    // Clear existing timeout if user clicks again quickly
+    if (toastTimeout) {
+        clearTimeout(toastTimeout);
+    }
+
+    // Reset animation by briefly removing classes
+    toast.classList.remove('opacity-100', 'translate-y-0');
+    toast.classList.add('opacity-0', 'translate-y-20');
+
+    // Force reflow to restart animation
+    void toast.offsetWidth;
+
+    // Show toast with slide-up animation
+    requestAnimationFrame(() => {
+        toast.classList.remove('opacity-0', 'translate-y-20', 'pointer-events-none');
+        toast.classList.add('opacity-100', 'translate-y-0');
+    });
+
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-20', 'pointer-events-none');
+        toastTimeout = null;
+    }, 2000);
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast();
+    }).catch(err => {
+        console.error('Failed to copy:', err);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('typewriter').textContent = '';
     typeWriter();
     initNavbarIcons();
+
+    // Discord card click handler
+    const discordCard = document.getElementById('discord-card');
+    if (discordCard) {
+        discordCard.addEventListener('click', (e) => {
+            e.preventDefault();
+            const userId = discordCard.dataset.userId;
+            copyToClipboard(userId);
+        });
+    }
 });
