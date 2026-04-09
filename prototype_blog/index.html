@@ -18,6 +18,96 @@
         rel="stylesheet">
 
     <title>Document</title>
+
+    <style>
+        :root {
+            /* PV 等級的張力曲線 */
+            --curve: cubic-bezier(0.2, 0.85, 0.15, 1);
+            --duration: 0.65s;
+            --fade-duration: 0.35s;
+            --offset: 35px;
+        }
+
+        /* 視圖的父容器：設定 relative 作為定位基準 */
+        .view-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* 核心組件：列表、文章、側邊欄元件共用 */
+        .view-container {
+            width: 100%;
+            transition: transform var(--duration) var(--curve),
+                opacity var(--fade-duration) ease-out,
+                visibility var(--duration);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 1. 顯示中：改為 relative 撐開父容器高度 */
+        .view-container.is-active {
+            position: relative;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        /* 2. 往左退場 */
+        .view-container.slide-left {
+            transform: translateX(calc(var(--offset) * -1));
+        }
+
+        /* 3. 往右退場 */
+        .view-container.slide-right {
+            transform: translateX(var(--offset));
+        }
+
+        /* --- 內部元素的微距上浮瀑布流 --- */
+        .pv-text {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease-out, transform 0.6s var(--curve);
+        }
+
+        .view-container.is-active .pv-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .view-container.is-active .delay-1 {
+            transition-delay: 0.05s;
+        }
+
+        .view-container.is-active .delay-2 {
+            transition-delay: 0.10s;
+        }
+
+        .view-container.is-active .delay-3 {
+            transition-delay: 0.15s;
+        }
+
+        .view-container.is-active .delay-4 {
+            transition-delay: 0.20s;
+        }
+
+        /* --- 封面區塊的淡入淡出 --- */
+        .cover-element {
+            transition: opacity var(--fade-duration) ease-out, transform var(--duration) var(--curve);
+        }
+
+        .cover-hidden {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: scale(0.98);
+        }
+    </style>
 </head>
 
 <script>
@@ -30,13 +120,24 @@
                 },
                 fontFamily: {
                     'noto': ['Noto Sans', 'Noto Sans TC', 'sans-serif']
+                },
+                transitionTimingFunction: {
+                    'pv': 'cubic-bezier(0.2, 0.85, 0.15, 1)',
+                },
+                transitionDuration: {
+                    'pv': '0.65s',
+                    'pv-fade': '0.35s',
+                },
+                translate: {
+                    'offset': '35px',
+                    '-offset': '-35px',
                 }
             }
         }
     }
 </script>
 
-<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen select-none">
+<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen select-none overflow-x-hidden">
     <!-- side nav -->
     <div
         class="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex-col items-center sticky top-0 left-0 hidden lg:flex">
@@ -100,11 +201,11 @@
 
             <!-- Home Cover Image -->
             <img id="home-cover-image" src="./imgs/home-cover.png" alt="Home Cover Image"
-                class="absolute w-full h-full object-cover z-10 transition-opacity duration-500 ease-in-out opacity-100">
+                class="absolute w-full h-full object-cover z-10 cover-element opacity-100">
 
             <!-- Home Title -->
             <span id="cover-title"
-                class="z-50 flex-col gap-2 md:gap-4 absolute flex w-full transition-all duration-300 ease-in-out">
+                class="z-50 flex-col gap-2 md:gap-4 absolute flex w-full cover-element opacity-100">
                 <h1 class="text-3xl lg:text-4xl h-fit text-center z-10 px-4">Tony2100's Life Log</h1>
                 <div class="relative w-full min-h-[28px] md:min-h-[36px] lg:min-h-[48px]">
                     <h1 class="absolute inset-0 text-xl md:text-2xl lg:text-3xl text-center z-10 px-4 flex items-start justify-center"
@@ -115,7 +216,7 @@
 
             <!-- Back Button -->
             <div id="post-backtolist"
-                class="absolute flex gap-3 top-6 left-6 z-50 rounded-[10px] bg-white/80 shadow-inner leading-6 px-4 py-2 cursor-pointer hover:opacity-80 transition-all duration-300 ease-in-out font-medium text-[#4E5969] border-[1px] border-[#4E5969]/20 opacity-0 pointer-events-none backdrop-blur-xl"
+                class="absolute flex gap-3 top-6 left-6 z-50 rounded-[10px] bg-white/80 shadow-inner leading-6 px-4 py-2 cursor-pointer hover:bg-white transition-all duration-300 ease-in-out font-medium text-[#4E5969] border-[1px] border-[#4E5969]/20 cover-element cover-hidden backdrop-blur-xl"
                 id="back-button" onclick="backToList();">
                 <img src="./imgs/icon/back.svg" alt="Back Icon" class="h-6 inline-block mr-1">
                 <p class="my-auto text-[16px]">返回列表</p>
@@ -123,26 +224,26 @@
 
             <!-- Post Cover Image -->
             <img id="post-cover-image" src="./imgs/cover-default.png" alt="Post Cover Image"
-                class="absolute w-full h-full object-cover z-10 transition-opacity duration-500 ease-in-out opacity-0 blur-2xl">
+                class="absolute w-full h-full object-cover z-10 cover-element cover-hidden blur-2xl">
 
             <!-- Post Title -->
             <span id="post-title"
-                class="z-50 flex-col gap-4 absolute flex w-full transition-all duration-300 ease-in-out left-[20px] opacity-0 pointer-events-none select-text">
+                class="z-50 flex-col gap-4 absolute flex w-full left-0 md:left-[20px] cover-element cover-hidden select-text">
                 <h1 class="text-2xl md:text-3xl lg:text-4xl h-fit text-center z-10 px-4">這是一個中文的標題文字</h1>
                 <h1 class="text-lg md:text-2xl lg:text-3xl h-fit text-center z-10 px-4">Haaaaiiyaaaaaaaaa</h1>
             </span>
         </div>
 
         <!-- Posts and SideInfo -->
-        <div class="w-full flex xl:flex-row flex-col gap-5">
+        <div class="w-full flex xl:flex-row flex-col gap-6 relative items-start">
 
             <!-- Posts Grid -->
-            <div class="relative w-full xl:flex-1">
-                <div class="flex flex-col gap-5 w-full transition-all duration-500 ease-in-out" id="post-area">
+            <div class="view-wrapper xl:flex-1 min-w-0">
+                <div class="view-container is-active flex flex-col gap-5" id="post-area">
 
                     <!-- Post Card -->
                     <div
-                        class="w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer">
+                        class="pv-text delay-1 w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer">
                         <div class="flex flex-col justify-between order-2 md:order-1 flex-1">
                             <div class="flex flex-col gap-1">
                                 <h1 class="text-[#4E5969] text-[20px] md:text-[25px] font-medium noto-font">
@@ -195,7 +296,7 @@
                     </div>
 
                     <div
-                        class="w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer">
+                        class="pv-text delay-2 w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer">
                         <div class="flex flex-col justify-between order-2 md:order-1 flex-1">
                             <div class="flex flex-col gap-1">
                                 <h1 class="text-[#4E5969] text-[20px] md:text-[25px] font-medium noto-font">
@@ -248,7 +349,7 @@
                     </div>
 
                     <div
-                        class="w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer">
+                        class="pv-text delay-3 w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer">
                         <div class="flex flex-col justify-between order-2 md:order-1 flex-1">
                             <div class="flex flex-col gap-1">
                                 <h1 class="text-[#4E5969] text-[20px] md:text-[25px] font-medium noto-font">
@@ -301,7 +402,7 @@
                     </div>
 
                     <div
-                        class="w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer">
+                        class="pv-text delay-4 w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer">
                         <div class="flex flex-col justify-between order-2 md:order-1 flex-1">
                             <div class="flex flex-col gap-1">
                                 <h1 class="text-[#4E5969] text-[20px] md:text-[25px] font-medium noto-font">
@@ -355,17 +456,17 @@
                 </div>
 
                 <!-- Post Content -->
-                <div class="absolute w-full min-h-[calc(100vh-200px)] z-40 bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] transition-all duration-500 ease-in-out left-3 pointer-events-none opacity-0 top-0 mb-24"
+                <div class="view-container slide-right w-full min-h-[calc(100vh-200px)] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] mb-24"
                     id="post-content">
 
-                    <h1 class="text-[#4E5969] text-[24px] md:text-[30px] font-medium noto-font p-6 md:p-10">
+                    <h1 class="text-[#4E5969] text-[24px] md:text-[30px] font-medium noto-font p-6 md:p-10 pv-text delay-1">
                         這是一個中文的標題文字
                     </h1>
 
                     <!-- Post content body with proper spacing -->
                     <div class="px-6 md:px-10 pb-20">
                         <!-- Post content goes here -->
-                        <p class="text-[#4E5969] text-[16px] md:text-[18px] noto-font leading-relaxed mb-4">
+                        <p class="text-[#4E5969] text-[16px] md:text-[18px] noto-font leading-relaxed mb-4 pv-text delay-2">
                             這裡是文章內容...
                         </p>
                         <!-- Add more content as needed -->
@@ -374,26 +475,12 @@
             </div>
 
             <!-- Side Info Section -->
-            <div class="flex flex-col gap-6 sticky top-4 self-start w-full xl:w-auto xl:min-w-[300px] transition-all duration-[200ms] ease-in-out"
+            <div class="flex flex-col gap-6 sticky top-4 self-start w-full xl:w-auto xl:min-w-[300px] z-20 h-fit"
                 id="side-info">
+                <div class="view-wrapper w-full">
+                    <div id="sidebar-widgets" class="view-container is-active flex flex-col gap-6 w-full">
 
-                <!-- 目錄 -->
-                <div class="w-full xl:w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-4 md:p-6 flex-col gap-4 hidden"
-                    id="table-of-contents">
-                    <h2 class="text-[#4E5969] text-[18px] md:text-[22px] font-semibold noto-font">文章目錄</h2>
-                    <div class="flex flex-col gap-5">
-                        <div class="flex flex-col gap-2">
-                            <a href="#section1"
-                                class="text-[#4E5969] text-xl font-bold hover:text-[#2D739A] flex items-center">
-                                <img src="./imgs/icon/list-arrow.svg" alt="Section 1 Icon" class="mr-1">
-                                第一段落標題
-                            </a>
-                            <a href="#section2" class="text-[#4E5969] text-lg font-medium hover:text-[#2D739A] ml-8">
-                                第二段落標題
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                
 
                 <!-- Side Featured Posts List -->
                 <div
@@ -466,6 +553,25 @@
                     </div>
                 </div>
 
+            </div>
+<!-- 目錄 -->
+                <div class="view-container slide-right w-full xl:w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-4 md:p-6 flex flex-col gap-4"
+                    id="table-of-contents">
+                    <h2 class="text-[#4E5969] text-[18px] md:text-[22px] font-semibold noto-font pv-text delay-1">文章目錄</h2>
+                    <div class="flex flex-col gap-5 pv-text delay-2">
+                        <div class="flex flex-col gap-2">
+                            <a href="#section1"
+                                class="text-[#4E5969] text-xl font-bold hover:text-[#2D739A] flex items-center">
+                                <img src="./imgs/icon/list-arrow.svg" alt="Section 1 Icon" class="mr-1">
+                                第一段落標題
+                            </a>
+                            <a href="#section2" class="text-[#4E5969] text-lg font-medium hover:text-[#2D739A] ml-8">
+                                第二段落標題
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
 

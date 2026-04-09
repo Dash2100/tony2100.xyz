@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <title>Tony2100's Life Log</title>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    boxShadow: {
+                        'nav': '0 4px 60px 0 rgba(45, 115, 154, 0.5)',
+                        'inner': 'inset 5px 5px 10px 0 rgba(118, 145, 175, 0.2)'
+                    },
+                    fontFamily: {
+                        'noto': ['Noto Sans', 'Noto Sans TC', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            /* PV 等級的張力曲線 */
+            --curve: cubic-bezier(0.2, 0.85, 0.15, 1);
+            --duration: 0.65s;
+            --fade-duration: 0.35s;
+            --offset: 35px;
+        }
+
+        /* 視圖的父容器：設定 relative 作為定位基準 */
+        .view-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* 核心組件：列表、文章、側邊欄元件共用 */
+        .view-container {
+            width: 100%;
+            transition: transform var(--duration) var(--curve),
+                opacity var(--fade-duration) ease-out,
+                visibility var(--duration);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 1. 顯示中：改為 relative 撐開父容器高度 */
+        .view-container.is-active {
+            position: relative;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        /* 2. 往左退場 */
+        .view-container.slide-left {
+            transform: translateX(calc(var(--offset) * -1));
+        }
+
+        /* 3. 往右退場 */
+        .view-container.slide-right {
+            transform: translateX(var(--offset));
+        }
+
+        /* --- 內部元素的微距上浮瀑布流 --- */
+        .pv-text {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease-out, transform 0.6s var(--curve);
+        }
+
+        .view-container.is-active .pv-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .view-container.is-active .delay-1 {
+            transition-delay: 0.05s;
+        }
+
+        .view-container.is-active .delay-2 {
+            transition-delay: 0.10s;
+        }
+
+        .view-container.is-active .delay-3 {
+            transition-delay: 0.15s;
+        }
+
+        .view-container.is-active .delay-4 {
+            transition-delay: 0.20s;
+        }
+
+        /* --- 封面區塊的淡入淡出 --- */
+        .cover-element {
+            transition: opacity var(--fade-duration) ease-out, transform var(--duration) var(--curve);
+        }
+
+        .cover-hidden {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen select-none overflow-x-hidden">
+    <div
+        class="h-dvh w-[70px] px-2 py-10 bg-[#EDF5FA] shadow-nav flex-col items-center sticky top-0 left-0 hidden lg:flex z-50">
+        <div class="flex items-center justify-center">
+            <img src="./imgs/profile.png" alt="Profile Picture" class="h-12 w-12 rounded-full">
+        </div>
+        <div class="flex flex-col gap-10 my-16">
+            <a href="#" onclick="backToList(); return false;"
+                class="flex items-center justify-center p-2 rounded-full bg-[#DBECF8] shadow-inner">
+                <img src="./imgs/icon/home.svg" alt="Home Icon" class="h-7 w-7">
+            </a>
+            <a href="#"
+                class="flex items-center justify-center p-2 rounded-full hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+                <img src="./imgs/icon/blog.svg" alt="Blog Icon" class="h-7 w-7">
+            </a>
+            <a href="#"
+                class="flex items-center justify-center p-2 rounded-full hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+                <img src="./imgs/icon/note.svg" alt="Note Icon" class="h-7 w-7">
+            </a>
+        </div>
+        <a href="#"
+            class="flex items-center justify-center p-2 rounded-full mt-auto hover:bg-[#e8f6ff] hover:shadow-inner ease-in-out duration-200">
+            <img src="./imgs/icon/settings.svg" alt="Settings Icon" class="h-7 w-7">
+        </a>
+    </div>
+
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#EDF5FA] shadow-nav">
+        <div class="flex justify-around items-center py-3 px-4">
+            <a href="#" onclick="backToList(); return false;"
+                class="flex flex-col items-center justify-center p-3 rounded-full bg-[#DBECF8] shadow-inner">
+                <img src="./imgs/icon/home.svg" alt="Home Icon" class="h-6 w-6">
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center p-3 rounded-full ease-in-out duration-200">
+                <img src="./imgs/icon/blog.svg" alt="Blog Icon" class="h-6 w-6">
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center p-3 rounded-full ease-in-out duration-200">
+                <img src="./imgs/icon/note.svg" alt="Note Icon" class="h-6 w-6">
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center p-3 rounded-full ease-in-out duration-200">
+                <img src="./imgs/icon/settings.svg" alt="Settings Icon" class="h-6 w-6">
+            </a>
+        </div>
+    </div>
+
+    <div class="w-full items-center p-4 md:p-8 lg:p-16 lg:pb-16 max-w-[1300px] mx-auto flex flex-col gap-6 md:gap-8">
+
+        <div
+            class="relative w-full h-[200px] md:h-[270px] py-10 md:py-20 rounded-[25px] md:rounded-[35px] mx-auto bg-[#DBECF8] text-[#4E5969] text-[28px] md:text-[40px] leading-[35px] md:leading-[55px] font-bold items-center justify-center shadow-inner text-center noto-font overflow-hidden flex mt-5 md:mt-0">
+            <img id="home-cover-image" src="./imgs/home-cover.png"
+                class="absolute w-full h-full object-cover z-10 cover-element opacity-100">
+            <span id="cover-title" class="z-50 flex-col gap-2 md:gap-4 absolute flex w-full cover-element opacity-100">
+                <h1 class="text-3xl lg:text-4xl h-fit text-center z-10 px-4">Tony2100's Life Log</h1>
+                <div class="relative w-full min-h-[28px] md:min-h-[36px] lg:min-h-[48px]">
+                    <h1
+                        class="absolute inset-0 text-xl md:text-2xl lg:text-3xl text-center z-10 px-4 flex items-start justify-center">
+                        每個成功的男人背後，都有一條脊椎</h1>
+                </div>
+            </span>
+
+            <div id="post-backtolist"
+                class="absolute flex gap-3 top-6 left-6 z-50 rounded-[10px] bg-white/80 shadow-inner leading-6 px-4 py-2 cursor-pointer hover:bg-white transition-all duration-300 ease-in-out font-medium text-[#4E5969] border-[1px] border-[#4E5969]/20 cover-element cover-hidden backdrop-blur-xl"
+                onclick="backToList();">
+                <img src="./imgs/icon/back.svg" alt="Back Icon" class="h-6 inline-block mr-1">
+                <p class="my-auto text-[16px]">返回</p>
+            </div>
+            <img id="post-cover-image" src="./imgs/cover-default.png"
+                class="absolute w-full h-full object-cover z-10 cover-element cover-hidden blur-2xl">
+            <span id="post-title"
+                class="z-50 flex-col gap-4 absolute flex w-full left-0 md:left-[20px] cover-element cover-hidden select-text">
+                <h1 class="text-2xl md:text-3xl lg:text-4xl h-fit text-center z-10 px-4" id="dynamic-post-title">
+                    這是一個中文的標題文字</h1>
+            </span>
+        </div>
+
+        <div class="w-full flex xl:flex-row flex-col gap-6 relative items-start">
+
+            <div class="view-wrapper xl:flex-1 min-w-0">
+
+                <div id="view-list" class="view-container is-active flex flex-col gap-5">
+
+                    <div onclick="openPost(this)"
+                        class="pv-text delay-1 w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer hover:bg-[#F0F7FC] transition-colors">
+                        <div class="flex flex-col justify-between order-2 md:order-1 flex-1">
+                            <div class="flex flex-col gap-1">
+                                <h1 class="text-[#4E5969] text-[20px] md:text-[25px] font-medium noto-font card-title">
+                                    全國技能競賽 網頁技術職種參賽心得</h1>
+                                <div class="flex lg:flex-row flex-col gap-1 lg:gap-3 mb-3 lg:mb-0">
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" class="h-5 w-5 my-auto">
+                                        <p class="text-[#4E5969] text-[15px] font-medium my-auto">2025 年 07 月 24 日</p>
+                                    </div>
+                                    <div class="w-[2px] h-[18px] my-auto bg-[#4E5969] hidden lg:block"></div>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/words.svg" class="h-5 w-5 my-auto">
+                                        <p class="text-[#4E5969] text-[15px] font-medium my-auto">5050 個字</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 w-full flex-wrap">
+                                <span
+                                    class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">
+                                    <img src="./imgs/icon/pin.svg" alt="Tag Icon" class="inline my-auto" /> 置頂
+                                </span>
+                                <span
+                                    class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">競賽</span>
+                            </div>
+                        </div>
+                        <div
+                            class="w-full md:w-[280px] h-[180px] md:h-auto bg-[#DBECF8] rounded-[20px] shadow-inner overflow-hidden order-1 md:order-2 flex-shrink-0">
+                            <img src="./imgs/cover-default.png"
+                                class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 lg:group-hover:scale-[1.02]">
+                        </div>
+                    </div>
+
+                    <div onclick="openPost(this)"
+                        class="pv-text delay-2 w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer hover:bg-[#F0F7FC] transition-colors">
+                        <div class="flex flex-col justify-between order-2 md:order-1 flex-1">
+                            <div class="flex flex-col gap-1">
+                                <h1 class="text-[#4E5969] text-[20px] md:text-[25px] font-medium noto-font card-title">
+                                    Proxmox VE (PVE) 基礎建置與直通設定</h1>
+                                <div class="flex lg:flex-row flex-col gap-1 lg:gap-3 mb-3 lg:mb-0">
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" class="h-5 w-5 my-auto">
+                                        <p class="text-[#4E5969] text-[15px] font-medium my-auto">2026 年 02 月 28 日</p>
+                                    </div>
+                                    <div class="w-[2px] h-[18px] my-auto bg-[#4E5969] hidden lg:block"></div>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/words.svg" class="h-5 w-5 my-auto">
+                                        <p class="text-[#4E5969] text-[15px] font-medium my-auto">3200 個字</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 w-full flex-wrap">
+                                <span
+                                    class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">伺服器</span>
+                                <span
+                                    class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">HomeLab</span>
+                            </div>
+                        </div>
+                        <div
+                            class="w-full md:w-[280px] h-[180px] md:h-auto bg-[#DBECF8] rounded-[20px] shadow-inner overflow-hidden order-1 md:order-2 flex-shrink-0">
+                            <img src="./imgs/cover-default.png"
+                                class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 lg:group-hover:scale-[1.02]">
+                        </div>
+                    </div>
+
+                    <div onclick="openPost(this)"
+                        class="pv-text delay-3 w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer hover:bg-[#F0F7FC] transition-colors">
+                        <div class="flex flex-col justify-between order-2 md:order-1 flex-1">
+                            <div class="flex flex-col gap-1">
+                                <h1 class="text-[#4E5969] text-[20px] md:text-[25px] font-medium noto-font card-title">
+                                    2026 福岡遠征：Yorushika 演唱會準備</h1>
+                                <div class="flex lg:flex-row flex-col gap-1 lg:gap-3 mb-3 lg:mb-0">
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" class="h-5 w-5 my-auto">
+                                        <p class="text-[#4E5969] text-[15px] font-medium my-auto">2026 年 02 月 11 日</p>
+                                    </div>
+                                    <div class="w-[2px] h-[18px] my-auto bg-[#4E5969] hidden lg:block"></div>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/words.svg" class="h-5 w-5 my-auto">
+                                        <p class="text-[#4E5969] text-[15px] font-medium my-auto">1800 個字</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 w-full flex-wrap">
+                                <span
+                                    class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">旅遊</span>
+                                <span
+                                    class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">音樂</span>
+                            </div>
+                        </div>
+                        <div
+                            class="w-full md:w-[280px] h-[180px] md:h-auto bg-[#DBECF8] rounded-[20px] shadow-inner overflow-hidden order-1 md:order-2 flex-shrink-0">
+                            <img src="./imgs/cover-default.png"
+                                class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 lg:group-hover:scale-[1.02]">
+                        </div>
+                    </div>
+
+                    <div onclick="openPost(this)"
+                        class="pv-text delay-4 w-full h-auto min-h-[200px] md:h-[230px] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-4 py-6 md:py-8 px-6 md:px-9 flex flex-col md:flex-row justify-between group cursor-pointer hover:bg-[#F0F7FC] transition-colors">
+                        <div class="flex flex-col justify-between order-2 md:order-1 flex-1">
+                            <div class="flex flex-col gap-1">
+                                <h1 class="text-[#4E5969] text-[20px] md:text-[25px] font-medium noto-font card-title">
+                                    Keychron Q6 Max 客製化鍵盤調教日誌</h1>
+                                <div class="flex lg:flex-row flex-col gap-1 lg:gap-3 mb-3 lg:mb-0">
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" class="h-5 w-5 my-auto">
+                                        <p class="text-[#4E5969] text-[15px] font-medium my-auto">2026 年 01 月 05 日</p>
+                                    </div>
+                                    <div class="w-[2px] h-[18px] my-auto bg-[#4E5969] hidden lg:block"></div>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/words.svg" class="h-5 w-5 my-auto">
+                                        <p class="text-[#4E5969] text-[15px] font-medium my-auto">2500 個字</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 w-full flex-wrap">
+                                <span
+                                    class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">硬體</span>
+                                <span
+                                    class="bg-[#DBECF8] text-[#4E5969] px-3 py-1 rounded-[10px] text-[15px] shadow-inner">鍵盤</span>
+                            </div>
+                        </div>
+                        <div
+                            class="w-full md:w-[280px] h-[180px] md:h-auto bg-[#DBECF8] rounded-[20px] shadow-inner overflow-hidden order-1 md:order-2 flex-shrink-0">
+                            <img src="./imgs/cover-default.png"
+                                class="w-full h-full object-cover rounded-[20px] transition-transform duration-300 lg:group-hover:scale-[1.02]">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="view-post"
+                    class="view-container slide-right w-full min-h-[calc(100vh-200px)] bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] mb-24">
+
+                    <div class="w-full border-b-[1px] border-[#4E5969]/10">
+                        <h1 class="text-[#4E5969] text-[24px] md:text-[30px] font-bold noto-font p-6 md:p-10 pv-text delay-1"
+                            id="inner-post-title">
+                            這是一個中文的標題文字
+                        </h1>
+                    </div>
+
+                    <div class="px-6 md:px-10 py-8 pb-20">
+                        <p
+                            class="text-[#4E5969] text-[16px] md:text-[18px] noto-font leading-relaxed mb-6 pv-text delay-2">
+                            這裡是文章內容... 在這版更新中，我們不僅加回了完整數量的卡片與側邊欄元件，還加入了純手工打造的「非線性平滑滾動 (Smooth Scroll)」邏輯。
+                        </p>
+                        <p
+                            class="text-[#4E5969] text-[16px] md:text-[18px] noto-font leading-relaxed mb-6 pv-text delay-3">
+                            為了在長文章與長列表之間切換時維持最頂級的手感，當你點擊任何一篇文章，或是按下返回列表的瞬間，視窗的捲軸會以指數減速 (Ease-Out-Expo)
+                            的拋物線俐落地滑動回頂端，這種細節是原生 CSS 做不到的頂級張力！
+                        </p>
+                        <div style="height: 1500px; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(78,89,105,0.03) 10px, rgba(78,89,105,0.03) 20px); border-radius: 20px; margin-top: 30px;"
+                            class="pv-text delay-4"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex flex-col gap-6 sticky top-4 self-start w-full xl:w-auto xl:min-w-[300px] z-20 h-fit">
+
+                <div class="view-wrapper w-full">
+                    <div id="sidebar-widgets" class="view-container is-active flex flex-col gap-6 w-full">
+
+                        <div
+                            class="pv-text delay-1 w-full xl:w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-6 flex flex-col gap-4">
+                            <div class="flex justify-between items-center">
+                                <h2 class="text-[#4E5969] text-[18px] md:text-[22px] font-semibold noto-font">熱門文章</h2>
+                                <button
+                                    class="text-[#4E5969] text-[12px] md:text-[14px] font-semibold noto-font border-[1px] border-[#4E5969]/20 px-3 md:px-4 rounded-[10px] shadow-inner h-7 md:h-8 hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">更多</button>
+                            </div>
+                            <div class="flex flex-col gap-4 items-center">
+                                <div
+                                    class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">
+                                    <p class="text-[#4E5969] text-[15px] noto-font truncate">全國技能競賽 網頁技術職種參賽心得</p>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" class="h-4 w-4 my-auto">
+                                        <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">
+                                    <p class="text-[#4E5969] text-[15px] noto-font truncate">Lorem ipsum dolor sit amet
+                                    </p>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" class="h-4 w-4 my-auto">
+                                        <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex flex-col border-[1px] border-[#4E5969]/20 w-full px-4 py-[10px] rounded-[15px] shadow-inner gap-[2px] cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">
+                                    <p class="text-[#4E5969] text-[15px] noto-font truncate">全國技能競賽 網頁技術職種參賽心得</p>
+                                    <div class="flex gap-1">
+                                        <img src="./imgs/icon/date.svg" class="h-4 w-4 my-auto">
+                                        <p class="text-[#4E5969] text-[13px] noto-font">2025 年 07 月 24 日</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="pv-text delay-2 w-full xl:w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-6 flex flex-col gap-4">
+                            <h2 class="text-[#4E5969] text-[18px] md:text-[22px] font-semibold noto-font">文章標籤</h2>
+                            <div class="flex flex-wrap gap-2 md:gap-3">
+                                <button
+                                    class="text-[#4E5969] text-[14px] md:text-[16px] px-3 md:px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200">競賽</button>
+                                <button
+                                    class="text-[#4E5969] text-[14px] md:text-[16px] px-3 md:px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200">北極熊</button>
+                                <button
+                                    class="text-[#4E5969] text-[14px] md:text-[16px] px-3 md:px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200">競賽</button>
+                                <button
+                                    class="text-[#4E5969] text-[14px] md:text-[16px] px-3 md:px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200">程式開發</button>
+                                <button
+                                    class="text-[#4E5969] text-[14px] md:text-[16px] px-3 md:px-4 py-1 noto-font border-[1px] border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200">北極</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="table-of-contents"
+                        class="view-container slide-right w-full xl:w-[300px] h-fit bg-[#f7fafd] border-[1px] border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-4 md:p-6 flex flex-col gap-4">
+                        <h2 class="text-[#4E5969] text-[18px] md:text-[22px] font-semibold noto-font pv-text delay-1">
+                            文章目錄</h2>
+                        <div class="flex flex-col gap-5 pv-text delay-2">
+                            <div class="flex flex-col gap-2">
+                                <a href="#section1"
+                                    class="text-[#4E5969] text-xl font-bold hover:text-[#2D739A] flex items-center">
+                                    <img src="./imgs/icon/list-arrow.svg" class="mr-1"> 第一段落標題
+                                </a>
+                                <a href="#section2"
+                                    class="text-[#4E5969] text-lg font-medium hover:text-[#2D739A] ml-8">第二段落標題</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="w-full rounded-[25px] md:rounded-[35px] bg-[#DBECF8] shadow-inner mt-20 mb-24 lg:mb-0">
+            <div
+                class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 xl:gap-8 p-6 md:p-8 xl:px-12">
+                <div class="flex gap-4 sm:gap-8 w-full xl:w-auto">
+                    <img src="./imgs/profile.png"
+                        class="h-16 sm:h-20 xl:h-24 rounded-[15px] xl:rounded-[20px] self-center sm:self-start">
+                    <div class="flex flex-col gap-1 text-[14px] sm:text-[16px] xl:text-[18px] my-auto">
+                        <h2 class="font-semibold text-[#4E5969]">© 2026 Tony2100. All rights reserved.</h2>
+                        <h2 class="font-semibold text-[#4E5969]">文章除特別聲明外，均採用 CC BY-NC-SA4.0 授權</h2>
+                    </div>
+                </div>
+                <div
+                    class="flex xl:flex-col justify-between xl:justify-normal gap-3 xl:gap-5 w-full xl:w-auto items-center xl:items-end">
+                    <div class="xl:w-full flex justify-center xl:justify-between gap-4">
+                        <div
+                            class="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
+                            <img src="./imgs/icon/world.svg" class="h-6 w-6 xl:h-7 xl:w-7 inline-block">
+                        </div>
+                        <div
+                            class="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
+                            <img src="./imgs/icon/github.svg" class="h-6 w-6 xl:h-7 xl:w-7 inline-block">
+                        </div>
+                        <div
+                            class="bg-[#F3FAFF] p-2 shadow-inner rounded-xl w-fit h-fit justify-center items-start text-center border-[2px] border-[#4E5969]/20 cursor-pointer hover:bg-[#E8F6FF] ease-in-out duration-200">
+                            <img src="./imgs/icon/mail.svg" class="h-6 w-6 xl:h-7 xl:w-7 inline-block">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const viewList = document.getElementById('view-list');
+        const viewPost = document.getElementById('view-post');
+        const sidebarWidgets = document.getElementById('sidebar-widgets');
+        const toc = document.getElementById('table-of-contents');
+
+        // Cover 元件
+        const homeCoverImg = document.getElementById('home-cover-image');
+        const coverTitle = document.getElementById('cover-title');
+        const postCoverImg = document.getElementById('post-cover-image');
+        const postTitle = document.getElementById('post-title');
+        const backButton = document.getElementById('post-backtolist');
+        const dynamicPostTitle = document.getElementById('dynamic-post-title');
+        const innerPostTitle = document.getElementById('inner-post-title');
+
+        // [重構]：iOS 級別阻尼手感的 Smooth Scroll
+        function premiumSmoothScrollToTop() {
+            const startY = window.scrollY;
+            if (startY === 0) return;
+
+            const duration = 550; // 固定 550ms，不管多長都不會覺得拖泥帶水
+            const startTime = performance.now();
+
+            // 數學公式：EaseOutExpo (起步極快，最後緩慢煞車貼合頂部)
+            const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
+            function scrollStep(currentTime) {
+                const timeElapsed = currentTime - startTime;
+                let progress = timeElapsed / duration;
+                if (progress > 1) progress = 1;
+
+                window.scrollTo(0, startY * (1 - easeOutExpo(progress)));
+
+                if (progress < 1) {
+                    requestAnimationFrame(scrollStep);
+                }
+            }
+            requestAnimationFrame(scrollStep);
+        }
+
+        // 狀態切換函數
+        function switchState(element, newClass) {
+            element.classList.remove('is-active', 'slide-left', 'slide-right');
+            element.classList.add(newClass);
+        }
+
+        function openPost(cardElement) {
+            if (cardElement) {
+                const title = cardElement.querySelector('.card-title').innerText;
+                dynamicPostTitle.innerText = title;
+                innerPostTitle.innerText = title;
+            }
+
+            // 1. 舊畫面往左推
+            switchState(viewList, 'slide-left');
+            switchState(sidebarWidgets, 'slide-left');
+
+            // 2. 新畫面滑入中央
+            switchState(viewPost, 'is-active');
+            switchState(toc, 'is-active');
+
+            // 3. 封面過渡
+            homeCoverImg.classList.add('cover-hidden');
+            coverTitle.classList.add('cover-hidden');
+            postCoverImg.classList.remove('cover-hidden');
+            postTitle.classList.remove('cover-hidden');
+            backButton.classList.remove('cover-hidden');
+
+            // 觸發高階平滑滾動
+            premiumSmoothScrollToTop();
+        }
+
+        function backToList() {
+            // 1. 文章畫面往右退
+            switchState(viewPost, 'slide-right');
+            switchState(toc, 'slide-right');
+
+            // 2. 列表畫面滑入中央
+            switchState(viewList, 'is-active');
+            switchState(sidebarWidgets, 'is-active');
+
+            // 3. 封面過渡還原
+            postCoverImg.classList.add('cover-hidden');
+            postTitle.classList.add('cover-hidden');
+            backButton.classList.add('cover-hidden');
+            homeCoverImg.classList.remove('cover-hidden');
+            coverTitle.classList.remove('cover-hidden');
+
+            // 觸發高階平滑滾動
+            premiumSmoothScrollToTop();
+        }
+    </script>
+</body>
+
+</html>

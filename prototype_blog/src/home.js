@@ -7,6 +7,7 @@ const home_cover_image = document.getElementById("home-cover-image");
 const post_cover_image = document.getElementById("post-cover-image");
 const post_backtolist = document.getElementById("post-backtolist");
 
+const sidebarWidgets = document.getElementById('sidebar-widgets');
 const side_info = document.getElementById("side-info");
 const table_of_contents = document.getElementById("table-of-contents");
 
@@ -39,6 +40,7 @@ let isDeleting = false;
 
 function typeWriter() {
     const container = document.getElementById('typewriter');
+    if (!container) return;
     const currentText = texts[textIndex];
 
     container.textContent = currentText.substring(0, isDeleting ? charIndex-- : charIndex++);
@@ -62,116 +64,88 @@ function typeWriter() {
     setTimeout(typeWriter, delay);
 }
 
+// [重構]：iOS 級別阻尼手感的 Smooth Scroll
+function premiumSmoothScrollToTop() {
+    const startY = window.scrollY;
+    if (startY === 0) return;
+
+    const duration = 550; // 固定 550ms，不管多長都不會覺得拖泥帶水
+    const startTime = performance.now();
+
+    // 數學公式：EaseOutExpo (起步極快，最後緩慢煞車貼合頂部)
+    const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
+    function scrollStep(currentTime) {
+        const timeElapsed = currentTime - startTime;
+        let progress = timeElapsed / duration;
+        if (progress > 1) progress = 1;
+
+        window.scrollTo(0, startY * (1 - easeOutExpo(progress)));
+
+        if (progress < 1) {
+            requestAnimationFrame(scrollStep);
+        }
+    }
+    requestAnimationFrame(scrollStep);
+}
+
+// 狀態切換函數
+function switchState(element, newClass) {
+    if (!element) return;
+    element.classList.remove('is-active', 'slide-left', 'slide-right');
+    element.classList.add(newClass);
+}
+
 function viewPost() {
-    post_list.classList.add("opacity-0", "left-[-3px]", "pointer-events-none");
-    post_content.classList.remove("opacity-0", "left-3", "pointer-events-none");
-    post_content.classList.add("left-0");
+    // 1. 舊畫面往左推
+    switchState(post_list, 'slide-left');
+    switchState(sidebarWidgets, 'slide-left');
 
-    cover_title.classList.add("transition-all", "duration-300", "ease-in-out");
-    cover_title.classList.add("opacity-0", "pointer-events-none", "left-[-20px]");
+    // 2. 新畫面滑入中央
+    switchState(post_content, 'is-active');
+    switchState(table_of_contents, 'is-active');
 
-    post_title.classList.add("transition-all", "duration-300", "ease-in-out");
-    post_title.classList.remove("opacity-0", "pointer-events-none", "left-[20px]");
-    post_title.classList.add("left-0");
+    // 3. 封面過渡
+    home_cover_image.classList.add('cover-hidden');
+    cover_title.classList.add('cover-hidden');
+    post_cover_image.classList.remove('cover-hidden');
+    post_title.classList.remove('cover-hidden');
+    post_backtolist.classList.remove('cover-hidden');
 
-    post_backtolist.classList.remove("opacity-0", "pointer-events-none");
-
-    // cover image fade
-    home_cover_image.style.opacity = "0";
-    post_cover_image.style.opacity = "1";
-
-    // wait for animation to complete before hiding
-    setTimeout(() => {
-        post_list.classList.add("hidden");
-    }, 500);
-
-    // reload side info
-    side_info.classList.add("opacity-0", "pointer-events-none");
-    setTimeout(() => {
-        table_of_contents.classList.remove("hidden");
-        table_of_contents.classList.add("flex");
-        side_info.classList.remove("opacity-0", "pointer-events-none");
-        // ensure sideinfo is visible on mobile when viewing post
-        side_info.classList.remove("hidden");
-    }, 200);
-
-    scrollToTop();
+    // 觸發高階平滑滾動
+    premiumSmoothScrollToTop();
 };
 
 function backToList() {
-    if (post_content.classList.contains("opacity-0") || post_content.classList.contains("pointer-events-none")) {
-        return;
-    }
+    // 1. 文章畫面往右退
+    switchState(post_content, 'slide-right');
+    switchState(table_of_contents, 'slide-right');
 
-    // first remove hidden to show element, then start animation
-    post_list.classList.remove("hidden");
-    post_list.classList.remove("opacity-0", "left-[-3px]", "pointer-events-none");
-    post_content.classList.add("opacity-0", "left-3", "pointer-events-none");
-    post_content.classList.remove("left-0");
+    // 2. 列表畫面滑入中央
+    switchState(post_list, 'is-active');
+    switchState(sidebarWidgets, 'is-active');
 
-    cover_title.classList.add("transition-all", "duration-300", "ease-in-out");
-    cover_title.classList.remove("opacity-0", "pointer-events-none", "left-[-20px]");
-    cover_title.classList.add("left-0");
+    // 3. 封面過渡還原
+    post_cover_image.classList.add('cover-hidden');
+    post_title.classList.add('cover-hidden');
+    post_backtolist.classList.add('cover-hidden');
+    home_cover_image.classList.remove('cover-hidden');
+    cover_title.classList.remove('cover-hidden');
 
-    post_title.classList.add("transition-all", "duration-300", "ease-in-out");
-    post_title.classList.add("opacity-0", "pointer-events-none", "left-[20px]");
-    post_title.classList.remove("left-0");
-
-    post_backtolist.classList.add("opacity-0", "pointer-events-none");
-
-    // cover image fade
-    home_cover_image.style.opacity = "1";
-    post_cover_image.style.opacity = "0";
-
-    // reload side info
-    side_info.classList.add("opacity-0", "pointer-events-none");
-    setTimeout(() => {
-        table_of_contents.classList.remove("flex");
-        table_of_contents.classList.add("hidden");
-        side_info.classList.remove("opacity-0", "pointer-events-none");
-    }, 220);
-
-    scrollToTop();
+    // 觸發高階平滑滾動
+    premiumSmoothScrollToTop();
 };
 
-function scrollToTop() {
-    const startPosition = window.pageYOffset;
-    const distance = -startPosition;
-    const duration = 450;
-    let startTime = null;
-
-    function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
-    }
-
-    function animation(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1);
-
-        // apply easing function
-        const easedProgress = easeOutCubic(progress);
-        const currentPosition = startPosition + distance * easedProgress;
-
-        window.scrollTo(0, currentPosition);
-
-        if (progress < 1) {
-            requestAnimationFrame(animation);
-        }
-    }
-
-    requestAnimationFrame(animation);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('typewriter').textContent = '';
-    typeWriter();
+    const typewriterElement = document.getElementById('typewriter');
+    if (typewriterElement) {
+        typewriterElement.textContent = '';
+        typeWriter();
+    }
 
     const postCards = document.querySelectorAll('.group.cursor-pointer');
 
     postCards.forEach(card => {
         card.addEventListener('click', viewPost);
     });
-
-    // viewPost();
 });
