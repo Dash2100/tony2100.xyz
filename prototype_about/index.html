@@ -21,7 +21,6 @@
     <!-- Toast Notification -->
     <div id="toast"
         class="fixed bottom-8 left-1/2 -translate-x-1/2 translate-y-20 bg-[#DBECF8] text-[#4E5969] px-6 py-3 rounded-full shadow-lg font-medium text-base opacity-0 pointer-events-none transition-all duration-300 z-50 border border-[#4E5969]/10">
-        已複製 Discord ID！
     </div>
 
     <div class="w-11/12 lg:w-9/12 items-center justify-center flex m-auto">
@@ -29,7 +28,7 @@
 
             <div
                 class="flex flex-col gap-3 items-center lg:items-start text-center mt-16 lg:mt-0 lg:text-left w-full lg:w-[400px] flex-shrink-0">
-                <img src="./imgs/profile.webp" class="w-40 h-40 lg:w-44 lg:h-44 rounded-full" />
+                <img src="./imgs/profile.webp" class="w-40 h-40 lg:w-44 lg:h-44 rounded-full shadow-lg" />
                 <h1 class="text-3xl lg:text-4xl font-bold text-[#4E5969] mt-3">!Tony2100</h1>
                 <p class="text-xl lg:text-2xl text-[#4E5969] w-full break-words h-[90px] lg:h-auto overflow-hidden"
                     id="typewriter"></p>
@@ -38,7 +37,7 @@
             <div class="flex flex-col 2xl:flex-row gap-8">
                 <div class="grid grid-cols-2 gap-8 w-fit mx-auto 2xl:mx-0 2xl:flex-shrink-0 select-text">
                     <a href="https://github.com/Dash2100" target="_blank" rel="noopener noreferrer"
-                        class="bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] active:[&:not(:has(.inner-btn:active))]:scale-95 select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
+                        class="clickable-card bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
 
                         <div class="flex flex-col gap-2">
                             <img src="./imgs/icons/GitHub.svg" alt="GitHub" class="w-11 h-11" />
@@ -53,7 +52,7 @@
                     </a>
 
                     <a href="mailto:tony@todev.me"
-                        class="bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] active:[&:not(:has(.inner-btn:active))]:scale-95 select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
+                        class="clickable-card bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
 
                         <div class="flex flex-col gap-2">
                             <img src="./imgs/icons/Email.svg" alt="Email" class="w-11 h-11" />
@@ -69,7 +68,7 @@
                     </a>
 
                     <div id="discord-card" data-user-id="tony2100"
-                        class="bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] active:[&:not(:has(.inner-btn:active))]:scale-95 select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto cursor-pointer">
+                        class="clickable-card bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto cursor-pointer">
 
                         <div class="flex flex-col gap-2">
                             <img src="./imgs/icons/Discord.svg" alt="Discord" class="w-11 h-11" />
@@ -84,7 +83,7 @@
                     </div>
 
                     <a href="https://www.instagram.com/tony2100.yt" target="_blank" rel="noopener noreferrer"
-                        class="bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] active:[&:not(:has(.inner-btn:active))]:scale-95 select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
+                        class="clickable-card bg-[#DBECF8] hover:bg-[#CFE6F4] active:bg-[#C4DFF0] select-none transition-all duration-200 py-6 px-5 lg:py-7 lg:px-[26px] w-44 h-44 lg:w-48 lg:h-48 rounded-[30px] shadow-inner flex flex-col justify-between mx-auto">
 
                         <div class="flex flex-col gap-2">
                             <img src="./imgs/icons/Instagram.svg" alt="Instagram" class="w-11 h-11" />
@@ -99,8 +98,8 @@
                     </a>
                 </div>
 
-                <div
-                    class="w-[384px] lg:w-[416px] 2xl:w-48 h-44 lg:h-48 2xl:h-auto mx-auto 2xl:mx-0 mb-16 2xl:mb-0 rounded-[30px] shadow-inner overflow-hidden cursor-pointer transition-all duration-200 active:scale-95">
+                <div id="cat-image"
+                    class="clickable-card w-[384px] lg:w-[416px] 2xl:w-48 h-44 lg:h-48 2xl:h-auto mx-auto 2xl:mx-0 mb-16 2xl:mb-0 rounded-[30px] shadow-inner shadow-lg overflow-hidden cursor-pointer transition-all duration-200">
                     <img src="./imgs/meow.webp" alt="Meow"
                         class="w-full h-full object-cover rounded-[30px] object-[60%_30%]" />
                 </div>

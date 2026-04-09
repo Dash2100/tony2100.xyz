@@ -57,8 +57,11 @@ function typeWriter() {
 
 let toastTimeout = null;
 
-function showToast() {
+function showToast(message) {
     const toast = document.getElementById('toast');
+
+    // Update toast message
+    toast.textContent = message;
 
     // Clear existing timeout if user clicks again quickly
     if (toastTimeout) {
@@ -87,16 +90,71 @@ function showToast() {
 
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
-        showToast();
+        showToast('已複製 Discord ID！');
     }).catch(err => {
         console.error('Failed to copy:', err);
     });
+}
+
+function addClickAnimation(element) {
+    let isPressed = false;
+    let releaseTimeout = null;
+
+    const pressDown = () => {
+        // If there's an ongoing release animation, cancel it
+        if (releaseTimeout) {
+            clearTimeout(releaseTimeout);
+            releaseTimeout = null;
+        }
+
+        // Immediately press down
+        isPressed = true;
+        element.style.transition = 'transform 100ms ease-out';
+        element.style.transform = 'scale(0.95)';
+    };
+
+    const release = () => {
+        // Only release if currently pressed
+        if (!isPressed) return;
+
+        isPressed = false;
+
+        // Start smooth elastic release animation
+        element.style.transition = 'transform 450ms cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        element.style.transform = 'scale(1)';
+
+        // Ensure animation completes before cleanup
+        releaseTimeout = setTimeout(() => {
+            // Only cleanup if we're still in released state (not pressed again)
+            if (!isPressed) {
+                element.style.transform = '';
+                element.style.transition = '';
+            }
+            releaseTimeout = null;
+        }, 450);
+    };
+
+    // Mouse events
+    element.addEventListener('mousedown', pressDown);
+    element.addEventListener('mouseup', release);
+    element.addEventListener('mouseleave', release);
+
+    // Touch events
+    element.addEventListener('touchstart', pressDown);
+    element.addEventListener('touchend', release);
+    element.addEventListener('touchcancel', release);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('typewriter').textContent = '';
     typeWriter();
     initNavbarIcons();
+
+    // Add click animation to all clickable cards
+    const clickableCards = document.querySelectorAll('.clickable-card');
+    clickableCards.forEach(card => {
+        addClickAnimation(card);
+    });
 
     // Discord card click handler
     const discordCard = document.getElementById('discord-card');
@@ -105,6 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const userId = discordCard.dataset.userId;
             copyToClipboard(userId);
+        });
+    }
+
+    // Cat image click handler
+    const catImage = document.getElementById('cat-image');
+    if (catImage) {
+        catImage.addEventListener('click', () => {
+            showToast('他是小咪，曾經是隻可愛的貓咪~');
         });
     }
 });
