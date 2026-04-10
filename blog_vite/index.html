@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- style -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <title>Document</title>
+</head>
+
+<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen select-none overflow-x-clip">
+    <load src="./components/navbar.html" />
+    <!-- main content -->
+    <div class="w-full items-center p-4 md:p-8 lg:p-16 lg:pb-16 max-w-325 mx-auto flex flex-col gap-6 md:gap-8">
+
+        <!-- Cover Image -->
+        <div
+            class="relative w-full h-50 md:h-67.5 py-10 md:py-20 rounded-[25px] md:rounded-[35px] mx-auto bg-[#DBECF8] text-[#4E5969] text-[28px] md:text-[40px] leading-offset md:leading-13.75 font-bold items-center justify-center shadow-inner text-center noto-font overflow-hidden flex mt-5 md:mt-0">
+
+            <!-- Home Cover Image -->
+            <img id="home-cover-image" src="./imgs/home-cover.png" alt="Home Cover Image"
+                class="absolute w-full h-full object-cover z-10 cover-element opacity-100">
+
+            <!-- Home Title -->
+            <span id="cover-title" class="z-50 flex-col gap-2 md:gap-4 absolute flex w-full cover-element opacity-100">
+                <h1 class="text-3xl lg:text-4xl h-fit text-center z-10 px-4">Tony2100's Life Log</h1>
+                <div class="relative w-full min-h-7 md:min-h-9 lg:min-h-12">
+                    <h1 class="absolute inset-0 text-xl md:text-2xl lg:text-3xl text-center z-10 px-4 flex items-start justify-center"
+                        id="typewriter">每個成功的男人背後，都有一條脊椎
+                    </h1>
+                </div>
+            </span>
+
+            <!-- Back Button -->
+            <div id="post-backtolist"
+                class="absolute flex gap-3 top-6 left-6 z-50 rounded-[10px] bg-white/80 shadow-inner leading-6 px-4 py-2 cursor-pointer hover:bg-white transition-all duration-300 ease-in-out font-medium text-[#4E5969] border border-[#4E5969]/20 cover-element cover-hidden backdrop-blur-xl"
+                onclick="backToList();">
+                <img src="./imgs/icon/back.svg" alt="Back Icon" class="h-6 inline-block mr-1">
+                <p class="my-auto text-[16px]">返回列表</p>
+            </div>
+
+            <!-- Post Cover Image -->
+            <img id="post-cover-image" src="./imgs/cover-default.png" alt="Post Cover Image"
+                class="absolute w-full h-full object-cover z-10 cover-element cover-hidden blur-2xl">
+
+            <!-- Post Title -->
+            <span id="post-title"
+                class="z-50 flex-col gap-4 absolute flex w-full left-0 md:left-5 cover-element cover-hidden select-text">
+                <h1 class="text-2xl md:text-3xl lg:text-4xl h-fit text-center z-10 px-4">這是一個中文的標題文字</h1>
+                <h1 class="text-lg md:text-2xl lg:text-3xl h-fit text-center z-10 px-4">Haaaaiiyaaaaaaaaa</h1>
+            </span>
+        </div>
+
+        <!-- Posts and SideInfo -->
+        <div class="w-full flex xl:flex-row flex-col gap-6 relative items-start">
+
+            <!-- Posts Grid -->
+            <div class="view-wrapper xl:flex-1 min-w-0">
+                <div class="view-container is-active flex flex-col gap-5" id="post-area">
+                    <load src="./components/post-card.html" title="測試文章" />
+                </div>
+
+                <!-- Post Content -->
+                <div class="view-container slide-right w-full min-h-[calc(100vh-200px)] bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] mb-24"
+                    id="post-content">
+
+                    <h1
+                        class="text-[#4E5969] text-[24px] md:text-[30px] font-medium noto-font p-6 md:p-10 pv-text delay-1">
+                        這是一個中文的標題文字
+                    </h1>
+
+                    <!-- Post content body with proper spacing -->
+                    <div class="px-6 md:px-10 pb-20">
+                        <!-- Post content goes here -->
+                        <p
+                            class="text-[#4E5969] text-[16px] md:text-[18px] noto-font leading-relaxed mb-4 pv-text delay-2">
+                            這裡是文章內容...
+                        </p>
+                        <!-- Add more content as needed -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Info Section -->
+            <div class="flex flex-col gap-6 sticky top-4 self-start w-full xl:w-auto xl:min-w-75 z-20 h-fit"
+                id="side-info">
+                <div class="view-wrapper w-full">
+
+                    <!-- sidebar -->
+                    <div id="sidebar-widgets" class="view-container is-active flex flex-col gap-6 w-full">
+                        <load src="./components/sidebar/featured-post.html" />
+                        <load src="./components/sidebar/post-tag.html" />
+                    </div>
+
+                    <!-- 目錄 -->
+                    <div class="view-container slide-right w-full xl:w-75 h-fit bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-4 md:p-6 flex flex-col gap-4"
+                        id="table-of-contents">
+                        <h2 class="text-[#4E5969] text-[18px] md:text-[22px] font-semibold noto-font pv-text delay-1">
+                            文章目錄</h2>
+                        <div class="flex flex-col gap-5 pv-text delay-2">
+                            <div class="flex flex-col gap-2">
+                                <a href="#section1"
+                                    class="text-[#4E5969] text-xl font-bold hover:text-[#2D739A] flex items-center">
+                                    <img src="./imgs/icon/list-arrow.svg" alt="Section 1 Icon" class="mr-1">
+                                    第一段落標題
+                                </a>
+                                <a href="#section2"
+                                    class="text-[#4E5969] text-lg font-medium hover:text-[#2D739A] ml-8">
+                                    第二段落標題
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <load src="./components/footer.html" />
+
+    </div>
+</body>
+
+<script type="module" src="./src/home.js"></script>
+
+</html>

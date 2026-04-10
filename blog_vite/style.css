@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+    --shadow-nav: 0 4px 60px 0 rgba(45, 115, 154, 0.5);
+    --shadow-inner: inset 5px 5px 10px 0 rgba(118, 145, 175, 0.2);
+    --font-noto: 'Noto Sans', 'Noto Sans TC', sans-serif;
+    --ease-pv: cubic-bezier(0.2, 0.85, 0.15, 1);
+    --duration-pv: 0.65s;
+    --duration-pv-fade: 0.35s;
+    --spacing-offset: 35px;
+    --spacing--offset: -35px;
+}
+
+:root {
+    /* PV 等級的張力曲線 */
+    --curve: cubic-bezier(0.2, 0.85, 0.15, 1);
+    --duration: 0.65s;
+    --fade-duration: 0.35s;
+    --offset: 35px;
+}
+
+/* 視圖的父容器：設定 relative 作為定位基準 */
+.view-wrapper {
+    position: relative;
+    width: 100%;
+    overflow-x: clip;
+}
+
+/* 核心組件：列表、文章、側邊欄元件共用 */
+.view-container {
+    width: 100%;
+    transition: transform var(--duration) var(--curve),
+        opacity var(--fade-duration) ease-out,
+        visibility var(--duration);
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 1. 顯示中：改為 relative 撐開父容器高度 */
+.view-container.is-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+/* 2. 往左退場 */
+.view-container.slide-left {
+    transform: translateX(calc(var(--offset) * -1));
+}
+
+/* 3. 往右退場 */
+.view-container.slide-right {
+    transform: translateX(var(--offset));
+}
+
+/* --- 內部元素的微距上浮瀑布流 --- */
+.pv-text {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.4s ease-out, transform 0.6s var(--curve);
+}
+
+.view-container.is-active .pv-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.view-container.is-active .delay-1 {
+    transition-delay: 0.05s;
+}
+
+.view-container.is-active .delay-2 {
+    transition-delay: 0.10s;
+}
+
+.view-container.is-active .delay-3 {
+    transition-delay: 0.15s;
+}
+
+.view-container.is-active .delay-4 {
+    transition-delay: 0.20s;
+}
+
+/* --- 封面區塊的淡入淡出 --- */
+.cover-element {
+    transition: opacity var(--fade-duration) ease-out, transform var(--duration) var(--curve);
+}
+
+.cover-hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: scale(0.98);
+}
