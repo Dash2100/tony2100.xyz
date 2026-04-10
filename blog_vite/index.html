@@ -45,7 +45,7 @@
                 class="absolute flex gap-1.5 md:gap-3 top-3 left-3 md:top-6 md:left-6 z-50 rounded-lg md:rounded-[10px] bg-white/80 shadow-inner leading-5 md:leading-6 px-3 py-1.5 md:px-4 md:py-2 cursor-pointer hover:bg-white transition-all duration-300 ease-in-out font-medium text-[#4E5969] border border-[#4E5969]/20 cover-element cover-hidden backdrop-blur-xl"
                 onclick="backToList();">
                 <img src="./imgs/icon/back.svg" alt="Back Icon" class="h-4 md:h-6 inline-block md:mr-1 my-auto">
-                <p class="my-auto text-[13px] md:text-[16px]">返回</p>
+                <p class="my-auto text-[13px] md:text-base">返回</p>
             </div>
 
             <!-- Post Cover Image -->
@@ -65,7 +65,12 @@
 
             <!-- Posts Grid -->
             <div class="view-wrapper xl:flex-1 min-w-0">
-                <div class="view-container is-active flex flex-col gap-5" id="post-area">
+                <div class="view-container is-active grid grid-cols-1 sm:grid-cols-2 xl:flex xl:flex-col gap-4 sm:gap-5"
+                    id="post-area">
+                    <load src="./components/post-card.html" title="測試文章" />
+                    <load src="./components/post-card.html" title="測試文章" />
+                    <load src="./components/post-card.html" title="測試文章" />
+                    <load src="./components/post-card.html" title="測試文章" />
                     <load src="./components/post-card.html" title="測試文章" />
                 </div>
 
@@ -73,16 +78,14 @@
                 <div class="view-container slide-right w-full min-h-[calc(100vh-200px)] bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] mb-24"
                     id="post-content">
 
-                    <h1
-                        class="text-[#4E5969] text-[24px] md:text-[30px] font-medium noto-font p-6 md:p-10 pv-text delay-1">
+                    <h1 class="text-[#4E5969] text-2xl md:text-3xl font-medium noto-font p-6 md:p-10 pv-text delay-1">
                         這是一個中文的標題文字
                     </h1>
 
                     <!-- Post content body with proper spacing -->
                     <div class="px-6 md:px-10 pb-20">
                         <!-- Post content goes here -->
-                        <p
-                            class="text-[#4E5969] text-[16px] md:text-[18px] noto-font leading-relaxed mb-4 pv-text delay-2">
+                        <p class="text-[#4E5969] text-base md:text-lg noto-font leading-relaxed mb-4 pv-text delay-2">
                             這裡是文章內容...
                         </p>
                         <!-- Add more content as needed -->
@@ -91,8 +94,7 @@
             </div>
 
             <!-- Side Info Section -->
-            <div class="flex flex-col gap-6 sticky top-4 self-start w-full xl:w-auto xl:min-w-75 z-20 h-fit"
-                id="side-info">
+            <div class="flex flex-col gap-6 sticky top-4 self-start w-full  xl:w-75 z-20 h-fit shrink-0" id="side-info">
                 <div class="view-wrapper w-full">
 
                     <!-- sidebar -->
@@ -102,9 +104,9 @@
                     </div>
 
                     <!-- 目錄 -->
-                    <div class="view-container slide-right w-full xl:w-75 h-fit bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-4 md:p-6 flex flex-col gap-4"
+                    <div class="view-container slide-right w-full h-fit bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-4 md:p-6 flex flex-col gap-4"
                         id="table-of-contents">
-                        <h2 class="text-[#4E5969] text-[18px] md:text-[22px] font-semibold noto-font pv-text delay-1">
+                        <h2 class="text-[#4E5969] text-lg md:text-[22px] font-semibold noto-font pv-text delay-1">
                             文章目錄</h2>
                         <div class="flex flex-col gap-5 pv-text delay-2">
                             <div class="flex flex-col gap-2">
