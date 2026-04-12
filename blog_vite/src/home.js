@@ -64,23 +64,25 @@ function typeWriter() {
     setTimeout(typeWriter, delay);
 }
 
-// [重構]：iOS 級別阻尼手感的 Smooth Scroll
+// [重構]：動態時長的 Smooth Scroll (避免長距離滑動過快)
 function premiumSmoothScrollToTop() {
     const startY = window.scrollY;
     if (startY === 0) return;
 
-    const duration = 550; // 固定 550ms，不管多長都不會覺得拖泥帶水
-    const startTime = performance.now();
+    // 根據滑動距離動態計算時間，確保速度不會過於誇張，限制在 500ms 到 1200ms 之間
+    const duration = Math.min(Math.max(startY * 0.3, 500), 1200);
+    let startTime = null;
 
-    // 數學公式：EaseOutExpo (起步極快，最後緩慢煞車貼合頂部)
-    const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    // 數學公式：EaseOutQuart (平滑減速，手感自然)
+    const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
 
     function scrollStep(currentTime) {
+        if (!startTime) startTime = currentTime;
         const timeElapsed = currentTime - startTime;
         let progress = timeElapsed / duration;
         if (progress > 1) progress = 1;
 
-        window.scrollTo(0, startY * (1 - easeOutExpo(progress)));
+        window.scrollTo(0, startY * (1 - easeOutQuart(progress)));
 
         if (progress < 1) {
             requestAnimationFrame(scrollStep);
