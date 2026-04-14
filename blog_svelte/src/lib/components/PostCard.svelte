@@ -1,0 +1,73 @@
+<script>
+	/** @type {{ cover: string, title: string, date: string, words: string, tags?: Array<{type: 'icon'|'item', icon?: string, text: string}>, onclick?: () => void }} */
+	let { cover, title, date, words, tags = [], onclick } = $props();
+</script>
+
+<div
+	class="pv-text delay-1 w-full h-full xl:h-auto bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-3 sm:gap-4 p-4 sm:p-5 md:p-6 xl:py-8 xl:px-9 flex flex-col xl:flex-row justify-between group cursor-pointer hover:bg-[#F0F8FF] transition-colors duration-300"
+	role="button"
+	tabindex="0"
+	{onclick}
+	onkeypress={(e) => e.key === 'Enter' && onclick?.()}
+>
+	<!-- Cover Image -->
+	<div
+		class="w-full xl:w-70 aspect-video bg-[#DBECF8] rounded-[20px] shadow-inner overflow-hidden shrink-0 order-1 xl:order-2"
+	>
+		<img
+			src={cover}
+			alt="文章封面"
+			class="w-full h-full object-cover transition-transform duration-300 ease-in-out lg:group-hover:scale-[1.02]"
+		/>
+	</div>
+
+	<!-- Content Area -->
+	<div class="flex flex-col justify-between flex-1 gap-2 sm:gap-3 mt-1 xl:mt-0 order-2 xl:order-1">
+		<div class="flex flex-col gap-1.5 sm:gap-2">
+			<h1
+				class="text-[#4E5969] text-base sm:text-lg md:text-[22px] xl:text-[25px] font-medium noto-font leading-snug"
+			>
+				{title}
+			</h1>
+
+			<div
+				class="flex flex-wrap lg:flex-nowrap gap-x-3 sm:gap-x-4 gap-y-1 sm:gap-y-2 mt-0.5 sm:mt-1 mb-1 sm:mb-2 items-center"
+			>
+				<!-- Date -->
+				<div class="flex items-center gap-1 sm:gap-1.5">
+					<img src="/imgs/icon/date.svg" alt="Calendar Icon" class="h-4 w-4 sm:h-5 sm:w-5" />
+					<p class="text-[#4E5969] text-[13px] sm:text-sm xl:text-[15px] noto-font font-medium">{date}</p>
+				</div>
+
+				<!-- Divider -->
+				<div class="w-0.5 h-3.5 xl:h-4 bg-[#4E5969] hidden lg:block"></div>
+
+				<!-- Word Count -->
+				<div class="flex items-center gap-1 sm:gap-1.5">
+					<img src="/imgs/icon/words.svg" alt="Word Count Icon" class="h-4 w-4 sm:h-5 sm:w-5" />
+					<p class="text-[#4E5969] text-[13px] sm:text-sm xl:text-[15px] noto-font font-medium">{words}</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Tags -->
+		<div class="flex gap-1.5 sm:gap-2 w-full flex-wrap mt-auto pt-1.5 sm:pt-2 xl:pt-0">
+			{#each tags as tag (tag.text)}
+				{#if tag.type === 'icon'}
+					<span
+						class="bg-[#DBECF8] text-[#4E5969] px-2.5 py-1 xl:px-3 rounded-lg xl:rounded-[10px] text-xs sm:text-[13px] xl:text-[15px] shadow-inner flex items-center gap-1"
+					>
+						<img src={tag.icon} alt="Tag Icon" class="h-3 w-3 xl:h-4 xl:w-4" />
+						{tag.text}
+					</span>
+				{:else}
+					<span
+						class="bg-[#DBECF8] text-[#4E5969] px-2.5 py-1 xl:px-3 rounded-lg xl:rounded-[10px] text-xs sm:text-[13px] xl:text-[15px] shadow-inner flex items-center"
+					>
+						{tag.text}
+					</span>
+				{/if}
+			{/each}
+		</div>
+	</div>
+</div>
