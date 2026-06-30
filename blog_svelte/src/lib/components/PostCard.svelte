@@ -1,14 +1,13 @@
 <script>
-	/** @type {{ cover: string, title: string, date: string, words: string, tags?: Array<{type: 'icon'|'item', icon?: string, text: string}>, onclick?: () => void }} */
-	let { cover, title, date, words, tags = [], onclick } = $props();
+	/** @type {{ slug: string, cover: string, title: string, dateLabel: string, wordsLabel: string, tags?: string[], pinned?: boolean, index?: number }} */
+	let { slug, cover, title, dateLabel, wordsLabel, tags = [], pinned = false, index = 0 } = $props();
 </script>
 
-<div
-	class="pv-text delay-1 w-full h-full xl:h-auto bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-3 sm:gap-4 p-4 sm:p-5 md:p-6 xl:py-8 xl:px-9 flex flex-col xl:flex-row justify-between group cursor-pointer hover:bg-[#F0F8FF] transition-colors duration-300"
-	role="button"
-	tabindex="0"
-	{onclick}
-	onkeypress={(e) => e.key === 'Enter' && onclick?.()}
+<a
+	href="/post/{slug}"
+	data-sveltekit-preload-data="hover"
+	style="animation-delay: {Math.min(index, 8) * 60}ms"
+	class="card-in w-full h-full xl:h-auto bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-3 sm:gap-4 p-4 sm:p-5 md:p-6 xl:py-8 xl:px-9 flex flex-col xl:flex-row justify-between group cursor-pointer hover:bg-[#F0F8FF] transition-colors duration-300"
 >
 	<!-- Cover Image -->
 	<div
@@ -22,7 +21,7 @@
 	</div>
 
 	<!-- Content Area -->
-	<div class="flex flex-col justify-between flex-1 gap-2 sm:gap-3 mt-1 xl:mt-0 order-2 xl:order-1">
+	<div class="flex flex-col justify-between flex-1 min-w-0 gap-2 sm:gap-3 mt-1 xl:mt-0 order-2 xl:order-1">
 		<div class="flex flex-col gap-1.5 sm:gap-2">
 			<h1
 				class="text-[#4E5969] text-base sm:text-lg md:text-[22px] xl:text-[25px] font-medium noto-font leading-snug"
@@ -36,7 +35,7 @@
 				<!-- Date -->
 				<div class="flex items-center gap-1 sm:gap-1.5">
 					<img src="/imgs/icon/date.svg" alt="Calendar Icon" class="h-4 w-4 sm:h-5 sm:w-5" />
-					<p class="text-[#4E5969] text-[13px] sm:text-sm xl:text-[15px] noto-font font-medium">{date}</p>
+					<p class="text-[#4E5969] text-[13px] sm:text-sm xl:text-[15px] noto-font font-medium">{dateLabel}</p>
 				</div>
 
 				<!-- Divider -->
@@ -45,29 +44,51 @@
 				<!-- Word Count -->
 				<div class="flex items-center gap-1 sm:gap-1.5">
 					<img src="/imgs/icon/words.svg" alt="Word Count Icon" class="h-4 w-4 sm:h-5 sm:w-5" />
-					<p class="text-[#4E5969] text-[13px] sm:text-sm xl:text-[15px] noto-font font-medium">{words}</p>
+					<p class="text-[#4E5969] text-[13px] sm:text-sm xl:text-[15px] noto-font font-medium">{wordsLabel}</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- Tags -->
 		<div class="flex gap-1.5 sm:gap-2 w-full flex-wrap mt-auto pt-1.5 sm:pt-2 xl:pt-0">
-			{#each tags as tag (tag.text)}
-				{#if tag.type === 'icon'}
-					<span
-						class="bg-[#DBECF8] text-[#4E5969] px-2.5 py-1 xl:px-3 rounded-lg xl:rounded-[10px] text-xs sm:text-[13px] xl:text-[15px] shadow-inner flex items-center gap-1"
-					>
-						<img src={tag.icon} alt="Tag Icon" class="h-3 w-3 xl:h-4 xl:w-4" />
-						{tag.text}
-					</span>
-				{:else}
-					<span
-						class="bg-[#DBECF8] text-[#4E5969] px-2.5 py-1 xl:px-3 rounded-lg xl:rounded-[10px] text-xs sm:text-[13px] xl:text-[15px] shadow-inner flex items-center"
-					>
-						{tag.text}
-					</span>
-				{/if}
+			{#if pinned}
+				<span
+					class="bg-[#DBECF8] text-[#4E5969] px-2.5 py-1 xl:px-3 rounded-lg xl:rounded-[10px] text-xs sm:text-[13px] xl:text-[15px] shadow-inner flex items-center gap-1"
+				>
+					<img src="/imgs/icon/pin.svg" alt="Pin Icon" class="h-3 w-3 xl:h-4 xl:w-4" />
+					置頂
+				</span>
+			{/if}
+			{#each tags as tag (tag)}
+				<span
+					class="bg-[#DBECF8] text-[#4E5969] px-2.5 py-1 xl:px-3 rounded-lg xl:rounded-[10px] text-xs sm:text-[13px] xl:text-[15px] shadow-inner flex items-center"
+				>
+					{tag}
+				</span>
 			{/each}
 		</div>
 	</div>
-</div>
+</a>
+
+<style>
+	.card-in {
+		animation: card-in 0.5s cubic-bezier(0.2, 0.85, 0.15, 1) both;
+	}
+
+	@keyframes card-in {
+		from {
+			opacity: 0;
+			transform: translateY(15px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.card-in {
+			animation: none;
+		}
+	}
+</style>

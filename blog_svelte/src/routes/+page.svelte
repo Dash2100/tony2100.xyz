@@ -1,13 +1,10 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { homeClickCallback } from '$lib/stores.js';
+	import { postList } from '$lib/posts.js';
 	import PostCard from '$lib/components/PostCard.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import FeaturedPost from '$lib/components/FeaturedPost.svelte';
 	import TagsWidget from '$lib/components/TagsWidget.svelte';
-
-	// --- 視圖狀態 ---
-	let view = $state('list'); // 'list' | 'post'
 
 	// --- Typewriter ---
 	const texts = [
@@ -69,85 +66,11 @@
 		typewriterTimer = setTimeout(typeWriter, delay);
 	}
 
-	// --- Smooth Scroll ---
-	function premiumSmoothScrollToTop() {
-		const startY = window.scrollY;
-		if (startY === 0) return;
-		const duration = Math.min(Math.max(startY * 0.3, 500), 1200);
-		let startTime: number | null = null;
-		const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
-		function scrollStep(currentTime: number) {
-			if (!startTime) startTime = currentTime;
-			const progress = Math.min((currentTime - startTime) / duration, 1);
-			window.scrollTo(0, startY * (1 - easeOutQuart(progress)));
-			if (progress < 1) requestAnimationFrame(scrollStep);
-		}
-		requestAnimationFrame(scrollStep);
-	}
-
-	// --- 視圖切換 ---
-	function viewPost() {
-		view = 'post';
-		premiumSmoothScrollToTop();
-	}
-
-	function backToList() {
-		view = 'list';
-		premiumSmoothScrollToTop();
-	}
-
-	// --- 文章資料 ---
-	type Tag = { type: 'icon'; icon: string; text: string } | { type: 'item'; text: string };
-	type Post = { cover: string; title: string; date: string; words: string; tags: Tag[] };
-
-	const posts: Post[] = [
-		{
-			cover: '/imgs/cover-default.png',
-			title: '測試文章 1',
-			date: '2025 年 07 月 24日',
-			words: '5050 個字',
-			tags: [
-				{ type: 'icon', icon: '/imgs/icon/pin.svg', text: '置頂' },
-				{ type: 'item', text: '競賽' }
-			]
-		},
-		{
-			cover: '/imgs/cover-default.png',
-			title: '測試文章 2',
-			date: '2025 年 07 月 25日',
-			words: '3200 個字',
-			tags: [{ type: 'item', text: '日常' }]
-		},
-		{
-			cover: '/imgs/cover-default.png',
-			title: '測試文章 3',
-			date: '2025 年 08 月 01日',
-			words: '1500 個字',
-			tags: [{ type: 'item', text: '教學' }]
-		},
-		{
-			cover: '/imgs/cover-default.png',
-			title: '測試文章 4',
-			date: '2025 年 08 月 15日',
-			words: '2000 個字',
-			tags: [{ type: 'item', text: '筆記' }]
-		},
-		{
-			cover: '/imgs/cover-default.png',
-			title: '測試文章 5',
-			date: '2025 年 09 月 02日',
-			words: '4100 個字',
-			tags: [{ type: 'item', text: '隨筆' }]
-		}
-	];
-
 	onMount(() => {
-		homeClickCallback.set(backToList);
 		typeWriter();
 	});
 
 	onDestroy(() => {
-		homeClickCallback.set(null);
 		if (typewriterTimer) clearTimeout(typewriterTimer);
 	});
 </script>
@@ -167,13 +90,11 @@
 		<img
 			src="/imgs/home-cover.png"
 			alt="首頁封面"
-			class="absolute w-full h-full object-cover z-10 cover-element {view === 'post' ? 'cover-hidden' : 'opacity-100'}"
+			class="absolute w-full h-full object-cover z-10"
 		/>
 
 		<!-- Home Title -->
-		<span
-			class="z-50 flex-col gap-2 md:gap-4 absolute flex w-full cover-element {view === 'post' ? 'cover-hidden' : 'opacity-100'}"
-		>
+		<span class="z-50 flex-col gap-2 md:gap-4 absolute flex w-full">
 			<h1 class="text-3xl lg:text-4xl h-fit text-center z-10 px-4">Tony2100's Life Log</h1>
 			<div class="relative w-full min-h-7 md:min-h-9 lg:min-h-12">
 				<h1
@@ -183,104 +104,34 @@
 				</h1>
 			</div>
 		</span>
-
-		<!-- Back Button -->
-		<div
-			class="absolute flex gap-1.5 md:gap-3 top-3 left-3 md:top-6 md:left-6 z-50 rounded-lg md:rounded-[10px] bg-white/80 shadow-inner leading-5 md:leading-6 px-3 py-1.5 md:px-4 md:py-2 cursor-pointer hover:bg-white transition-all duration-300 ease-in-out font-medium text-[#4E5969] border border-[#4E5969]/20 cover-element backdrop-blur-xl {view !== 'post' ? 'cover-hidden' : ''}"
-			onclick={backToList}
-			role="button"
-			tabindex="0"
-			onkeypress={(e) => e.key === 'Enter' && backToList()}
-		>
-			<img src="/imgs/icon/back.svg" alt="Back Icon" class="h-4 md:h-6 inline-block md:mr-1 my-auto" />
-			<p class="my-auto text-[13px] md:text-base">返回</p>
-		</div>
-
-		<!-- Post Cover Image -->
-		<img
-			src="/imgs/cover-default.png"
-			alt="文章封面"
-			class="absolute w-full h-full object-cover z-10 cover-element blur-2xl {view !== 'post' ? 'cover-hidden' : ''}"
-		/>
-
-		<!-- Post Title -->
-		<span
-			class="z-50 flex-col gap-4 absolute flex w-full left-0 md:left-5 cover-element select-text {view !== 'post' ? 'cover-hidden' : ''}"
-		>
-			<h1 class="text-2xl md:text-3xl lg:text-4xl h-fit text-center z-10 px-4">這是一個中文的標題文字</h1>
-			<h1 class="text-lg md:text-2xl lg:text-3xl h-fit text-center z-10 px-4">Haaaaiiyaaaaaaaaa</h1>
-		</span>
 	</div>
 
 	<!-- Posts and SideInfo -->
 	<div class="w-full flex xl:flex-row flex-col gap-6 relative items-start">
-
 		<!-- Posts Grid -->
-		<div class="view-wrapper xl:flex-1 min-w-0">
+		<div class="xl:flex-1 min-w-0 w-full">
 			<div
-				class="view-container {view === 'list' ? 'is-active' : 'slide-left'} grid grid-cols-1 sm:grid-cols-2 xl:flex xl:flex-col gap-4 sm:gap-5"
+				class="grid grid-cols-1 sm:grid-cols-2 xl:flex xl:flex-col gap-4 sm:gap-5"
 			>
-				{#each posts as post (post.title)}
+				{#each postList as post, i (post.slug)}
 					<PostCard
+						slug={post.slug}
 						cover={post.cover}
 						title={post.title}
-						date={post.date}
-						words={post.words}
+						dateLabel={post.dateLabel}
+						wordsLabel={post.wordsLabel}
 						tags={post.tags}
-						onclick={viewPost}
+						pinned={post.pinned}
+						index={i}
 					/>
 				{/each}
-			</div>
-
-			<!-- Post Content -->
-			<div
-				class="view-container {view === 'post' ? 'is-active' : 'slide-right'} w-full min-h-[calc(100vh-200px)] bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] mb-24"
-			>
-				<h1 class="text-[#4E5969] text-2xl md:text-3xl font-medium noto-font p-6 md:p-10 pv-text delay-1">
-					這是一個中文的標題文字
-				</h1>
-				<div class="px-6 md:px-10 pb-20">
-					<p class="text-[#4E5969] text-base md:text-lg noto-font leading-relaxed mb-4 pv-text delay-2">
-						這裡是文章內容...
-					</p>
-				</div>
 			</div>
 		</div>
 
 		<!-- Side Info Section -->
-		<div
-			class="flex flex-col gap-6 sticky top-4 self-start w-full xl:w-75 z-20 h-fit shrink-0"
-		>
-			<div class="view-wrapper w-full">
-				<!-- Sidebar Widgets -->
-				<div class="view-container {view === 'list' ? 'is-active' : 'slide-left'} flex flex-col gap-6 w-full">
-					<FeaturedPost />
-					<TagsWidget />
-				</div>
-
-				<!-- 目錄 -->
-				<div
-					class="view-container {view === 'post' ? 'is-active' : 'slide-right'} w-full h-fit bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-4 md:p-6 flex flex-col gap-4"
-				>
-					<h2 class="text-[#4E5969] text-lg md:text-[22px] font-semibold noto-font pv-text delay-1">
-						文章目錄
-					</h2>
-					<div class="flex flex-col gap-5 pv-text delay-2">
-						<div class="flex flex-col gap-2">
-							<a
-								href="#section1"
-								class="text-[#4E5969] text-xl font-bold hover:text-[#2D739A] flex items-center"
-							>
-								<img src="/imgs/icon/list-arrow.svg" alt="Section Icon" class="mr-1" />
-								第一段落標題
-							</a>
-							<a href="#section2" class="text-[#4E5969] text-lg font-medium hover:text-[#2D739A] ml-8">
-								第二段落標題
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+		<div class="flex flex-col gap-6 sticky top-4 self-start w-full xl:w-75 z-20 h-fit shrink-0">
+			<FeaturedPost />
+			<TagsWidget />
 		</div>
 	</div>
 

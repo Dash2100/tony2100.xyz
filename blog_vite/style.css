@@ -99,3 +99,252 @@
     pointer-events: none !important;
     transform: scale(0.98);
 }
+
+/* --- Active navigation item (NavLink active state) --- */
+.nav-link.nav-active {
+    background: #DBECF8;
+    box-shadow: var(--shadow-inner);
+    color: #2D739A;
+}
+
+/* --- Article TOC scroll-spy ---
+   The leading ">" arrow only appears on the active section, which also
+   scales up slightly. Everything animates smoothly. */
+.toc-link .toc-arrow {
+    opacity: 0;
+    max-width: 0;
+    margin-right: -0.25rem;
+    transform: translateX(-4px);
+    transition: opacity 0.3s var(--curve), max-width 0.3s var(--curve),
+        transform 0.3s var(--curve), margin-right 0.3s var(--curve);
+}
+
+.toc-link.toc-active .toc-arrow {
+    opacity: 1;
+    max-width: 1.25rem;
+    margin-right: 0;
+    transform: translateX(0);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* =========================================================
+   Rendered Markdown content (.md-content)
+   The build-time pipeline emits .md-h / .md-h2 / .md-h3 /
+   .md-anchor / .md-img / .md-a plus highlight.js .hljs-* tokens.
+   ========================================================= */
+.md-content {
+    color: #4E5969;
+    line-height: 1.85;
+    font-size: 1.05rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.md-content>*:first-child {
+    margin-top: 0;
+}
+
+.md-content p {
+    margin: 1rem 0;
+}
+
+.md-content .md-h {
+    position: relative;
+    font-weight: 700;
+    line-height: 1.4;
+    scroll-margin-top: 100px;
+}
+
+.md-content .md-h2 {
+    font-size: 1.55rem;
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid rgba(78, 89, 105, 0.12);
+}
+
+.md-content .md-h3 {
+    font-size: 1.25rem;
+    margin: 1.6rem 0 0.7rem;
+}
+
+.md-content .md-anchor {
+    position: absolute;
+    left: -1.05em;
+    color: #9DB6CC;
+    opacity: 0;
+    text-decoration: none;
+    padding-right: 0.3em;
+    transition: opacity 0.2s ease-out;
+}
+
+.md-content .md-h:hover .md-anchor {
+    opacity: 1;
+}
+
+.md-content .md-a {
+    color: #2D739A;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(45, 115, 154, 0.35);
+    transition: color 0.2s ease-out;
+}
+
+.md-content .md-a:hover {
+    color: #538AD9;
+}
+
+.md-content ul,
+.md-content ol {
+    margin: 1rem 0;
+    padding-left: 1.6rem;
+}
+
+.md-content li {
+    margin: 0.4rem 0;
+}
+
+.md-content ul li {
+    list-style: disc;
+}
+
+.md-content ol li {
+    list-style: decimal;
+}
+
+.md-content blockquote {
+    margin: 1.4rem 0;
+    padding: 0.8rem 1.2rem;
+    border-left: 4px solid #9DB6CC;
+    background: #EDF5FA;
+    border-radius: 0 12px 12px 0;
+    color: #5A6B7E;
+}
+
+.md-content blockquote p {
+    margin: 0;
+}
+
+.md-content .md-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem auto;
+    border-radius: 16px;
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content hr {
+    border: none;
+    border-top: 2px solid rgba(78, 89, 105, 0.12);
+    margin: 2rem 0;
+}
+
+.md-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.4rem 0;
+    font-size: 0.95rem;
+}
+
+.md-content th,
+.md-content td {
+    border: 1px solid rgba(78, 89, 105, 0.18);
+    padding: 0.55rem 0.9rem;
+    text-align: left;
+}
+
+.md-content th {
+    background: #DBECF8;
+    font-weight: 600;
+}
+
+.md-content :not(pre)>code {
+    background: #DBECF8;
+    color: #2D739A;
+    padding: 0.15em 0.45em;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.md-content pre {
+    background: #2B3A4A;
+    color: #E6EDF3;
+    padding: 1.1rem 1.3rem;
+    border-radius: 16px;
+    overflow-x: auto;
+    margin: 1.4rem 0;
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content pre code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* highlight.js token colours (dark scheme) */
+.hljs-comment,
+.hljs-quote {
+    color: #8B98A5;
+    font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in {
+    color: #FF9B87;
+}
+
+.hljs-string,
+.hljs-attr,
+.hljs-meta-string {
+    color: #A5E6A0;
+}
+
+.hljs-number,
+.hljs-literal {
+    color: #F0C674;
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-section {
+    color: #82C0FF;
+}
+
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link {
+    color: #82C0FF;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+    color: #F0C674;
+}
+
+.hljs-tag,
+.hljs-name {
+    color: #FF9B87;
+}
+
+.hljs-variable,
+.hljs-template-variable {
+    color: #E6EDF3;
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: 700;
+}

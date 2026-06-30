@@ -28,6 +28,7 @@
 	<div class="flex flex-col gap-10 my-16">
 		<a
 			href="/"
+			data-sveltekit-noscroll
 			onclick={handleHomeClick}
 			class="flex items-center justify-center p-2 rounded-full transition-all duration-200 ease-in-out
 			{isHome ? 'bg-[#DBECF8] shadow-inner' : 'hover:bg-[#e8f6ff] hover:shadow-inner'}"
@@ -36,6 +37,7 @@
 		</a>
 		<a
 			href="/post-list"
+			data-sveltekit-noscroll
 			class="flex items-center justify-center p-2 rounded-full transition-all duration-200 ease-in-out
 			{isList ? 'bg-[#DBECF8] shadow-inner' : 'hover:bg-[#e8f6ff] hover:shadow-inner'}"
 		>
@@ -43,6 +45,7 @@
 		</a>
 		<a
 			href="/note"
+			data-sveltekit-noscroll
 			class="flex items-center justify-center p-2 rounded-full transition-all duration-200 ease-in-out
 			{isNote ? 'bg-[#DBECF8] shadow-inner' : 'hover:bg-[#e8f6ff] hover:shadow-inner'}"
 		>
@@ -66,6 +69,7 @@
 	<div class="flex justify-around items-center py-3 px-4">
 		<a
 			href="/"
+			data-sveltekit-noscroll
 			onclick={handleHomeClick}
 			class="flex flex-col items-center justify-center p-3 rounded-full transition-all duration-200 ease-in-out
 			{isHome ? 'bg-[#DBECF8] shadow-inner' : ''}"
@@ -74,6 +78,7 @@
 		</a>
 		<a
 			href="/post-list"
+			data-sveltekit-noscroll
 			class="flex flex-col items-center justify-center p-3 rounded-full transition-all duration-200 ease-in-out
 			{isList ? 'bg-[#DBECF8] shadow-inner' : ''}"
 		>
@@ -81,6 +86,7 @@
 		</a>
 		<a
 			href="/note"
+			data-sveltekit-noscroll
 			class="flex flex-col items-center justify-center p-3 rounded-full transition-all duration-200 ease-in-out
 			{isNote ? 'bg-[#DBECF8] shadow-inner' : ''}"
 		>

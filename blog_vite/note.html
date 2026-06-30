@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- style -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <title>筆記｜Tony2100's Life Log</title>
+</head>
+
+<body class="m-0 bg-[#EDF5FA] flex font-noto min-h-screen overflow-x-clip">
+    <!-- side nav -->
+    <load src="./components/navbar.html" />
+
+    <!-- main content -->
+    <div class="w-full p-4 md:p-8 lg:p-16 lg:pb-16 max-w-225 mx-auto flex flex-col gap-6 md:gap-8 pb-28 lg:pb-16">
+
+        <!-- title area -->
+        <div class="flex flex-col gap-3 text-center mt-4 md:mt-0">
+            <h1 class="text-3xl md:text-4xl font-bold text-[#4E5969] noto-font">筆記</h1>
+            <h2 class="text-base md:text-2xl text-[#4E5969]/80 noto-font">那些不夠長到寫成一篇文章，卻又想記下來的事</h2>
+        </div>
+
+        <!-- notes feed -->
+        <div id="note-feed" class="flex flex-col gap-4 sm:gap-5">
+            <!-- note cards injected by src/note.js -->
+        </div>
+
+        <load src="./components/footer.html" />
+    </div>
+
+    <script type="module" src="./src/note.js"></script>
+</body>
+
+</html>
