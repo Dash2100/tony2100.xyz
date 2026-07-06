@@ -14,10 +14,10 @@ const variants = {
 };
 
 export default function Page({ children, className = '' }) {
-  // Sidenav navigations are 'instant': reset scroll before paint, while the
-  // incoming content is still invisible (opacity 0 during its onload). This
+  // Sidenav navigations (and far-distance downgrades) are 'instant': reset
+  // scroll before paint, while the incoming content is still invisible. This
   // keeps the section-switch animation identical regardless of scroll position.
-  // 'smooth' navigations are scrolled by the App-level handler instead.
+  // 'smooth' navigations glide via the App-level handler instead.
   useLayoutEffect(() => {
     if (takeScrollIntent() === 'instant') {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });

@@ -16,8 +16,8 @@ import { useEffect, useRef, useState } from 'react';
  * - Tail headings that can never physically reach the reading line (the page
  *   runs out of scroll room first) get their activation points remapped evenly
  *   across the final scrollable stretch, so EVERY entry can become active.
- * - While the app's post-navigation auto-scroll runs (`html.is-navigating`),
- *   updates are suppressed so the highlight doesn't flicker through sections.
+ * - While the app's post-navigation glide runs (`html.is-navigating`), updates
+ *   are suppressed so the highlight doesn't flicker through sections.
  *
  * Returns [activeId, activate]:
  * - activate(id): optimistically highlight `id` and lock the spy until the
@@ -122,7 +122,7 @@ export default function useScrollSpy(ids) {
       clearTimeout(timer);
     };
     window.addEventListener('scrollend', release);
-    timer = setTimeout(release, 1000);
+    timer = setTimeout(release, 1200);
   };
 
   return [active, activate];

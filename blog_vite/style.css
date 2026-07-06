@@ -191,6 +191,15 @@ html.is-navigating #page-height-extend {
     animation: fade-in-up 0.3s ease-out 0.15s forwards;
 }
 
+/* While the app-level glide to the top is running, hold the incoming page's
+   footer invisible: at mid-glide scroll positions it would otherwise fade in
+   right on screen and then slide away. When the glide finishes and the class
+   is removed, the entrance animation starts fresh — safely below the fold. */
+html.is-navigating .onload-footer {
+    opacity: 0;
+    animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
 
     .page-onload>*,
@@ -208,9 +217,22 @@ html.is-navigating #page-height-extend {
 .md-content {
     color: #4E5969;
     line-height: 1.85;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     overflow-wrap: break-word;
     word-break: break-word;
+}
+
+/* Notes render larger than the article body — casual, short content that
+   should read at a glance. (Higher specificity so it also beats the
+   mobile .md-content media query below.) */
+.md-content.note-content {
+    font-size: 1.15rem;
+}
+
+@media (max-width: 640px) {
+    .md-content.note-content {
+        font-size: 1.0625rem;
+    }
 }
 
 .md-content>*:first-child {
@@ -304,6 +326,12 @@ html.is-navigating #page-height-extend {
     margin: 1.5rem auto;
     border-radius: 16px;
     box-shadow: var(--shadow-inner);
+    cursor: zoom-in;
+    transition: transform 0.25s var(--curve);
+}
+
+.md-content .md-img:hover {
+    transform: scale(1.01);
 }
 
 .md-content hr {
@@ -348,6 +376,62 @@ html.is-navigating #page-height-extend {
     overflow-x: auto;
     margin: 1.4rem 0;
     box-shadow: var(--shadow-inner);
+}
+
+/* --- Copy button on code blocks ---
+   <pre> gets wrapped in .code-block (see MdContent.jsx) so the button stays
+   pinned while the code scrolls horizontally. */
+.md-content .code-block {
+    position: relative;
+    margin: 1.4rem 0;
+}
+
+.md-content .code-block pre {
+    margin: 0;
+}
+
+.code-copy {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    line-height: 1;
+    color: #E6EDF3;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    padding: 0.4rem 0.65rem;
+    cursor: pointer;
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    font-family: var(--font-noto);
+    transition: opacity 0.2s ease-out, background 0.2s ease-out,
+        color 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.md-content .code-block:hover .code-copy,
+.code-copy:focus-visible,
+.code-copy.copied {
+    opacity: 1;
+}
+
+.code-copy:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.code-copy.copied {
+    color: #A5E6A0;
+    border-color: rgba(165, 230, 160, 0.45);
+}
+
+/* Touch devices have no hover — keep the button visible. */
+@media (hover: none) {
+    .code-copy {
+        opacity: 1;
+    }
 }
 
 .md-content pre code {
@@ -422,17 +506,17 @@ html.is-navigating #page-height-extend {
 /* --- Mobile tuning for rendered Markdown --- */
 @media (max-width: 640px) {
     .md-content {
-        font-size: 1rem;
+        font-size: 1.05rem;
         line-height: 1.8;
     }
 
     .md-content .md-h2 {
-        font-size: 1.3rem;
+        font-size: 1.35rem;
         margin: 1.6rem 0 0.8rem;
     }
 
     .md-content .md-h3 {
-        font-size: 1.12rem;
+        font-size: 1.15rem;
         margin: 1.3rem 0 0.6rem;
     }
 

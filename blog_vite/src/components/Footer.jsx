@@ -2,35 +2,36 @@
  * Shared footer. Lives in the app shell (outside the page transition) and uses
  * a single fixed max-width container so its width never changes between pages.
  *
- * Layout: identity (avatar + site name + tagline) with social links on the
- * first row, a divider, then the legal lines. On mobile everything centers
- * into a single column.
+ * Mobile (<sm): compact layout — avatar + name in a row, three full-width
+ * labelled social buttons, tight centred legal lines.
+ * Desktop (sm+): identity left / icon buttons right, divider, split legal.
  */
 const SOCIALS = [
-  { icon: 'world', label: '個人網站', href: '#' }, // TODO: 換成你的網站連結
-  { icon: 'github', label: 'GitHub', href: '#' }, // TODO: 換成你的 GitHub 連結
-  { icon: 'mail', label: 'Email', href: 'mailto:haco.tw@gmail.com' },
+  { icon: 'world', label: '個人網站', short: '網站', href: 'https://tony2100.xyz' },
+  { icon: 'github', label: 'GitHub', short: 'GitHub', href: 'https://github.com/Dash2100' },
+  { icon: 'mail', label: 'Email', short: 'Email', href: 'mailto:tony@todev.me' },
 ];
 
+const external = (href) =>
+  href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+
 export default function Footer() {
-  const year = new Date().getFullYear();
   return (
     <div className="w-full max-w-325 mx-auto px-5 md:px-8 lg:px-16">
-      <footer className="w-full rounded-[25px] md:rounded-[35px] bg-[#DBECF8] shadow-inner mt-20 mb-24 lg:mb-8 p-6 md:p-8 xl:px-12 flex flex-col gap-5 md:gap-6">
-        {/* identity + socials */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-5 md:gap-8">
-          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5 text-center sm:text-left">
+      <footer className="w-full rounded-[25px] md:rounded-[35px] bg-[#DBECF8] shadow-inner mt-20 mb-24 lg:mb-8 p-5 sm:p-8 xl:px-12 flex flex-col gap-4 sm:gap-6">
+        {/* identity (+ desktop icon buttons) */}
+        <div className="flex items-center justify-between gap-4 sm:gap-8">
+          <div className="flex items-center gap-3.5 sm:gap-5 min-w-0 text-left">
             <img src="/imgs/profile.png" alt="Tony2100"
-              className="h-16 md:h-20 rounded-[15px] md:rounded-[20px] shrink-0" />
-            <div className="flex flex-col gap-0.5 md:gap-1">
-              <h2 className="font-bold text-[#4E5969] text-lg md:text-xl noto-font">Tony2100's Life Log</h2>
-              <p className="text-[#4E5969]/80 text-sm md:text-base noto-font">生活紀錄、技術筆記，還有一些胡思亂想。</p>
+              className="h-14 w-14 sm:h-20 sm:w-20 rounded-full sm:rounded-[20px] shrink-0" />
+            <div className="flex flex-col gap-0.5 md:gap-1 min-w-0">
+              <h2 className="font-bold text-[#4E5969] text-[17px] sm:text-xl noto-font leading-snug">Tony2100's Life Log</h2>
+              <p className="text-[#4E5969]/80 text-[13px] sm:text-base noto-font leading-snug">生活紀錄、技術筆記，還有一些胡思亂想。</p>
             </div>
           </div>
-          <div className="flex gap-3 md:gap-4 shrink-0">
+          <div className="hidden sm:flex gap-3 md:gap-4 shrink-0">
             {SOCIALS.map(({ icon, label, href }) => (
-              <a key={icon} href={href} aria-label={label}
-                {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              <a key={icon} href={href} aria-label={label} {...external(href)}
                 className="bg-[#F3FAFF] p-2.5 shadow-inner rounded-xl border border-[#4E5969]/20 hover:bg-white transition-colors duration-200">
                 <img src={`/imgs/icon/${icon}.svg`} alt="" className="h-6 w-6 md:h-7 md:w-7 block" />
               </a>
@@ -38,11 +39,30 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* mobile: three equal labelled buttons */}
+        <div className="grid grid-cols-3 gap-2.5 sm:hidden">
+          {SOCIALS.map(({ icon, short, label, href }) => (
+            <a key={icon} href={href} aria-label={label} {...external(href)}
+              className="flex items-center justify-center gap-1.5 bg-[#F3FAFF] border border-[#4E5969]/20 shadow-inner rounded-xl py-2.5 text-[13px] text-[#4E5969] noto-font active:scale-95 transition-transform duration-150">
+              <img src={`/imgs/icon/${icon}.svg`} alt="" className="h-4 w-4 shrink-0" />
+              <span className="truncate">{short}</span>
+            </a>
+          ))}
+        </div>
+
         <hr className="border-none h-px bg-[#4E5969]/15" />
 
-        {/* legal */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-1.5 md:gap-6 text-center md:text-left text-xs md:text-sm text-[#4E5969]/75 noto-font">
-          <p>© 2025-{year} Tony2100 · All rights reserved.</p>
+        {/* legal — compact centred stack on mobile, split row on sm+ */}
+        <div className="flex flex-col gap-1 text-center text-[12.5px] leading-relaxed text-[#4E5969]/70 noto-font sm:hidden">
+          <p>© Tony2100 · All rights reserved.</p>
+          <p>
+            文章採用 <a className="text-[#538AD9]" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hant"
+              target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a> 授權，轉載請註明出處。
+          </p>
+          <p>部分圖片來自網路，如有侵權請來信告知。</p>
+        </div>
+        <div className="hidden sm:flex flex-col md:flex-row md:items-end md:justify-between gap-1.5 md:gap-6 text-left text-sm text-[#4E5969]/75 noto-font">
+          <p>© Tony2100 · All rights reserved.</p>
           <div className="flex flex-col gap-1.5 md:items-end">
             <p>
               文章除特別聲明外，均採用 <a

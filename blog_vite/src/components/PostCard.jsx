@@ -18,18 +18,18 @@ export default function PostCard({ post }) {
       </div>
       <div className="flex flex-col justify-between flex-1 gap-2 sm:gap-3 mt-1 xl:mt-0 order-2 xl:order-1">
         <div className="flex flex-col gap-1.5 sm:gap-2">
-          <h2 className="text-[#4E5969] text-[17px] sm:text-lg md:text-xl xl:text-[22px] font-medium noto-font leading-snug">
+          <h2 className="text-[#4E5969] text-lg md:text-xl xl:text-[22px] font-medium noto-font leading-snug">
             {post.title}
           </h2>
           <div className="flex flex-wrap lg:flex-nowrap gap-x-3 sm:gap-x-4 gap-y-1 sm:gap-y-2 mt-0.5 sm:mt-1 mb-1 sm:mb-2 items-center">
             <div className="flex items-center gap-1 sm:gap-1.5">
               <img src="/imgs/icon/date.svg" alt="Calendar Icon" className="h-4 w-4 sm:h-5 sm:w-5" />
-              <p className="text-[#4E5969] text-[13px] sm:text-sm xl:text-[15px] noto-font font-medium">{post.dateText}</p>
+              <p className="text-[#4E5969] text-sm xl:text-[15px] noto-font font-medium">{post.dateText}</p>
             </div>
             <div className="w-0.5 h-3.5 xl:h-4 bg-[#4E5969] hidden lg:block"></div>
             <div className="flex items-center gap-1 sm:gap-1.5">
               <img src="/imgs/icon/words.svg" alt="Word Count Icon" className="h-4 w-4 sm:h-5 sm:w-5" />
-              <p className="text-[#4E5969] text-[13px] sm:text-sm xl:text-[15px] noto-font font-medium">{post.wordsText}</p>
+              <p className="text-[#4E5969] text-sm xl:text-[15px] noto-font font-medium">{post.wordsText}</p>
             </div>
           </div>
         </div>

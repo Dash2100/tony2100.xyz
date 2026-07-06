@@ -35,9 +35,11 @@ export default function Home() {
         <img src="/imgs/home-cover.png" alt="Home Cover"
           className="absolute w-full h-full object-cover z-10" />
         <span className="z-50 flex-col gap-1.5 md:gap-4 absolute flex w-full">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl text-center px-4">Tony2100's Life Log</h1>
+          {/* fluid size: as large as the phone allows, capped so it never
+              wraps or overflows (~24px on 320px screens, ~30px from 400px up) */}
+          <h1 className="text-[clamp(1.5rem,7.5vw,1.875rem)] md:text-3xl lg:text-4xl whitespace-nowrap text-center px-4">Tony2100's Life Log</h1>
           <div className="relative w-full min-h-6 md:min-h-9 lg:min-h-12">
-            <h1 className="absolute inset-0 text-sm sm:text-base md:text-2xl lg:text-3xl text-center px-4 flex items-start justify-center">
+            <h1 className="absolute inset-0 text-base sm:text-lg md:text-2xl lg:text-3xl text-center px-4 flex items-start justify-center">
               {typed}
             </h1>
           </div>
@@ -61,10 +63,10 @@ export default function Home() {
               {featured.map((p) => (
                 <Link key={p.slug} to={`/post/${p.slug}`}
                   className="flex flex-col border border-[#4E5969]/20 w-full px-4 py-2.5 rounded-[15px] shadow-inner gap-0.5 cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">
-                  <p className="text-[#4E5969] text-[15px] noto-font truncate">{p.title}</p>
+                  <p className="text-[#4E5969] text-base noto-font truncate">{p.title}</p>
                   <div className="flex gap-1">
                     <img src="/imgs/icon/date.svg" alt="Calendar Icon" className="h-4 w-4 my-auto" />
-                    <p className="text-[#4E5969] text-[13px] noto-font">{p.dateText}</p>
+                    <p className="text-[#4E5969] text-sm noto-font">{p.dateText}</p>
                   </div>
                 </Link>
               ))}
@@ -77,7 +79,7 @@ export default function Home() {
             <div className="flex flex-wrap gap-2 md:gap-3">
               {tags.map(({ tag, count }) => (
                 <Link key={tag} to={`/posts?tag=${encodeURIComponent(tag)}`}
-                  className="text-[#4E5969] text-sm md:text-base px-3 md:px-4 py-1 noto-font border border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out cursor-pointer">
+                  className="text-[#4E5969] text-[15px] md:text-base px-3 md:px-4 py-1 noto-font border border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out cursor-pointer">
                   {tag} <span className="opacity-60">{count}</span>
                 </Link>
               ))}
