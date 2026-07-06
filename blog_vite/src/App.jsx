@@ -1,11 +1,60 @@
+import { useEffect, useRef } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar.jsx';
-import Footer from './components/Footer.jsx';
 import Home from './pages/Home.jsx';
 import PostList from './pages/PostList.jsx';
 import Notes from './pages/Notes.jsx';
 import Article from './pages/Article.jsx';
+import { peekScrollIntent } from './scrollIntent.js';
+
+/**
+ * Article-style smooth scroll on navigation (fuwari trick).
+ *
+ * Only runs for 'smooth' navigations (sidenav switches are 'instant' and handled
+ * by the incoming page on mount). Before scrolling, the document is made 300vh
+ * tall (#page-height-extend) so the smooth scroll never clamps/jumps on a
+ * shorter page. While it runs we also block user wheel/touch input, so the user
+ * can't scroll down into the temporary empty space. Everything is undone once
+ * the scroll finishes.
+ */
+function NavigationScroll() {
+  const { pathname } = useLocation();
+  const first = useRef(true);
+
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (peekScrollIntent() !== 'smooth') return;
+
+    const html = document.documentElement;
+    const block = (e) => e.preventDefault();
+
+    html.classList.add('is-navigating');
+    window.addEventListener('wheel', block, { passive: false });
+    window.addEventListener('touchmove', block, { passive: false });
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      html.classList.remove('is-navigating');
+      window.removeEventListener('wheel', block);
+      window.removeEventListener('touchmove', block);
+      window.removeEventListener('scrollend', finish);
+      clearTimeout(timer);
+    };
+    window.addEventListener('scrollend', finish);
+    const timer = setTimeout(finish, 1200);
+
+    return finish;
+  }, [pathname]);
+
+  return null;
+}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -24,17 +73,17 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <div className="flex min-h-screen select-none">
-      <Navbar />
-      {/* main column */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* content area is at least one viewport tall, so the footer is always
-            pushed off-screen even when a page has very little content */}
-        <div className="flex-1 min-h-screen">
+    <>
+      <div className="flex min-h-screen select-none">
+        <NavigationScroll />
+        <Navbar />
+        {/* main column — each page renders its own footer inside the transition */}
+        <div className="flex-1 flex flex-col min-w-0">
           <AnimatedRoutes />
         </div>
-        <Footer />
       </div>
-    </div>
+      {/* temporary spacer that gives the smooth scroll room to travel */}
+      <div id="page-height-extend" aria-hidden="true"></div>
+    </>
   );
 }

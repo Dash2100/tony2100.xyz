@@ -1,19 +1,27 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
+import Footer from './Footer.jsx';
+import { takeScrollIntent } from '../scrollIntent.js';
 
+// fuwari-style page transition: the whole page (content + footer) fades/slides
+// out on leave; the entering page's content blocks fade-in-up in a stagger
+// (`.page-onload`). The footer lives INSIDE the transition so it fades with the
+// page, while keeping its own constant-width container.
 const variants = {
-  initial: { opacity: 0, y: 10 },
+  initial: { opacity: 1, y: 0 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -10 },
+  exit: { opacity: 0, y: 16 },
 };
 
-/**
- * Shared page wrapper: applies the smooth fade/slide transition used for every
- * route change and resets scroll position on mount.
- */
 export default function Page({ children, className = '' }) {
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  // Sidenav navigations are 'instant': reset scroll before paint, while the
+  // incoming content is still invisible (opacity 0 during its onload). This
+  // keeps the section-switch animation identical regardless of scroll position.
+  // 'smooth' navigations are scrolled by the App-level handler instead.
+  useLayoutEffect(() => {
+    if (takeScrollIntent() === 'instant') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
   }, []);
 
   return (
@@ -22,10 +30,16 @@ export default function Page({ children, className = '' }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.24, ease: [0.2, 0.85, 0.15, 1] }}
-      className={className}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
     >
-      {children}
+      {/* content area kept ≥101vh tall so the footer stays off-screen until the
+          user scrolls down */}
+      <div className={`page-onload min-h-[101vh] ${className}`}>
+        {children}
+      </div>
+      <div className="onload-footer">
+        <Footer />
+      </div>
     </motion.main>
   );
 }

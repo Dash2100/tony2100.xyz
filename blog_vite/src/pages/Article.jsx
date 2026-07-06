@@ -26,28 +26,28 @@ export default function Article() {
   };
 
   return (
-    <Page className="w-full items-center p-4 md:p-8 lg:p-16 max-w-325 mx-auto flex flex-col gap-6 md:gap-8">
+    <Page className="w-full items-center px-5 py-6 sm:p-8 lg:p-16 max-w-325 mx-auto flex flex-col gap-5 md:gap-8">
       {/* Cover */}
-      <div className="relative w-full h-50 md:h-67.5 rounded-[25px] md:rounded-[35px] bg-[#DBECF8] shadow-inner overflow-hidden flex items-center justify-center mt-5 md:mt-0">
+      <div className="relative w-full h-44 sm:h-52 md:h-67.5 rounded-3xl md:rounded-[35px] bg-[#DBECF8] shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
         <img src={post.cover} alt={post.title} className="absolute w-full h-full object-cover z-10 blur-2xl scale-110" />
         <div className="absolute inset-0 bg-[#DBECF8]/40 z-20" />
         <button onClick={() => navigate(-1)}
-          className="absolute flex gap-1.5 md:gap-3 top-3 left-3 md:top-6 md:left-6 z-50 rounded-lg md:rounded-[10px] bg-white/80 shadow-inner px-3 py-1.5 md:px-4 md:py-2 cursor-pointer hover:bg-white transition-all duration-300 ease-in-out font-medium text-[#4E5969] border border-[#4E5969]/20 backdrop-blur-xl">
+          className="absolute flex gap-1 md:gap-3 top-3 left-3 md:top-6 md:left-6 z-50 rounded-lg md:rounded-[10px] bg-white/80 shadow-inner px-2.5 py-1.5 md:px-4 md:py-2 cursor-pointer hover:bg-white transition-all duration-300 ease-in-out font-medium text-[#4E5969] border border-[#4E5969]/20 backdrop-blur-xl">
           <img src="/imgs/icon/back.svg" alt="Back" className="h-4 md:h-6 my-auto" />
-          <p className="my-auto text-[13px] md:text-base">返回</p>
+          <p className="my-auto text-xs md:text-base">返回</p>
         </button>
-        <span className="z-40 flex flex-col gap-2 md:gap-3 absolute w-full px-6 select-text">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl text-center font-bold text-[#4E5969]">{post.title}</h1>
+        <span className="z-40 flex flex-col gap-1.5 md:gap-3 absolute w-full px-5 select-text">
+          <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl text-center font-bold text-[#4E5969] leading-snug">{post.title}</h1>
           {post.subtitle && (
-            <h2 className="text-base md:text-2xl lg:text-3xl text-center text-[#4E5969]/80">{post.subtitle}</h2>
+            <h2 className="text-xs sm:text-lg md:text-2xl lg:text-3xl text-center text-[#4E5969]/80">{post.subtitle}</h2>
           )}
         </span>
       </div>
 
       {/* Body + TOC */}
-      <div className="w-full flex xl:flex-row flex-col gap-6 relative items-start">
-        <article className="xl:flex-1 min-w-0 w-full bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] p-6 md:p-10">
-          <div className="flex flex-wrap gap-x-4 gap-y-1 items-center text-[#4E5969]/75 text-sm noto-font mb-6 pb-6 border-b border-[#4E5969]/12">
+      <div className="w-full flex xl:flex-row flex-col gap-5 md:gap-6 relative items-start">
+        <article className="xl:flex-1 min-w-0 w-full bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-3xl md:rounded-[35px] p-5 sm:p-6 md:p-10">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 items-center text-[#4E5969]/75 text-[13px] sm:text-sm noto-font mb-5 pb-5 md:mb-6 md:pb-6 border-b border-[#4E5969]/12">
             <span className="flex items-center gap-1"><img src="/imgs/icon/date.svg" className="h-4 w-4" alt="" />{post.dateText}</span>
             <span className="flex items-center gap-1"><img src="/imgs/icon/words.svg" className="h-4 w-4" alt="" />{post.wordsText}</span>
             <span>· 約 {post.readingMinutes} 分鐘</span>

@@ -131,6 +131,76 @@ html {
 }
 
 /* =========================================================
+   fuwari-style page transition + entrance animations
+   ========================================================= */
+
+/* Temporary spacer: shown only during a navigation so the smooth scroll to the
+   top always has room to travel and never clamps/jumps on a shorter page. */
+#page-height-extend {
+    display: none;
+}
+
+html.is-navigating #page-height-extend {
+    display: block;
+    height: 300vh;
+}
+
+/* Staggered "fade in + slide up" entrance for each page's content blocks. */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(2rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* `.no-onload` opts an element out (e.g. a child that runs its own framer-motion
+   animation), so it isn't animated twice. */
+.page-onload>*:not(.no-onload) {
+    opacity: 0;
+    animation: fade-in-up 0.4s ease-out forwards;
+}
+
+.page-onload>*:not(.no-onload):nth-child(1) {
+    animation-delay: 0ms;
+}
+
+.page-onload>*:not(.no-onload):nth-child(2) {
+    animation-delay: 80ms;
+}
+
+.page-onload>*:not(.no-onload):nth-child(3) {
+    animation-delay: 160ms;
+}
+
+.page-onload>*:not(.no-onload):nth-child(4) {
+    animation-delay: 240ms;
+}
+
+.page-onload>*:not(.no-onload):nth-child(n+5) {
+    animation-delay: 300ms;
+}
+
+/* Footer rides inside the page transition and fades in last. */
+.onload-footer {
+    opacity: 0;
+    animation: fade-in-up 0.4s ease-out 0.25s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .page-onload>*,
+    .onload-footer {
+        opacity: 1;
+        animation: none;
+    }
+}
+
+/* =========================================================
    Rendered Markdown content (.md-content)
    The build-time pipeline emits .md-h / .md-h2 / .md-h3 /
    .md-anchor / .md-img / .md-a plus highlight.js .hljs-* tokens.
@@ -347,4 +417,36 @@ html {
 
 .hljs-strong {
     font-weight: 700;
+}
+
+/* --- Mobile tuning for rendered Markdown --- */
+@media (max-width: 640px) {
+    .md-content {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+
+    .md-content .md-h2 {
+        font-size: 1.3rem;
+        margin: 1.6rem 0 0.8rem;
+    }
+
+    .md-content .md-h3 {
+        font-size: 1.12rem;
+        margin: 1.3rem 0 0.6rem;
+    }
+
+    .md-content .md-anchor {
+        display: none;
+    }
+
+    .md-content pre {
+        padding: 0.9rem 1rem;
+        border-radius: 14px;
+        font-size: 0.85rem;
+    }
+
+    .md-content blockquote {
+        padding: 0.7rem 1rem;
+    }
 }

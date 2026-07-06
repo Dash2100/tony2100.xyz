@@ -10,7 +10,7 @@ export default function PostCard({ post }) {
     <Link
       to={`/post/${post.slug}`}
       data-testid="post-card"
-      className="w-full h-full xl:h-auto bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-[25px] md:rounded-[35px] gap-3 sm:gap-4 p-4 sm:p-5 md:p-6 xl:py-8 xl:px-9 flex flex-col xl:flex-row justify-between group cursor-pointer hover:bg-[#F0F8FF] transition-colors duration-300"
+      className="w-full h-full xl:h-auto bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-3xl md:rounded-[35px] gap-3 sm:gap-4 p-3.5 sm:p-5 md:p-6 xl:py-8 xl:px-9 flex flex-col xl:flex-row justify-between group cursor-pointer hover:bg-[#F0F8FF] transition-colors duration-300"
     >
       <div className="w-full xl:w-70 aspect-video bg-[#DBECF8] rounded-[20px] shadow-inner overflow-hidden shrink-0 order-1 xl:order-2">
         <img src={post.cover} alt={post.title}
@@ -18,7 +18,7 @@ export default function PostCard({ post }) {
       </div>
       <div className="flex flex-col justify-between flex-1 gap-2 sm:gap-3 mt-1 xl:mt-0 order-2 xl:order-1">
         <div className="flex flex-col gap-1.5 sm:gap-2">
-          <h2 className="text-[#4E5969] text-base sm:text-lg md:text-[22px] xl:text-[25px] font-medium noto-font leading-snug">
+          <h2 className="text-[#4E5969] text-[17px] sm:text-lg md:text-xl xl:text-[22px] font-medium noto-font leading-snug">
             {post.title}
           </h2>
           <div className="flex flex-wrap lg:flex-nowrap gap-x-3 sm:gap-x-4 gap-y-1 sm:gap-y-2 mt-0.5 sm:mt-1 mb-1 sm:mb-2 items-center">

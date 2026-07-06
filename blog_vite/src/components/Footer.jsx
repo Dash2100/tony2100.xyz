@@ -4,7 +4,7 @@
  */
 export default function Footer() {
   return (
-    <div className="w-full max-w-325 mx-auto px-4 md:px-8 lg:px-16">
+    <div className="w-full max-w-325 mx-auto px-5 md:px-8 lg:px-16">
       <div className="w-full rounded-[25px] md:rounded-[35px] bg-[#DBECF8] shadow-inner mt-20 mb-24 lg:mb-8">
         <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 xl:gap-8 p-6 md:p-8 xl:px-12">
           <div className="flex gap-4 sm:gap-8 w-full xl:w-auto">
