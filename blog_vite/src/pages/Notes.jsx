@@ -12,9 +12,9 @@ export default function Notes() {
       {/* Hero banner — same visual anchor as the home/article covers */}
       <div className="relative w-full h-40 sm:h-44 md:h-56 rounded-3xl md:rounded-[35px] bg-[var(--card-2)] shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
         {/* soft decorative glows */}
-        <div aria-hidden="true" className="absolute -top-10 -left-10 w-44 h-44 md:w-60 md:h-60 rounded-full bg-white/50 dark:bg-white/10 blur-2xl" />
+        <div aria-hidden="true" className="absolute -top-10 -left-10 w-44 h-44 md:w-60 md:h-60 rounded-full bg-white/50 blur-2xl" />
         <div aria-hidden="true" className="absolute -bottom-12 -right-8 w-48 h-48 md:w-64 md:h-64 rounded-full bg-[var(--accent)]/10 blur-2xl" />
-        <div aria-hidden="true" className="absolute top-5 right-12 w-16 h-16 rounded-full bg-white/35 dark:bg-white/8 blur-xl" />
+        <div aria-hidden="true" className="absolute top-5 right-12 w-16 h-16 rounded-full bg-white/35 blur-xl" />
 
         <div className="relative z-10 flex flex-col items-center gap-2 md:gap-3 px-6 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-[var(--ink)] noto-font">筆記</h1>

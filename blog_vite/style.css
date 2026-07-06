@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-    /* colour lives in a runtime var so .dark can swap it (Tailwind inlines
-       @theme values into utilities at build time) */
+    /* shadow colours live in runtime vars (see :root palette below) */
     --shadow-nav: 0 4px 60px 0 var(--shadow-nav-c);
     --shadow-inner: inset 5px 5px 10px 0 var(--shadow-inner-c);
     --font-noto: 'Noto Sans', 'Noto Sans TC', sans-serif;
@@ -12,9 +11,6 @@
     --spacing-offset: 35px;
     --spacing--offset: -35px;
 }
-
-/* `dark:` variants keyed off the .dark class on <html> */
-@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
     /* PV 等級的張力曲線 */
@@ -43,42 +39,10 @@
     /* text on accent */
     --link: #538AD9;
     /* links */
-    --scrim: rgba(78, 89, 105, 0.28);
+    --scrim: rgba(78, 89, 105, 0.25);
     /* sheet backdrop */
     --shadow-nav-c: rgba(45, 115, 154, 0.5);
     --shadow-inner-c: rgba(118, 145, 175, 0.2);
-}
-
-.dark {
-    /* =====  palette (dark — derived from the same blue-slate family)  ===== */
-    color-scheme: dark;
-    --bg: #141E28;
-    --card: #1D2935;
-    --card-2: #24384A;
-    --card-hover: #223140;
-    --chip: #22303E;
-    --ink: #D7E3EE;
-    --accent: #7FB5D8;
-    --accent-ink: #10202C;
-    --link: #8FBBE8;
-    --scrim: rgba(0, 0, 0, 0.5);
-    --shadow-nav-c: rgba(0, 0, 0, 0.55);
-    --shadow-inner-c: rgba(0, 0, 0, 0.3);
-}
-
-body {
-    transition: background-color 0.25s ease-out, color 0.25s ease-out;
-}
-
-/* Monochrome UI icons (SVG files in <img>) flip to the light ink in dark
-   mode: invert then rotate hue back to the blue family. Photos/covers are
-   untouched (they don't live under /imgs/icon/). */
-.dark img[src^="/imgs/icon/"] {
-    filter: invert(1) hue-rotate(180deg) saturate(0.6) brightness(1.05);
-}
-
-::selection {
-    background: var(--card-2);
 }
 
 /* 視圖的父容器：設定 relative 作為定位基準 */

@@ -34,8 +34,6 @@ export default function Home() {
       <div className="relative w-full h-40 sm:h-52 md:h-67.5 rounded-3xl md:rounded-[35px] mx-auto bg-[var(--card-2)] text-[var(--ink)] font-bold shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
         <img src="/imgs/home-cover.png" alt="Home Cover"
           className="absolute w-full h-full object-cover z-10" />
-        {/* dark mode: dim the bright cover so the light ink stays readable */}
-        <div aria-hidden="true" className="absolute inset-0 z-20 dark:bg-black/40 transition-colors duration-300" />
         <span className="z-50 flex-col gap-1.5 md:gap-4 absolute flex w-full">
           {/* fluid size: as large as the phone allows, capped so it never
               wraps or overflows (~24px on 320px screens, ~30px from 400px up) */}

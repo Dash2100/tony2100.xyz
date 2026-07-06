@@ -83,7 +83,7 @@ export default function Article() {
       {/* Decorative header (blurred cover + title) */}
       <div className="relative w-full h-52 md:h-67.5 rounded-3xl md:rounded-[35px] bg-[var(--card-2)] shadow-inner overflow-hidden flex justify-center md:items-center mt-1 md:mt-0">
         <img src={post.cover} alt="" aria-hidden="true" className="absolute w-full h-full object-cover z-10 blur-2xl scale-110" />
-        <div className="absolute inset-0 bg-[var(--card-2)]/40 dark:bg-black/45 z-20 transition-colors duration-300" />
+        <div className="absolute inset-0 bg-[var(--card-2)]/40 z-20" />
         <button type="button" onClick={() => navigate(-1)}
           className="absolute flex gap-1.5 md:gap-3 top-3 left-3 md:top-6 md:left-6 z-50 rounded-[10px] bg-[var(--card)]/85 shadow-inner px-3.5 py-2 md:px-4 md:py-2 cursor-pointer hover:bg-[var(--card)] transition-all duration-300 ease-in-out font-medium text-[var(--ink)] border border-[var(--ink)]/20 backdrop-blur-xl">
           <img src="/imgs/icon/back.svg" alt="Back" className="h-4 md:h-6 my-auto" />
