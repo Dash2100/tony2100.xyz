@@ -6,7 +6,7 @@ import Home from './pages/Home.jsx';
 import PostList from './pages/PostList.jsx';
 import Notes from './pages/Notes.jsx';
 import Article from './pages/Article.jsx';
-import { peekScrollIntent } from './scrollIntent.js';
+import { peekScrollIntent, setScrollIntent } from './scrollIntent.js';
 
 /**
  * Article-style smooth scroll on navigation (fuwari trick).
@@ -28,6 +28,16 @@ function NavigationScroll() {
       return;
     }
     if (peekScrollIntent() !== 'smooth') return;
+
+    // Long distances make the native smooth scroll drag on (very noticeable on
+    // mobile when clicking the featured/tag widgets at the bottom of a long
+    // page). Past ~1.5 viewports, downgrade to the sidebar-style instant
+    // reset: the incoming page consumes the intent and snaps to the top while
+    // its content is still invisible, so only the fade is visible.
+    if (window.scrollY > window.innerHeight * 1.5) {
+      setScrollIntent('instant');
+      return;
+    }
 
     const html = document.documentElement;
     const block = (e) => e.preventDefault();

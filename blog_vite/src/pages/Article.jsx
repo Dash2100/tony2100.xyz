@@ -79,7 +79,7 @@ export default function Article() {
   };
 
   return (
-    <Page className="w-full items-center px-5 py-6 sm:p-8 lg:p-16 max-w-325 mx-auto flex flex-col gap-5 md:gap-8">
+    <Page className="w-full items-center px-3 py-6 sm:p-8 lg:p-16 max-w-325 mx-auto flex flex-col gap-5 md:gap-8">
       {/* Decorative header (blurred cover + title) */}
       <div className="relative w-full h-44 sm:h-52 md:h-67.5 rounded-3xl md:rounded-[35px] bg-[#DBECF8] shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
         <img src={post.cover} alt="" aria-hidden="true" className="absolute w-full h-full object-cover z-10 blur-2xl scale-110" />
@@ -99,7 +99,7 @@ export default function Article() {
 
       {/* Body + TOC */}
       <div className="w-full flex xl:flex-row flex-col gap-5 md:gap-6 relative items-start">
-        <article className="xl:flex-1 min-w-0 w-full bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-3xl md:rounded-[35px] p-5 sm:p-6 md:p-10">
+        <article className="xl:flex-1 min-w-0 w-full bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-3xl md:rounded-[35px] p-4 sm:p-6 md:p-10">
           {/* Actual 16:9 cover image */}
           <div className="w-full aspect-video bg-[#DBECF8] rounded-[20px] md:rounded-3xl shadow-inner overflow-hidden mb-5 md:mb-6">
             <img src={post.cover} alt={post.title} className="w-full h-full object-cover" />
