@@ -64,7 +64,7 @@ function zoomAt(view, nextS, ax, ay) {
 function LightboxButton({ label, onClick, children, as: As = 'button', ...rest }) {
   return (
     <As type={As === 'button' ? 'button' : undefined} aria-label={label} title={label} onClick={onClick}
-      className="h-10 min-w-10 px-2 flex items-center justify-center rounded-[10px] bg-white/85 border border-[#4E5969]/20 shadow-inner backdrop-blur-xl text-[#4E5969] text-sm font-medium hover:bg-white transition-colors duration-200 cursor-pointer"
+      className="h-10 min-w-10 px-2 flex items-center justify-center rounded-[10px] bg-[var(--card)]/90 border border-[var(--ink)]/20 shadow-inner backdrop-blur-xl text-[var(--ink)] text-sm font-medium hover:bg-[var(--card)] transition-colors duration-200 cursor-pointer"
       {...rest}>
       {children}
     </As>

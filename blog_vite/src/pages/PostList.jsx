@@ -48,8 +48,8 @@ export default function PostList() {
       <button type="button" onClick={() => select(tag)}
         className={`px-3 md:px-4 py-1 sm:py-1.5 noto-font text-sm sm:text-[15px] md:text-base border rounded-[10px] shadow-inner transition-all duration-200 ease-in-out cursor-pointer origin-center
           ${isActive
-            ? 'bg-[#2D739A] text-white border-[#2D739A] scale-105'
-            : 'bg-[#f7fafd] text-[#4E5969] border-[#4E5969]/20 hover:bg-[#DBECF8]'}`}>
+            ? 'bg-[var(--accent)] text-[var(--accent-ink)] border-[var(--accent)] scale-105'
+            : 'bg-[var(--card)] text-[var(--ink)] border-[var(--ink)]/20 hover:bg-[var(--card-2)]'}`}>
         {label}{count != null && <span className="opacity-70"> {count}</span>}
       </button>
     );
@@ -58,15 +58,15 @@ export default function PostList() {
   return (
     <Page className="w-full px-4 py-6 sm:p-8 lg:px-12 lg:py-16 max-w-300 mx-auto flex flex-col gap-5 md:gap-8">
       {/* Hero banner — same visual anchor as the home/article covers */}
-      <div className="relative w-full h-40 sm:h-44 md:h-56 rounded-3xl md:rounded-[35px] bg-[#DBECF8] shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
+      <div className="relative w-full h-40 sm:h-44 md:h-56 rounded-3xl md:rounded-[35px] bg-[var(--card-2)] shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
         {/* soft decorative glows */}
-        <div aria-hidden="true" className="absolute -top-10 -left-10 w-44 h-44 md:w-60 md:h-60 rounded-full bg-white/50 blur-2xl" />
-        <div aria-hidden="true" className="absolute -bottom-12 -right-8 w-48 h-48 md:w-64 md:h-64 rounded-full bg-[#2D739A]/10 blur-2xl" />
-        <div aria-hidden="true" className="absolute top-5 right-12 w-16 h-16 rounded-full bg-white/35 blur-xl" />
+        <div aria-hidden="true" className="absolute -top-10 -left-10 w-44 h-44 md:w-60 md:h-60 rounded-full bg-white/50 dark:bg-white/10 blur-2xl" />
+        <div aria-hidden="true" className="absolute -bottom-12 -right-8 w-48 h-48 md:w-64 md:h-64 rounded-full bg-[var(--accent)]/10 blur-2xl" />
+        <div aria-hidden="true" className="absolute top-5 right-12 w-16 h-16 rounded-full bg-white/35 dark:bg-white/8 blur-xl" />
 
         <div className="relative z-10 flex flex-col items-center gap-2 md:gap-3 px-6 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#4E5969] noto-font">文章列表</h1>
-          <h2 className="text-[15px] sm:text-base md:text-xl text-[#4E5969]/80 noto-font leading-relaxed">
+          <h1 className="text-3xl md:text-4xl font-bold text-[var(--ink)] noto-font">文章列表</h1>
+          <h2 className="text-[15px] sm:text-base md:text-xl text-[var(--ink)]/80 noto-font leading-relaxed">
             我覺得這件事撇除不好玩的部分，其實都蠻好玩的
           </h2>
         </div>
@@ -89,7 +89,7 @@ export default function PostList() {
             ))
             : (
               <motion.p variants={cardVariants} custom={{ i: 0, base }}
-                className="text-[#4E5969] noto-font text-center py-10">
+                className="text-[var(--ink)] noto-font text-center py-10">
                 這個標籤底下還沒有文章。
               </motion.p>
             )}

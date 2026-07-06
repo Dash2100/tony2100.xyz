@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-    --shadow-nav: 0 4px 60px 0 rgba(45, 115, 154, 0.5);
-    --shadow-inner: inset 5px 5px 10px 0 rgba(118, 145, 175, 0.2);
+    /* colour lives in a runtime var so .dark can swap it (Tailwind inlines
+       @theme values into utilities at build time) */
+    --shadow-nav: 0 4px 60px 0 var(--shadow-nav-c);
+    --shadow-inner: inset 5px 5px 10px 0 var(--shadow-inner-c);
     --font-noto: 'Noto Sans', 'Noto Sans TC', sans-serif;
     --ease-pv: cubic-bezier(0.2, 0.85, 0.15, 1);
     --duration-pv: 0.65s;
@@ -11,12 +13,72 @@
     --spacing--offset: -35px;
 }
 
+/* `dark:` variants keyed off the .dark class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
     /* PV 等級的張力曲線 */
     --curve: cubic-bezier(0.2, 0.85, 0.15, 1);
     --duration: 0.65s;
     --fade-duration: 0.35s;
     --offset: 35px;
+
+    /* =====  palette (light — the original theme)  ===== */
+    color-scheme: light;
+    --bg: #EDF5FA;
+    /* page background */
+    --card: #f7fafd;
+    /* card surface */
+    --card-2: #DBECF8;
+    /* accent surface (banners, chips, hover) */
+    --card-hover: #F0F8FF;
+    /* card hover */
+    --chip: #F3FAFF;
+    /* small buttons (footer socials) */
+    --ink: #4E5969;
+    /* main text */
+    --accent: #2D739A;
+    /* primary accent */
+    --accent-ink: #ffffff;
+    /* text on accent */
+    --link: #538AD9;
+    /* links */
+    --scrim: rgba(78, 89, 105, 0.28);
+    /* sheet backdrop */
+    --shadow-nav-c: rgba(45, 115, 154, 0.5);
+    --shadow-inner-c: rgba(118, 145, 175, 0.2);
+}
+
+.dark {
+    /* =====  palette (dark — derived from the same blue-slate family)  ===== */
+    color-scheme: dark;
+    --bg: #141E28;
+    --card: #1D2935;
+    --card-2: #24384A;
+    --card-hover: #223140;
+    --chip: #22303E;
+    --ink: #D7E3EE;
+    --accent: #7FB5D8;
+    --accent-ink: #10202C;
+    --link: #8FBBE8;
+    --scrim: rgba(0, 0, 0, 0.5);
+    --shadow-nav-c: rgba(0, 0, 0, 0.55);
+    --shadow-inner-c: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+}
+
+/* Monochrome UI icons (SVG files in <img>) flip to the light ink in dark
+   mode: invert then rotate hue back to the blue family. Photos/covers are
+   untouched (they don't live under /imgs/icon/). */
+.dark img[src^="/imgs/icon/"] {
+    filter: invert(1) hue-rotate(180deg) saturate(0.6) brightness(1.05);
+}
+
+::selection {
+    background: var(--card-2);
 }
 
 /* 視圖的父容器：設定 relative 作為定位基準 */
@@ -102,9 +164,9 @@
 
 /* --- Active navigation item (NavLink active state) --- */
 .nav-link.nav-active {
-    background: #DBECF8;
+    background: var(--card-2);
     box-shadow: var(--shadow-inner);
-    color: #2D739A;
+    color: var(--accent);
 }
 
 /* --- Article TOC scroll-spy ---
@@ -215,7 +277,7 @@ html.is-navigating .onload-footer {
    .md-anchor / .md-img / .md-a plus highlight.js .hljs-* tokens.
    ========================================================= */
 .md-content {
-    color: #4E5969;
+    color: var(--ink);
     line-height: 1.85;
     font-size: 1.1rem;
     overflow-wrap: break-word;
@@ -254,7 +316,7 @@ html.is-navigating .onload-footer {
     font-size: 1.55rem;
     margin: 2rem 0 1rem;
     padding-bottom: 0.4rem;
-    border-bottom: 2px solid rgba(78, 89, 105, 0.12);
+    border-bottom: 2px solid color-mix(in srgb, var(--ink) 12%, transparent);
 }
 
 .md-content .md-h3 {
@@ -265,7 +327,7 @@ html.is-navigating .onload-footer {
 .md-content .md-anchor {
     position: absolute;
     left: -1.05em;
-    color: #9DB6CC;
+    color: color-mix(in srgb, var(--accent) 55%, var(--card-2));
     opacity: 0;
     text-decoration: none;
     padding-right: 0.3em;
@@ -277,15 +339,15 @@ html.is-navigating .onload-footer {
 }
 
 .md-content .md-a {
-    color: #2D739A;
+    color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 3px;
-    text-decoration-color: rgba(45, 115, 154, 0.35);
+    text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
     transition: color 0.2s ease-out;
 }
 
 .md-content .md-a:hover {
-    color: #538AD9;
+    color: var(--link);
 }
 
 .md-content ul,
@@ -309,10 +371,10 @@ html.is-navigating .onload-footer {
 .md-content blockquote {
     margin: 1.4rem 0;
     padding: 0.8rem 1.2rem;
-    border-left: 4px solid #9DB6CC;
-    background: #EDF5FA;
+    border-left: 4px solid color-mix(in srgb, var(--accent) 55%, var(--card-2));
+    background: var(--card-2);
     border-radius: 0 12px 12px 0;
-    color: #5A6B7E;
+    color: color-mix(in srgb, var(--ink) 88%, transparent);
 }
 
 .md-content blockquote p {
@@ -336,7 +398,7 @@ html.is-navigating .onload-footer {
 
 .md-content hr {
     border: none;
-    border-top: 2px solid rgba(78, 89, 105, 0.12);
+    border-top: 2px solid color-mix(in srgb, var(--ink) 12%, transparent);
     margin: 2rem 0;
 }
 
@@ -349,19 +411,19 @@ html.is-navigating .onload-footer {
 
 .md-content th,
 .md-content td {
-    border: 1px solid rgba(78, 89, 105, 0.18);
+    border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
     padding: 0.55rem 0.9rem;
     text-align: left;
 }
 
 .md-content th {
-    background: #DBECF8;
+    background: var(--card-2);
     font-weight: 600;
 }
 
 .md-content :not(pre)>code {
-    background: #DBECF8;
-    color: #2D739A;
+    background: var(--card-2);
+    color: var(--accent);
     padding: 0.15em 0.45em;
     border-radius: 6px;
     font-size: 0.9em;

@@ -31,9 +31,11 @@ export default function Home() {
   return (
     <Page className="w-full items-center px-5 py-6 sm:p-8 lg:p-16 max-w-325 mx-auto flex flex-col gap-5 md:gap-8">
       {/* Cover */}
-      <div className="relative w-full h-40 sm:h-52 md:h-67.5 rounded-3xl md:rounded-[35px] mx-auto bg-[#DBECF8] text-[#4E5969] font-bold shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
+      <div className="relative w-full h-40 sm:h-52 md:h-67.5 rounded-3xl md:rounded-[35px] mx-auto bg-[var(--card-2)] text-[var(--ink)] font-bold shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
         <img src="/imgs/home-cover.png" alt="Home Cover"
           className="absolute w-full h-full object-cover z-10" />
+        {/* dark mode: dim the bright cover so the light ink stays readable */}
+        <div aria-hidden="true" className="absolute inset-0 z-20 dark:bg-black/40 transition-colors duration-300" />
         <span className="z-50 flex-col gap-1.5 md:gap-4 absolute flex w-full">
           {/* fluid size: as large as the phone allows, capped so it never
               wraps or overflows (~24px on 320px screens, ~30px from 400px up) */}
@@ -54,19 +56,19 @@ export default function Home() {
 
         <div className="flex flex-col gap-6 sticky top-4 self-start w-full xl:w-75 z-20 h-fit shrink-0">
           {/* Featured */}
-          <div className="w-full h-fit bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-3xl md:rounded-[35px] p-5 sm:p-6 flex flex-col gap-4">
+          <div className="w-full h-fit bg-[var(--card)] border border-[var(--ink)]/20 shadow-inner rounded-3xl md:rounded-[35px] p-5 sm:p-6 flex flex-col gap-4">
             <div className="flex justify-between items-center">
-              <h2 className="text-[#4E5969] text-lg md:text-[22px] font-semibold noto-font">熱門文章</h2>
-              <Link to="/posts" className="text-[#4E5969] text-xs md:text-sm font-semibold noto-font border border-[#4E5969]/20 px-3 md:px-4 rounded-[10px] shadow-inner h-7 md:h-8 flex items-center hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">更多</Link>
+              <h2 className="text-[var(--ink)] text-lg md:text-[22px] font-semibold noto-font">熱門文章</h2>
+              <Link to="/posts" className="text-[var(--ink)] text-xs md:text-sm font-semibold noto-font border border-[var(--ink)]/20 px-3 md:px-4 rounded-[10px] shadow-inner h-7 md:h-8 flex items-center hover:bg-[var(--card-2)] transition-all duration-200 ease-in-out">更多</Link>
             </div>
             <div className="flex flex-col gap-4">
               {featured.map((p) => (
                 <Link key={p.slug} to={`/post/${p.slug}`}
-                  className="flex flex-col border border-[#4E5969]/20 w-full px-4 py-2.5 rounded-[15px] shadow-inner gap-0.5 cursor-pointer hover:bg-[#DBECF8] transition-all duration-200 ease-in-out">
-                  <p className="text-[#4E5969] text-base noto-font truncate">{p.title}</p>
+                  className="flex flex-col border border-[var(--ink)]/20 w-full px-4 py-2.5 rounded-[15px] shadow-inner gap-0.5 cursor-pointer hover:bg-[var(--card-2)] transition-all duration-200 ease-in-out">
+                  <p className="text-[var(--ink)] text-base noto-font truncate">{p.title}</p>
                   <div className="flex gap-1">
                     <img src="/imgs/icon/date.svg" alt="Calendar Icon" className="h-4 w-4 my-auto" />
-                    <p className="text-[#4E5969] text-sm noto-font">{p.dateText}</p>
+                    <p className="text-[var(--ink)] text-sm noto-font">{p.dateText}</p>
                   </div>
                 </Link>
               ))}
@@ -74,12 +76,12 @@ export default function Home() {
           </div>
 
           {/* Tag cloud */}
-          <div className="w-full h-fit bg-[#f7fafd] border border-[#4E5969]/20 shadow-inner rounded-3xl md:rounded-[35px] p-5 sm:p-6 flex flex-col gap-4">
-            <h2 className="text-[#4E5969] text-lg md:text-[22px] font-semibold noto-font">文章標籤</h2>
+          <div className="w-full h-fit bg-[var(--card)] border border-[var(--ink)]/20 shadow-inner rounded-3xl md:rounded-[35px] p-5 sm:p-6 flex flex-col gap-4">
+            <h2 className="text-[var(--ink)] text-lg md:text-[22px] font-semibold noto-font">文章標籤</h2>
             <div className="flex flex-wrap gap-2 md:gap-3">
               {tags.map(({ tag, count }) => (
                 <Link key={tag} to={`/posts?tag=${encodeURIComponent(tag)}`}
-                  className="text-[#4E5969] text-[15px] md:text-base px-3 md:px-4 py-1 noto-font border border-[#4E5969]/20 rounded-[10px] shadow-inner w-fit hover:bg-[#DBECF8] transition-all duration-200 ease-in-out cursor-pointer">
+                  className="text-[var(--ink)] text-[15px] md:text-base px-3 md:px-4 py-1 noto-font border border-[var(--ink)]/20 rounded-[10px] shadow-inner w-fit hover:bg-[var(--card-2)] transition-all duration-200 ease-in-out cursor-pointer">
                   {tag} <span className="opacity-60">{count}</span>
                 </Link>
               ))}

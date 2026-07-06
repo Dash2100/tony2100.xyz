@@ -13,9 +13,17 @@
         rel="stylesheet">
 
     <title>Tony2100's Life Log</title>
+    <script>
+        // apply saved theme before first paint (default: light)
+        try {
+            if (localStorage.getItem('blog-theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        } catch (e) { }
+    </script>
 </head>
 
-<body class="m-0 bg-[#EDF5FA] font-noto min-h-screen overflow-x-clip">
+<body class="m-0 bg-[var(--bg)] font-noto min-h-screen overflow-x-clip">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 </body>
