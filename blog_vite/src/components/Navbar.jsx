@@ -30,7 +30,7 @@ export default function Navbar() {
             <img src="/imgs/icon/note.svg" alt="Note" className="h-7 w-7" />
           </NavLink>
         </div>
-        <a href="#/" onClick={instant} className="nav-link flex items-center justify-center p-2 rounded-full mt-auto transition-all ease-in-out duration-200">
+        <a href="#/" onClick={instant} aria-label="設定" className="nav-link flex items-center justify-center p-2 rounded-full mt-auto transition-all ease-in-out duration-200">
           <img src="/imgs/icon/settings.svg" alt="Settings" className="h-7 w-7" />
         </a>
       </div>
@@ -47,7 +47,7 @@ export default function Navbar() {
           <NavLink to="/notes" className={mobile} onClick={instant}>
             <img src="/imgs/icon/note.svg" alt="Note" className="h-6 w-6" />
           </NavLink>
-          <a href="#/" onClick={instant} className="nav-link flex flex-col items-center justify-center p-3 rounded-full transition-all ease-in-out duration-200">
+          <a href="#/" onClick={instant} aria-label="設定" className="nav-link flex flex-col items-center justify-center p-3 rounded-full transition-all ease-in-out duration-200">
             <img src="/imgs/icon/settings.svg" alt="Settings" className="h-6 w-6" />
           </a>
         </div>

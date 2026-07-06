@@ -30,7 +30,7 @@ export default function Page({ children, className = '' }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.2, ease: 'easeOut' }}
+      transition={{ duration: 0.12, ease: 'easeOut' }}
     >
       {/* content area kept ≥101vh tall so the footer stays off-screen until the
           user scrolls down */}

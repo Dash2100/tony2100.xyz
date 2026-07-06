@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar.jsx';
 import Home from './pages/Home.jsx';
 import PostList from './pages/PostList.jsx';
@@ -73,7 +73,7 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <div className="flex min-h-screen select-none">
         <NavigationScroll />
         <Navbar />
@@ -84,6 +84,6 @@ export default function App() {
       </div>
       {/* temporary spacer that gives the smooth scroll room to travel */}
       <div id="page-height-extend" aria-hidden="true"></div>
-    </>
+    </MotionConfig>
   );
 }

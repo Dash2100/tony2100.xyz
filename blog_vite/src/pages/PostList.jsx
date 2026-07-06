@@ -1,14 +1,44 @@
+import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Page from '../components/Page.jsx';
 import PostCard from '../components/PostCard.jsx';
 import { posts, getAllTags, filterByTag } from '../posts.js';
 
+// Per-card entrance: same fade-in-up language as `.page-onload` (2rem rise,
+// ease-out), but each card is staggered individually so the list "cascades".
+// Delay is capped so long lists don't take forever to settle.
+const CARD_STEP = 0.06;
+const CARD_CAP = 8;
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 32 },
+  show: ({ i, base }) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: 'easeOut', delay: base + Math.min(i, CARD_CAP) * CARD_STEP },
+  }),
+};
+
+const listVariants = {
+  hidden: {},
+  show: {},
+  exit: { opacity: 0, y: -8, transition: { duration: 0.15, ease: 'easeOut' } },
+};
+
 export default function PostList() {
   const [params, setParams] = useSearchParams();
   const active = params.get('tag') || 'all';
   const tags = getAllTags();
   const filtered = filterByTag(active);
+
+  // First mount rides the page entrance (starts alongside the title/pills
+  // cascade); tag switches respond immediately.
+  const firstMount = useRef(true);
+  useEffect(() => {
+    firstMount.current = false;
+  }, []);
+  const base = firstMount.current ? 0.1 : 0.02;
 
   const select = (tag) => setParams(tag === 'all' ? {} : { tag });
 
@@ -39,12 +69,20 @@ export default function PostList() {
 
       <AnimatePresence mode="wait">
         <motion.div key={active}
-          initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2, ease: [0.2, 0.85, 0.15, 1] }}
+          variants={listVariants} initial="hidden" animate="show" exit="exit"
           className="no-onload flex flex-col gap-4 sm:gap-5">
           {filtered.length
-            ? filtered.map((p) => <PostCard key={p.slug} post={p} />)
-            : <p className="text-[#4E5969] noto-font text-center py-10">這個標籤底下還沒有文章。</p>}
+            ? filtered.map((p, i) => (
+              <motion.div key={p.slug} variants={cardVariants} custom={{ i, base }}>
+                <PostCard post={p} />
+              </motion.div>
+            ))
+            : (
+              <motion.p variants={cardVariants} custom={{ i: 0, base }}
+                className="text-[#4E5969] noto-font text-center py-10">
+                這個標籤底下還沒有文章。
+              </motion.p>
+            )}
         </motion.div>
       </AnimatePresence>
     </Page>
