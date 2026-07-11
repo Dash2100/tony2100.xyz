@@ -73,3 +73,85 @@ console.log(greet('Markdown'));
 ## 小結
 
 掌握以上語法，幾乎能應付所有寫作需求。剩下的，就是坐下來把想法寫出來而已。
+
+## 自訂區塊
+
+本站支援幾種特殊區塊，用程式碼圍欄語法撰寫（```` ```poll ````、```` ```callout ```` 等）。
+
+```callout
+type: tip
+title: 小提示
+這是提示框，支援 info / tip / warning / danger / success 五種型態。
+```
+
+```poll
+question: 你最喜歡哪種自訂區塊？
+options: 投票 | 提示框 | 評分條 | YouTube 嵌入
+```
+
+```rating
+label: 這篇指南的完整度
+score: 9
+max: 10
+```
+
+<details>
+<summary>點我展開隱藏內容</summary>
+
+收合區塊用原生 `<details>` 標籤，適合放劇透或補充說明。
+
+</details>
+
+還有更多好玩的區塊——時間軸、引用卡、連結卡片、進度條、倒數日：
+
+```timeline
+2024-01: 開始學前端
+2024-06: 做出第一個作品
+2025-03: 部落格上線
+```
+
+```quote
+text: 種一棵樹最好的時間是十年前，其次是現在。
+author: 諺語
+```
+
+```linkcard
+title: MDN Web Docs
+desc: Web 開發者的百科全書
+url: https://developer.mozilla.org
+```
+
+```progress
+JavaScript: 85
+CSS: 70
+設計: 60
+```
+
+```countdown
+title: 距離 2027 新年
+date: 2027-01-01
+```
+
+實用型的也有——步驟教學、FAQ、規格表、快捷鍵表：
+
+```steps
+安裝環境: 下載並安裝 Node.js LTS
+建立專案: npm create vite@latest
+啟動開發: npm run dev
+```
+
+```faq
+這是免費的嗎？: 是的，完全免費。
+手機可以看嗎？: 可以，全站響應式設計。
+```
+
+```spec
+處理器: Apple M3
+記憶體: 16GB
+重量: 1.24kg
+```
+
+```keys
+儲存: Cmd + S
+搜尋: Cmd + F
+```

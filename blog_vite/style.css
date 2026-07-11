@@ -529,6 +529,834 @@ html.is-navigating .onload-footer {
     font-weight: 700;
 }
 
+/* =========================================================
+   Custom content blocks (```poll / callout / youtube / rating
+   fenced blocks, plus native <details>) — see vite.config.js
+   ========================================================= */
+
+/* --- callout --- */
+.md-content .md-callout {
+    margin: 1.4rem 0;
+    padding: 0.9rem 1.2rem;
+    border-radius: 14px;
+    border: 1px solid var(--callout-c, var(--accent));
+    background: color-mix(in srgb, var(--callout-c, var(--accent)) 8%, var(--card));
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content .md-callout-title {
+    margin: 0 0 0.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.md-content .md-callout-icon {
+    display: inline-flex;
+    color: var(--callout-c, var(--accent));
+    flex-shrink: 0;
+}
+
+.md-content .md-callout-icon svg {
+    width: 1.1em;
+    height: 1.1em;
+}
+
+.md-content .md-callout-body {
+    color: color-mix(in srgb, var(--ink) 90%, transparent);
+}
+
+.md-content .md-callout-info {
+    --callout-c: #538AD9;
+}
+
+.md-content .md-callout-tip {
+    --callout-c: #2D9A7C;
+}
+
+.md-content .md-callout-warning {
+    --callout-c: #D9A053;
+}
+
+.md-content .md-callout-danger {
+    --callout-c: #D96B5F;
+}
+
+.md-content .md-callout-success {
+    --callout-c: #4CAF7D;
+}
+
+/* --- poll --- */
+.md-content .md-poll {
+    margin: 1.6rem 0;
+    padding: 1.1rem 1.2rem;
+    border-radius: 16px;
+    border: 1px solid var(--line, rgba(78, 89, 105, 0.2));
+    border-color: color-mix(in srgb, var(--ink) 20%, transparent);
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content .md-poll-q {
+    margin: 0 0 0.7rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.md-content .md-poll-opt {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    width: 100%;
+    margin: 0.4rem 0;
+    padding: 0.55rem 0.9rem;
+    border-radius: 10px;
+    border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+    background: var(--card);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s ease-out, transform 0.15s ease-out;
+}
+
+.md-content .md-poll-opt:hover {
+    border-color: var(--accent);
+}
+
+.md-content .md-poll-opt:active {
+    transform: scale(0.985);
+}
+
+.md-content .md-poll-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    transition: width 0.5s var(--curve);
+    pointer-events: none;
+}
+
+.md-content .md-poll-label,
+.md-content .md-poll-pct {
+    position: relative;
+    z-index: 1;
+}
+
+.md-content .md-poll-pct {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent);
+    min-width: 2.6em;
+    text-align: right;
+}
+
+.md-content .md-poll-opt.mine {
+    border-color: var(--accent);
+    font-weight: 600;
+}
+
+/* pure-CSS checkmark next to the option you voted for */
+.md-content .md-poll-opt.mine .md-poll-label::after {
+    content: '';
+    display: inline-block;
+    width: 0.5em;
+    height: 0.28em;
+    margin-left: 0.45em;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(-45deg) translateY(-30%);
+}
+
+.md-content .md-poll-note {
+    margin: 0.6rem 0 0;
+    font-size: 0.78rem;
+    color: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+/* --- youtube --- */
+.md-content .md-youtube {
+    position: relative;
+    margin: 1.6rem 0;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-inner);
+    background: #000;
+}
+
+.md-content .md-youtube iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* --- rating --- */
+.md-content .md-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.4rem 0;
+    padding: 0.8rem 1.1rem;
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content .md-rating-label {
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.md-content .md-rating-track {
+    flex: 1;
+    height: 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink) 15%, transparent);
+    overflow: hidden;
+}
+
+.md-content .md-rating-fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--link));
+}
+
+.md-content .md-rating-score {
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+    font-size: 0.9rem;
+}
+
+/* --- timeline --- */
+.md-content .md-timeline {
+    margin: 1.6rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.md-content .md-tl-item {
+    position: relative;
+    display: flex;
+    gap: 0.9rem;
+    padding-bottom: 1.1rem;
+}
+
+.md-content .md-tl-item:last-child {
+    padding-bottom: 0;
+}
+
+.md-content .md-tl-item::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 16px;
+    bottom: -4px;
+    width: 2px;
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.md-content .md-tl-item:last-child::before {
+    display: none;
+}
+
+.md-content .md-tl-dot {
+    position: relative;
+    z-index: 1;
+    width: 12px;
+    height: 12px;
+    margin-top: 6px;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+    flex-shrink: 0;
+}
+
+.md-content .md-tl-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.md-content .md-tl-label {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+/* --- quote card --- */
+.md-content .md-quote {
+    margin: 1.8rem 0;
+    padding: 1.2rem 1.4rem 1.1rem;
+    border-radius: 16px;
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content .md-quote-icon {
+    display: inline-flex;
+    color: var(--accent);
+    opacity: 0.85;
+}
+
+.md-content .md-quote-icon svg {
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+.md-content .md-quote blockquote {
+    margin: 0.4rem 0 0;
+    padding: 0;
+    border-left: none;
+    background: transparent;
+    border-radius: 0;
+    color: var(--ink);
+    font-size: 1.12rem;
+    font-weight: 600;
+    line-height: 1.75;
+}
+
+.md-content .md-quote figcaption {
+    margin-top: 0.6rem;
+    text-align: right;
+    font-size: 0.88rem;
+    color: color-mix(in srgb, var(--ink) 65%, transparent);
+}
+
+/* --- link card --- */
+.md-content .md-linkcard {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 1.5rem 0;
+    padding: 0.9rem 1.1rem;
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.md-content .md-linkcard:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.md-content .md-linkcard-icon {
+    color: var(--accent);
+    display: flex;
+    flex-shrink: 0;
+}
+
+.md-content .md-linkcard-icon svg {
+    width: 1.7rem;
+    height: 1.7rem;
+}
+
+.md-content .md-linkcard-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    gap: 0.05rem;
+}
+
+.md-content .md-linkcard-title {
+    font-weight: 700;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.md-content .md-linkcard-desc {
+    font-size: 0.86rem;
+    color: color-mix(in srgb, var(--ink) 70%, transparent);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.md-content .md-linkcard-url {
+    font-size: 0.78rem;
+    color: var(--accent);
+}
+
+.md-content .md-linkcard-arrow {
+    color: color-mix(in srgb, var(--ink) 45%, transparent);
+    flex-shrink: 0;
+    display: flex;
+}
+
+.md-content .md-linkcard-arrow svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+/* --- progress bars --- */
+.md-content .md-progress {
+    margin: 1.5rem 0;
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.md-content .md-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.md-content .md-progress-label {
+    min-width: 6em;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.92rem;
+}
+
+.md-content .md-progress-track {
+    flex: 1;
+    height: 9px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink) 15%, transparent);
+    overflow: hidden;
+}
+
+.md-content .md-progress-fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--link));
+}
+
+.md-content .md-progress-val {
+    min-width: 3em;
+    text-align: right;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent);
+}
+
+/* --- countdown --- */
+.md-content .md-countdown {
+    margin: 1.6rem 0;
+    padding: 1.4rem 1.2rem;
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+    text-align: center;
+}
+
+.md-content .md-countdown-title {
+    margin: 0;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--ink) 75%, transparent);
+    font-size: 0.95rem;
+}
+
+.md-content .md-countdown-num {
+    margin: 0.2rem 0 0;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.2;
+}
+
+.md-content .md-countdown-unit {
+    margin: 0;
+    font-size: 0.9rem;
+    color: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+
+/* --- before/after image compare --- */
+.md-content .md-compare {
+    --pos: 50%;
+    position: relative;
+    margin: 1.6rem 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-inner);
+    user-select: none;
+}
+
+.md-content .md-compare img {
+    display: block;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.md-content .md-compare .md-compare-after {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    object-fit: cover;
+    clip-path: inset(0 0 0 var(--pos));
+}
+
+.md-content .md-compare-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    width: 2px;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.45);
+    transform: translateX(-1px);
+    pointer-events: none;
+}
+
+.md-content .md-compare-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: ew-resize;
+    margin: 0;
+    touch-action: none;
+}
+
+/* --- numbered steps --- */
+.md-content .md-steps {
+    margin: 1.6rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.md-content .md-step {
+    position: relative;
+    display: flex;
+    gap: 0.9rem;
+    padding-bottom: 1.2rem;
+}
+
+.md-content .md-step:last-child {
+    padding-bottom: 0;
+}
+
+.md-content .md-step::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 32px;
+    bottom: -2px;
+    width: 2px;
+    background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.md-content .md-step:last-child::before {
+    display: none;
+}
+
+.md-content .md-step-num {
+    position: relative;
+    z-index: 1;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.md-content .md-step-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding-top: 3px;
+    min-width: 0;
+}
+
+.md-content .md-step-title {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.md-content .md-step-text {
+    color: color-mix(in srgb, var(--ink) 78%, transparent);
+    font-size: 0.95rem;
+}
+
+/* --- FAQ --- */
+.md-content .md-faq {
+    margin: 1.6rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.md-content .md-faq details {
+    margin: 0;
+}
+
+.md-content .md-faq p {
+    margin: 0 0 1rem;
+    color: color-mix(in srgb, var(--ink) 85%, transparent);
+}
+
+/* --- spec table --- */
+.md-content .md-spec {
+    margin: 1.5rem 0;
+    border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content .md-spec-row {
+    display: flex;
+}
+
+.md-content .md-spec-row:nth-child(odd) {
+    background: var(--card-2);
+}
+
+.md-content .md-spec-row:nth-child(even) {
+    background: var(--card);
+}
+
+.md-content .md-spec-key {
+    width: 34%;
+    min-width: 6em;
+    padding: 0.55rem 0.9rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--ink) 80%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+    flex-shrink: 0;
+}
+
+.md-content .md-spec-val {
+    flex: 1;
+    padding: 0.55rem 0.9rem;
+    color: var(--ink);
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+/* --- keyboard shortcuts --- */
+.md-content .md-keys {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    border-radius: 14px;
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content .md-keys-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.md-content .md-keys-label {
+    color: var(--ink);
+    font-size: 0.95rem;
+    min-width: 0;
+}
+
+.md-content .md-keys-combo {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-shrink: 0;
+}
+
+.md-content .md-keys kbd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 7px;
+    background: var(--card);
+    border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+    border-bottom-width: 2.5px;
+    color: var(--ink);
+}
+
+.md-content .md-keys-plus {
+    color: color-mix(in srgb, var(--ink) 50%, transparent);
+    font-size: 0.8rem;
+}
+
+/* --- file download card --- */
+.md-content .md-file {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 1.5rem 0;
+    padding: 0.85rem 1.1rem;
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.md-content .md-file:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.md-content .md-file-icon {
+    color: var(--accent);
+    display: flex;
+    flex-shrink: 0;
+}
+
+.md-content .md-file-icon svg {
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+.md-content .md-file-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.md-content .md-file-name {
+    font-weight: 700;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.md-content .md-file-meta {
+    font-size: 0.8rem;
+    color: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+
+.md-content .md-file-btn {
+    flex-shrink: 0;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.45rem 1rem;
+    border-radius: 10px;
+}
+
+/* --- embedded map --- */
+.md-content .md-map {
+    position: relative;
+    margin: 1.6rem 0;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-inner);
+    background: var(--card-2);
+}
+
+.md-content .md-map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* --- audio --- */
+.md-content .md-audio {
+    margin: 1.5rem 0;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    border-radius: 14px;
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+}
+
+.md-content .md-audio-title {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.95rem;
+}
+
+.md-content .md-audio audio {
+    width: 100%;
+    display: block;
+}
+
+/* --- collapsible <details> --- */
+.md-content details {
+    margin: 1.4rem 0;
+    border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    border-radius: 14px;
+    background: var(--card-2);
+    box-shadow: var(--shadow-inner);
+    padding: 0 1.1rem;
+}
+
+.md-content details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--ink);
+    padding: 0.8rem 0;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.md-content details summary::-webkit-details-marker {
+    display: none;
+}
+
+.md-content details summary::before {
+    content: '';
+    width: 0.5em;
+    height: 0.5em;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(-45deg);
+    transition: transform 0.25s var(--curve);
+    flex-shrink: 0;
+}
+
+.md-content details[open] summary::before {
+    transform: rotate(45deg);
+}
+
+.md-content details>*:last-child {
+    margin-bottom: 1rem;
+}
+
 /* --- Mobile tuning for rendered Markdown --- */
 @media (max-width: 640px) {
     .md-content {

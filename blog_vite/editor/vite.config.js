@@ -15,8 +15,10 @@ const DIRS = {
   posts: join(BLOG_ROOT, 'posts'),
   notes: join(BLOG_ROOT, 'notes'),
 };
-const COVERS_DIR = join(BLOG_ROOT, 'public', 'imgs', 'covers');
-const COVERS_URL = '/imgs/covers';
+const IMG_DIRS = {
+  covers: { dir: join(BLOG_ROOT, 'public', 'imgs', 'covers'), url: '/imgs/covers' },
+  posts: { dir: join(BLOG_ROOT, 'public', 'imgs', 'posts'), url: '/imgs/posts' },
+};
 
 const okType = (t) => t === 'posts' || t === 'notes';
 const okSlug = (s) => typeof s === 'string' && /^[a-z0-9][a-z0-9_-]{0,80}$/i.test(s);
@@ -116,15 +118,22 @@ function contentApi() {
             }
           }
 
-          /* ---- POST /api/upload — save a cover image (base64 data URL) ---- */
+          /* ---- POST /api/upload — save an image (base64 data URL).
+                  dir=covers → 封面；dir=posts → 內文圖片（預設） ---- */
           if (url.pathname === '/api/upload' && req.method === 'POST') {
-            const { name, dataUrl } = await readBody(req);
+            const { name, dataUrl, dir } = await readBody(req);
+            const target = IMG_DIRS[dir] || IMG_DIRS.posts;
             if (!okImgName(name)) return send(res, 400, { error: 'bad file name' });
             const m = /^data:image\/[a-z+]+;base64,(.+)$/i.exec(String(dataUrl || ''));
             if (!m) return send(res, 400, { error: 'bad data url' });
-            if (!existsSync(COVERS_DIR)) mkdirSync(COVERS_DIR, { recursive: true });
-            writeFileSync(join(COVERS_DIR, name), Buffer.from(m[1], 'base64'));
-            return send(res, 200, { ok: true, path: `${COVERS_URL}/${name}` });
+            if (!existsSync(target.dir)) mkdirSync(target.dir, { recursive: true });
+            // never overwrite an existing image — prefix a timestamp instead
+            let finalName = name;
+            if (existsSync(join(target.dir, finalName))) {
+              finalName = `${Date.now().toString(36)}-${name}`;
+            }
+            writeFileSync(join(target.dir, finalName), Buffer.from(m[1], 'base64'));
+            return send(res, 200, { ok: true, path: `${target.url}/${finalName}` });
           }
 
           return send(res, 404, { error: 'not found' });

@@ -24,9 +24,10 @@ export const deleteItem = (type, slug) =>
     method: 'DELETE',
   }).then(j);
 
-export const uploadCover = (name, dataUrl) =>
+/** dir: 'covers'（封面）或 'posts'（內文圖，預設）。回傳 { path }。 */
+export const uploadImage = (name, dataUrl, dir = 'posts') =>
   fetch('/api/upload', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, dataUrl }),
+    body: JSON.stringify({ name, dataUrl, dir }),
   }).then(j);

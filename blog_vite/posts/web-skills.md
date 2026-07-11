@@ -1,10 +1,12 @@
 ---
 title: 全國技能競賽 網頁技術職種參賽心得
 subtitle: 四個小時、一個版型，和我學到的事
-date: 2025-07-24
-tags: [競賽, 程式開發]
+date: '2025-07-24'
+tags:
+  - 競賽
+  - 程式開發
 cover: /imgs/covers/web-skills.png
-pinned: true
+pinned: false
 excerpt: 記錄我參加全國技能競賽網頁技術職種的準備過程、賽場上的時間分配，以及賽後最深刻的幾個體悟。
 ---
 

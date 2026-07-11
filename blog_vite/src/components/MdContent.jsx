@@ -363,6 +363,102 @@ export default function MdContent({ html, className = '' }) {
     return () => root.removeEventListener('click', onClick);
   }, []);
 
+  // Hydrate poll widgets (```poll blocks): votes live in the reader's
+  // localStorage — click to vote, click another option to change your vote.
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const polls = root.querySelectorAll('.md-poll');
+    if (!polls.length) return;
+
+    const render = (poll) => {
+      const id = poll.dataset.poll;
+      let state = null;
+      try {
+        state = JSON.parse(localStorage.getItem(`md-poll-${id}`));
+      } catch {
+        state = null;
+      }
+      const opts = [...poll.querySelectorAll('.md-poll-opt')];
+      if (!state || state.mine == null) return;
+      const votes = Array.isArray(state.votes) ? state.votes : [];
+      const total = votes.reduce((a, b) => a + (b || 0), 0) || 1;
+      poll.classList.add('md-poll-done');
+      opts.forEach((o, i) => {
+        const pct = Math.round(((votes[i] || 0) / total) * 100);
+        o.querySelector('.md-poll-pct').textContent = `${pct}%`;
+        o.querySelector('.md-poll-fill').style.width = `${pct}%`;
+        o.classList.toggle('mine', state.mine === i);
+      });
+    };
+    polls.forEach(render);
+
+    const onClick = (e) => {
+      const btn = e.target.closest('.md-poll-opt');
+      if (!btn || !root.contains(btn)) return;
+      const poll = btn.closest('.md-poll');
+      const id = poll.dataset.poll;
+      const opts = [...poll.querySelectorAll('.md-poll-opt')];
+      const i = opts.indexOf(btn);
+      let state = {};
+      try {
+        state = JSON.parse(localStorage.getItem(`md-poll-${id}`)) || {};
+      } catch {
+        state = {};
+      }
+      const votes =
+        Array.isArray(state.votes) && state.votes.length === opts.length
+          ? state.votes
+          : opts.map(() => 0);
+      if (state.mine === i) return; // already voted for this option
+      if (state.mine != null && votes[state.mine] > 0) votes[state.mine] -= 1;
+      votes[i] += 1;
+      try {
+        localStorage.setItem(`md-poll-${id}`, JSON.stringify({ votes, mine: i }));
+      } catch {
+        /* ignore */
+      }
+      render(poll);
+    };
+    root.addEventListener('click', onClick);
+    return () => root.removeEventListener('click', onClick);
+  }, [html]);
+
+  // Hydrate countdown (live day count) and before/after compare sliders.
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+
+    root.querySelectorAll('.md-countdown').forEach((el) => {
+      const d = new Date(`${el.dataset.date}T00:00:00`);
+      if (isNaN(d.getTime())) return;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const diff = Math.round((d - today) / 86400000);
+      const num = el.querySelector('.md-countdown-num');
+      const unit = el.querySelector('.md-countdown-unit');
+      if (!num || !unit) return;
+      if (diff === 0) {
+        num.textContent = '今天';
+        unit.textContent = '';
+      } else {
+        num.textContent = String(Math.abs(diff));
+        unit.textContent = diff > 0 ? '天後' : '天前';
+      }
+    });
+
+    const cleanups = [];
+    root.querySelectorAll('.md-compare').forEach((el) => {
+      const range = el.querySelector('.md-compare-range');
+      if (!range) return;
+      const set = () => el.style.setProperty('--pos', `${range.value}%`);
+      set();
+      range.addEventListener('input', set);
+      cleanups.push(() => range.removeEventListener('input', set));
+    });
+    return () => cleanups.forEach((f) => f());
+  }, [html]);
+
   return (
     <>
       <div ref={ref} className={`md-content ${className}`} dangerouslySetInnerHTML={{ __html: html }} />

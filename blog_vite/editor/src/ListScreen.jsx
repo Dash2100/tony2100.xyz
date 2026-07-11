@@ -71,7 +71,7 @@ export default function ListScreen({ initialType = 'posts', onOpen }) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-200 px-4 sm:px-6 py-5 sm:py-8 flex flex-col gap-4 sm:gap-5 pb-[calc(2rem+env(safe-area-inset-bottom))]">
+    <div className="mx-auto w-full max-w-200 px-4 sm:px-6 py-5 sm:py-8 flex flex-col gap-4 sm:gap-5 pb-[calc(2rem+env(safe-area-inset-bottom))] screen-enter">
       {/* header */}
       <header className="flex items-center justify-between gap-3">
         <div className="flex flex-col">
@@ -147,7 +147,7 @@ export default function ListScreen({ initialType = 'posts', onOpen }) {
           {q ? '沒有符合搜尋的項目。' : '還沒有任何內容，按「新增」開始寫第一篇吧。'}
         </div>
       )}
-      <div className="flex flex-col gap-3">
+      <div key={`${type}-${q}`} className="flex flex-col gap-3 stagger">
         {filtered?.map((it) => (
           <button key={it.slug} type="button" onClick={() => onOpen(type, it.slug)}
             className="card p-4 sm:p-5 text-left cursor-pointer transition-transform duration-150 active:scale-[0.99] hover:brightness-[1.03] flex gap-4 items-center">
