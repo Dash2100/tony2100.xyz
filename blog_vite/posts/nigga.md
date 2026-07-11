@@ -69,8 +69,40 @@ date: 2027-01-01
 
 ---
 
+```audio
+title: 錄音檔
+src: /files/audio.mp3
+```
 
+```map
+query: 雲科大
+```
 
+```file
+name: 簡報檔案.pdf
+url: /files/slides.pdf
+size: 2.4 MB
+```
 
+```keys
+儲存: Cmd + S
+搜尋: Cmd + F
+```
 
+```spec
+處理器: Apple M3
+記憶體: 16GB
+重量: 1.24kg
+```
+
+```faq
+這是免費的嗎？: 是的，完全免費。
+手機可以看嗎？: 可以，全站響應式設計。
+```
+
+```steps
+安裝環境: 下載並安裝 Node.js LTS
+建立專案: npm create vite@latest
+啟動開發: npm run dev
+```
 

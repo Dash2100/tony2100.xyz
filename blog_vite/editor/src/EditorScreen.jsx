@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ThemeToggle } from './App.jsx';
 import { getItem, saveItem, deleteItem, uploadImage } from './api.js';
 import { renderMd } from './md.js';
@@ -228,6 +228,16 @@ export default function EditorScreen({ type, slug, onBack }) {
     return () => window.removeEventListener('beforeunload', warn);
   }, [dirty]);
 
+  // Lock page scroll while the insert sheet is open (mobile bottom sheet).
+  useEffect(() => {
+    if (!insertOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [insertOpen]);
+
   const back = () => {
     if (dirty && !confirm('有尚未儲存的變更，確定要離開嗎？')) return;
     onBack();
@@ -243,14 +253,26 @@ export default function EditorScreen({ type, slug, onBack }) {
     }
   };
 
-  /* ---- markdown toolbar (operates on the visible textarea) ---- */
+  /* ---- markdown toolbar (operates on the visible textarea) ----
+     After React swaps the controlled value the browser resets the textarea's
+     internal scroll to the top. We stash caret + scrollTop and restore them in
+     a layout effect (before paint), so editing never jumps the view. */
+  const pendingSel = useRef(null);
+  useLayoutEffect(() => {
+    const p = pendingSel.current;
+    if (!p) return;
+    pendingSel.current = null;
+    // the panel may have been remounted (e.g. tab switch) — retarget if so
+    const ta = p.ta.isConnected ? p.ta : getTa();
+    if (!ta) return;
+    ta.focus({ preventScroll: true });
+    ta.setSelectionRange(p.start, p.end);
+    ta.scrollTop = p.top;
+  }, [content]);
+
   const applyEdit = (ta, nextValue, selStart, selEnd) => {
+    if (ta) pendingSel.current = { ta, start: selStart, end: selEnd, top: ta.scrollTop };
     updateContent(nextValue);
-    requestAnimationFrame(() => {
-      if (!ta) return;
-      ta.focus();
-      ta.setSelectionRange(selStart, selEnd);
-    });
   };
   const surround = (before, after = before, placeholder = '文字') => {
     const ta = getTa();
@@ -275,7 +297,18 @@ export default function EditorScreen({ type, slug, onBack }) {
   const insertBlock = (block) => {
     const ta = getTa();
     if (!ta) return;
-    const { selectionStart: s, value } = ta;
+    let s = ta.selectionStart;
+    // Never interacted with the textarea (caret still at 0/0)? Inserting at
+    // the very top is almost never what the user wants — append to the end.
+    if (
+      document.activeElement !== ta &&
+      s === 0 &&
+      ta.selectionEnd === 0 &&
+      ta.value.length > 0
+    ) {
+      s = ta.value.length;
+    }
+    const { value } = ta;
     const pre = value.slice(0, s);
     const pad = pre && !pre.endsWith('\n\n') ? (pre.endsWith('\n') ? '\n' : '\n\n') : '';
     const next = pre + pad + block + '\n' + value.slice(s);
@@ -680,8 +713,9 @@ export default function EditorScreen({ type, slug, onBack }) {
                 <button key={it.name} type="button"
                   className="flex items-center gap-3 text-left rounded-xl px-3 py-2.5 cursor-pointer transition-colors duration-150 hover:bg-[var(--card-2)] active:scale-[0.99]"
                   onClick={() => {
-                    insertBlock(it.tpl);
                     setInsertOpen(false);
+                    setTab('write'); // mobile: make sure the inserted block is visible
+                    insertBlock(it.tpl);
                   }}>
                   <span className="shrink-0 flex items-center justify-center w-9 h-9 rounded-lg"
                     style={{ background: 'var(--card-2)', color: 'var(--accent)', boxShadow: 'var(--inset)' }}>
