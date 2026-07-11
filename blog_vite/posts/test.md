@@ -1,16 +1,12 @@
 ---
-title: 黑人黑人
-subtitle: 慕尼黑人不能叫黑人
+title: 自訂元件測試頁
+subtitle: 所有插入物件的展示（上線前可刪除本篇）
 date: '2026-07-06'
 tags:
-  - 黑鬼
-  - 黑人
-  - 星巴克
-  - 炸雞
-  - 西瓜
+  - 測試
 cover: ''
 pinned: false
-excerpt: 慕尼黑人不能叫黑人
+excerpt: 展示所有自訂區塊的測試文章，正式上線前可刪除 posts/test.md。
 ---
 
 ## ``文字``
@@ -105,4 +101,3 @@ size: 2.4 MB
 建立專案: npm create vite@latest
 啟動開發: npm run dev
 ```
-

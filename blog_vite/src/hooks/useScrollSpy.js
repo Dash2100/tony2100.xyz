@@ -93,10 +93,20 @@ export default function useScrollSpy(ids) {
       });
     };
 
-    // Body resizes (lazy images, fonts, viewport changes) shift heading
-    // positions — recompute activation points whenever layout changes.
-    const ro = new ResizeObserver(compute);
-    ro.observe(document.body);
+    // Content resizes (lazy images, fonts) shift heading positions — watch the
+    // ARTICLE container, not document.body: the navigation glide toggles a
+    // 300vh spacer on the body, and observing body would force a layout pass
+    // (rect reads) right in the middle of the entrance animation.
+    let roRaf = 0;
+    const ro = new ResizeObserver(() => {
+      if (roRaf) return;
+      roRaf = requestAnimationFrame(() => {
+        roRaf = 0;
+        compute();
+      });
+    });
+    const firstEl = document.getElementById(ids[0]);
+    ro.observe((firstEl && firstEl.closest('article')) || document.body);
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', compute);
     compute();
@@ -106,6 +116,7 @@ export default function useScrollSpy(ids) {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', compute);
       if (raf) cancelAnimationFrame(raf);
+      if (roRaf) cancelAnimationFrame(roRaf);
     };
   }, [ids.join('|')]);
 

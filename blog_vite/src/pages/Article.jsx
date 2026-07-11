@@ -94,8 +94,8 @@ export default function Article() {
   return (
     <Page className="w-full items-center px-4 py-6 sm:p-8 lg:p-16 max-w-325 mx-auto flex flex-col gap-5 md:gap-8">
       {/* Decorative header (blurred cover + title) */}
-      <div className="relative w-full h-52 md:h-67.5 rounded-3xl md:rounded-[35px] bg-[var(--card-2)] shadow-inner overflow-hidden flex justify-center md:items-center mt-1 md:mt-0">
-        <img src={post.cover} alt="" aria-hidden="true" className="absolute w-full h-full object-cover z-10 blur-2xl scale-110" />
+      <div className="onload-heavy relative w-full h-52 md:h-67.5 rounded-3xl md:rounded-[35px] bg-[var(--card-2)] shadow-inner overflow-hidden flex justify-center md:items-center mt-1 md:mt-0">
+        <img src={post.cover} alt="" aria-hidden="true" decoding="async" className="absolute w-full h-full object-cover z-10 blur-2xl scale-110" />
         <div className="absolute inset-0 bg-[var(--card-2)]/40 z-20" />
         <button type="button" onClick={() => navigate(-1)}
           className="absolute flex gap-1.5 md:gap-3 top-3 left-3 md:top-6 md:left-6 z-50 rounded-[10px] bg-[var(--card)]/85 shadow-inner px-3.5 py-2 md:px-4 md:py-2 cursor-pointer hover:bg-[var(--card)] transition-all duration-300 ease-in-out font-medium text-[var(--ink)] border border-[var(--ink)]/20 backdrop-blur-xl">
@@ -115,12 +115,12 @@ export default function Article() {
         </span>
       </div>
 
-      {/* Body + TOC */}
-      <div className="w-full flex xl:flex-row flex-col gap-5 md:gap-6 relative items-start">
+      {/* Body + TOC (opacity-only entrance — the subtree is huge) */}
+      <div className="onload-heavy w-full flex xl:flex-row flex-col gap-5 md:gap-6 relative items-start">
         <article className="xl:flex-1 min-w-0 w-full bg-[var(--card)] border border-[var(--ink)]/20 shadow-inner rounded-3xl md:rounded-[35px] p-4 sm:p-6 md:p-10">
           {/* Actual 16:9 cover image */}
           <div className="w-full aspect-video bg-[var(--card-2)] rounded-[20px] md:rounded-3xl shadow-inner overflow-hidden mb-5 md:mb-6">
-            <img src={post.cover} alt={post.title} className="w-full h-full object-cover" />
+            <img src={post.cover} alt={post.title} decoding="async" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-wrap gap-x-4 gap-y-1 items-center text-[var(--ink)]/75 text-sm noto-font mb-5 pb-5 md:mb-6 md:pb-6 border-b border-[var(--ink)]/12">
             <span className="flex items-center gap-1"><img src="/imgs/icon/date.svg" className="h-4 w-4" alt="" />{post.dateText}</span>

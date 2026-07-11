@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Footer from './Footer.jsx';
 import { takeScrollIntent } from '../scrollIntent.js';
 
@@ -13,7 +13,7 @@ const variants = {
   exit: { opacity: 0, y: 16 },
 };
 
-export default function Page({ children, className = '' }) {
+export default function Page({ children, className = '', footerKey }) {
   // Sidenav navigations (and far-distance downgrades) are 'instant': reset
   // scroll before paint, while the incoming content is still invisible. This
   // keeps the section-switch animation identical regardless of scroll position.
@@ -38,7 +38,21 @@ export default function Page({ children, className = '' }) {
         {children}
       </div>
       <div className="onload-footer">
-        <Footer />
+        {footerKey !== undefined ? (
+          /* the page can key the footer to its own filter state (e.g. the
+             active tag) so the footer crossfades together with the content */
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div key={footerKey}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}>
+              <Footer />
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          <Footer />
+        )}
       </div>
     </motion.main>
   );

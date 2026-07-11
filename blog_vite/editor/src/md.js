@@ -18,6 +18,12 @@ const simpleHash = (s) => {
   return Math.abs(h).toString(36);
 };
 
+/** allow-list URL schemes — blocks javascript:/data:/vbscript: injection */
+const safeUrl = (u) => {
+  const s = String(u || '').trim();
+  return /^(https?:\/\/|mailto:|\/|\.\/|\.\.\/|#)/i.test(s) ? s : '#';
+};
+
 function parseBlockMeta(text) {
   const meta = {};
   const lines = String(text).replace(/\r/g, '').split('\n');
@@ -172,7 +178,7 @@ function renderCustomBlock(lang, text) {
       host = m.url;
     }
     return (
-      `<a class="md-linkcard" href="${escHtml(m.url)}" target="_blank" rel="noopener noreferrer">` +
+      `<a class="md-linkcard" href="${escHtml(safeUrl(m.url))}" target="_blank" rel="noopener noreferrer">` +
       `<span class="md-linkcard-icon">` +
       svgIcon('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/>') +
       `</span><span class="md-linkcard-body">` +
@@ -295,7 +301,7 @@ function renderCustomBlock(lang, text) {
     if (!m.url) return null;
     const name = m.name || m.url.split('/').pop() || '下載檔案';
     return (
-      `<a class="md-file" href="${escHtml(m.url)}" download>` +
+      `<a class="md-file" href="${escHtml(safeUrl(m.url))}" download>` +
       `<span class="md-file-icon">` +
       svgIcon('<path d="M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M13 3v6h6"/><path d="M12 12v5m0 0-2.5-2.5M12 17l2.5-2.5"/>') +
       `</span><span class="md-file-body"><span class="md-file-name">${escHtml(name)}</span>` +
@@ -319,7 +325,7 @@ function renderCustomBlock(lang, text) {
     return (
       `<div class="md-audio">` +
       `${m.title ? `<p class="md-audio-title">${escHtml(m.title)}</p>` : ''}` +
-      `<audio controls preload="none" src="${escHtml(src)}"></audio></div>`
+      `<audio controls preload="none" src="${escHtml(safeUrl(src))}"></audio></div>`
     );
   }
   return null;
@@ -358,13 +364,13 @@ marked.use({
       return `<h${depth} class="md-h md-h${depth}">${inner}</h${depth}>\n`;
     },
     image({ href, title, text }) {
-      const t = title ? ` title="${title}"` : '';
-      return `<img class="md-img" src="${href}" alt="${text || ''}"${t} loading="lazy">`;
+      const t = title ? ` title="${escHtml(title)}"` : '';
+      return `<img class="md-img" src="${escHtml(safeUrl(href))}" alt="${escHtml(text || '')}"${t} loading="lazy">`;
     },
     link({ href, title, tokens }) {
       const inner = this.parser.parseInline(tokens);
-      const t = title ? ` title="${title}"` : '';
-      return `<a class="md-a" href="${href}"${t} target="_blank" rel="noopener noreferrer">${inner}</a>`;
+      const t = title ? ` title="${escHtml(title)}"` : '';
+      return `<a class="md-a" href="${escHtml(safeUrl(href))}"${t} target="_blank" rel="noopener noreferrer">${inner}</a>`;
     },
   },
 });

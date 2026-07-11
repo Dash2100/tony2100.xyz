@@ -63,7 +63,7 @@ export default function PostList() {
   };
 
   return (
-    <Page className="w-full px-4 py-6 sm:p-8 lg:px-12 lg:py-16 max-w-300 mx-auto flex flex-col gap-5 md:gap-8">
+    <Page footerKey={active} className="w-full px-4 py-6 sm:p-8 lg:px-12 lg:py-16 max-w-300 mx-auto flex flex-col gap-5 md:gap-8">
       {/* Hero banner — same visual anchor as the home/article covers */}
       <div className="relative w-full h-40 sm:h-44 md:h-56 rounded-3xl md:rounded-[35px] bg-[var(--card-2)] shadow-inner overflow-hidden flex items-center justify-center mt-1 md:mt-0">
         {/* soft decorative glows */}

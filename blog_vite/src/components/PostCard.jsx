@@ -13,7 +13,7 @@ export default function PostCard({ post }) {
       className="w-full h-full xl:h-auto bg-[var(--card)] border border-[var(--ink)]/20 shadow-inner rounded-3xl md:rounded-[35px] gap-3 sm:gap-4 p-3.5 sm:p-5 md:p-6 xl:py-8 xl:px-9 flex flex-col xl:flex-row justify-between group cursor-pointer hover:bg-[var(--card-hover)] transition-colors duration-300"
     >
       <div className="w-full xl:w-70 aspect-video bg-[var(--card-2)] rounded-[20px] shadow-inner overflow-hidden shrink-0 order-1 xl:order-2">
-        <img src={post.cover} alt={post.title}
+        <img src={post.cover} alt={post.title} loading="lazy" decoding="async"
           className="w-full h-full object-cover transition-transform duration-300 ease-in-out lg:group-hover:scale-[1.02]" />
       </div>
       <div className="flex flex-col justify-between flex-1 gap-2 sm:gap-3 mt-1 xl:mt-0 order-2 xl:order-1">

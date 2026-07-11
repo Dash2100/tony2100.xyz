@@ -41,9 +41,9 @@ export default function Home() {
               wraps or overflows (~24px on 320px screens, ~30px from 400px up) */}
           <h1 className="text-[clamp(1.5rem,7.5vw,1.875rem)] md:text-3xl lg:text-4xl whitespace-nowrap text-center px-4">Tony2100's Life Log</h1>
           <div className="relative w-full min-h-6 md:min-h-9 lg:min-h-12">
-            <h1 className="absolute inset-0 text-base sm:text-lg md:text-2xl lg:text-3xl text-center px-4 flex items-start justify-center">
+            <p className="absolute inset-0 text-base sm:text-lg md:text-2xl lg:text-3xl text-center px-4 flex items-start justify-center">
               {typed}
-            </h1>
+            </p>
           </div>
         </span>
       </div>

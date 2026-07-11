@@ -206,6 +206,15 @@ export default function EditorScreen({ type, slug, onBack }) {
   const saveRef = useRef(save);
   saveRef.current = save;
 
+  /* clear pending timers on unmount */
+  useEffect(
+    () => () => {
+      clearTimeout(toastTimer.current);
+      clearTimeout(unlockTimer.current);
+    },
+    []
+  );
+
   /* Cmd/Ctrl+S + Escape + leave guard */
   useEffect(() => {
     const onKey = (e) => {
@@ -436,6 +445,7 @@ export default function EditorScreen({ type, slug, onBack }) {
         showToast(`上傳失敗：${err.message || err}`);
       }
     };
+    reader.onerror = () => showToast('讀取檔案失敗');
     reader.readAsDataURL(file);
   };
 

@@ -54,7 +54,9 @@ export default function useSeo({
   useEffect(() => {
     const fullTitle = title ? `${title}｜${SITE_NAME}` : `${SITE_NAME}｜生活紀錄與技術筆記`;
     const desc = description || DEFAULT_DESC;
-    const url = SITE + path;
+    // trailing-slash canonical, matching the prerendered shells + sitemap
+    const normPath = path === '/' ? '/' : path.replace(/\/?$/, '/');
+    const url = SITE + normPath;
     const img = image
       ? image.startsWith('http')
         ? image

@@ -72,6 +72,12 @@ const simpleHash = (s) => {
   return Math.abs(h).toString(36);
 };
 
+/** allow-list URL schemes — blocks javascript:/data:/vbscript: injection */
+const safeUrl = (u) => {
+  const s = String(u || '').trim();
+  return /^(https?:\/\/|mailto:|\/|\.\/|\.\.\/|#)/i.test(s) ? s : '#';
+};
+
 /** `key: value` lines up to the first blank line; the rest becomes `_body`. */
 function parseBlockMeta(text) {
   const meta = {};
@@ -227,7 +233,7 @@ function renderCustomBlock(lang, text) {
       host = m.url;
     }
     return (
-      `<a class="md-linkcard" href="${escHtml(m.url)}" target="_blank" rel="noopener noreferrer">` +
+      `<a class="md-linkcard" href="${escHtml(safeUrl(m.url))}" target="_blank" rel="noopener noreferrer">` +
       `<span class="md-linkcard-icon">` +
       svgIcon('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/>') +
       `</span><span class="md-linkcard-body">` +
@@ -351,7 +357,7 @@ function renderCustomBlock(lang, text) {
     if (!m.url) return null;
     const name = m.name || m.url.split('/').pop() || '下載檔案';
     return (
-      `<a class="md-file" href="${escHtml(m.url)}" download>` +
+      `<a class="md-file" href="${escHtml(safeUrl(m.url))}" download>` +
       `<span class="md-file-icon">` +
       svgIcon('<path d="M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M13 3v6h6"/><path d="M12 12v5m0 0-2.5-2.5M12 17l2.5-2.5"/>') +
       `</span><span class="md-file-body"><span class="md-file-name">${escHtml(name)}</span>` +
@@ -375,7 +381,7 @@ function renderCustomBlock(lang, text) {
     return (
       `<div class="md-audio">` +
       `${m.title ? `<p class="md-audio-title">${escHtml(m.title)}</p>` : ''}` +
-      `<audio controls preload="none" src="${escHtml(src)}"></audio></div>`
+      `<audio controls preload="none" src="${escHtml(safeUrl(src))}"></audio></div>`
     );
   }
   return null;
@@ -421,15 +427,16 @@ function renderMarkdown(content) {
         return `<h${depth} id="${id}" class="md-h md-h${depth}"><a class="md-anchor" href="#${id}" aria-hidden="true">#</a>${inner}</h${depth}>\n`;
       },
       image({ href, title, text }) {
-        const t = title ? ` title="${title}"` : '';
-        return `<img class="md-img" src="${href}" alt="${text || ''}"${t} loading="lazy" decoding="async">`;
+        const t = title ? ` title="${escHtml(title)}"` : '';
+        return `<img class="md-img" src="${escHtml(safeUrl(href))}" alt="${escHtml(text || '')}"${t} loading="lazy" decoding="async">`;
       },
       link({ href, title, tokens }) {
         const inner = this.parser.parseInline(tokens);
-        const t = title ? ` title="${title}"` : '';
-        const external = /^https?:\/\//.test(href);
+        const t = title ? ` title="${escHtml(title)}"` : '';
+        const url = safeUrl(href);
+        const external = /^https?:\/\//.test(url);
         const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
-        return `<a class="md-a" href="${href}"${t}${attrs}>${inner}</a>`;
+        return `<a class="md-a" href="${escHtml(url)}"${t}${attrs}>${inner}</a>`;
       },
     },
   });
@@ -535,6 +542,9 @@ function seoPrerenderPlugin() {
         byName('twitter:title', o.title);
         byName('twitter:description', o.description);
         byName('twitter:image', o.image);
+        if (o.extra) {
+          h = h.replace('</head>', `${o.extra}\n</head>`);
+        }
         if (o.jsonld) {
           h = h.replace(
             '</head>',
@@ -558,41 +568,47 @@ function seoPrerenderPlugin() {
           const { data, content } = matter(readFileSync(join(postsDir, f), 'utf8'));
           const slug = (data.slug || f.replace(/\.md$/, '')).toString();
           const date = data.date ? new Date(data.date) : null;
+          const valid = date && !isNaN(date.getTime());
           return {
             slug,
             title: String(data.title ?? slug),
             excerpt: (data.excerpt ? String(data.excerpt) : stripMarkdown(content).slice(0, 120)).trim(),
             tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
             cover: data.cover ? String(data.cover) : null,
-            dateIso: date && !isNaN(date.getTime()) ? date.toISOString().slice(0, 10) : null,
+            dateIso: valid ? date.toISOString().slice(0, 10) : null,
+            dateFull: valid ? date.toISOString() : null,
           };
         });
 
       const allTags = [...new Set(posts.flatMap((p) => p.tags))];
+      // trailing-slash URLs everywhere: the shells are directory indexes, and
+      // hosts like GitHub Pages 301 /post/x → /post/x/ — canonical must be
+      // the final URL. Clean-URL hosts serve both fine.
+      const latest = posts.map((p) => p.dateIso).filter(Boolean).sort().pop();
       const pages = [];
 
       write('posts', inject({
         title: `文章列表｜${SITE_NAME}`,
         description: 'Tony2100 的所有文章：技術筆記、生活紀錄與隨筆。',
         keywords: [...allTags, ...BASE_KEYWORDS],
-        url: `${SITE_ORIGIN}/posts`,
+        url: `${SITE_ORIGIN}/posts/`,
         image: `${SITE_ORIGIN}/imgs/home-cover.png`,
         type: 'website',
       }));
-      pages.push({ loc: `${SITE_ORIGIN}/posts` });
+      pages.push({ loc: `${SITE_ORIGIN}/posts/`, lastmod: latest });
 
       write('notes', inject({
         title: `筆記｜${SITE_NAME}`,
         description: '那些不夠長到寫成一篇文章，卻又想記下來的事——Tony2100 的隨手筆記。',
         keywords: BASE_KEYWORDS,
-        url: `${SITE_ORIGIN}/notes`,
+        url: `${SITE_ORIGIN}/notes/`,
         image: `${SITE_ORIGIN}/imgs/home-cover.png`,
         type: 'website',
       }));
-      pages.push({ loc: `${SITE_ORIGIN}/notes` });
+      pages.push({ loc: `${SITE_ORIGIN}/notes/`, lastmod: latest });
 
       for (const p of posts) {
-        const url = `${SITE_ORIGIN}/post/${p.slug}`;
+        const url = `${SITE_ORIGIN}/post/${p.slug}/`;
         const image = SITE_ORIGIN + (p.cover || '/imgs/cover-default.png');
         write(`post/${p.slug}`, inject({
           title: `${p.title}｜${SITE_NAME}`,
@@ -601,6 +617,9 @@ function seoPrerenderPlugin() {
           url,
           image,
           type: 'article',
+          extra: p.dateFull
+            ? `<meta property="article:published_time" content="${p.dateFull}"><meta property="article:author" content="Tony2100">`
+            : `<meta property="article:author" content="Tony2100">`,
           jsonld: {
             '@context': 'https://schema.org',
             '@type': 'BlogPosting',
@@ -609,8 +628,8 @@ function seoPrerenderPlugin() {
             image: [image],
             url,
             mainEntityOfPage: url,
-            datePublished: p.dateIso || undefined,
-            dateModified: p.dateIso || undefined,
+            datePublished: p.dateFull || undefined,
+            dateModified: p.dateFull || undefined,
             keywords: p.tags.join(', '),
             inLanguage: 'zh-Hant',
             author: {
@@ -625,7 +644,7 @@ function seoPrerenderPlugin() {
         pages.push({ loc: url, lastmod: p.dateIso });
       }
 
-      const urls = [{ loc: `${SITE_ORIGIN}/` }, ...pages];
+      const urls = [{ loc: `${SITE_ORIGIN}/`, lastmod: latest }, ...pages];
       writeFileSync(
         join(outDir, 'sitemap.xml'),
         `<?xml version="1.0" encoding="UTF-8"?>\n` +

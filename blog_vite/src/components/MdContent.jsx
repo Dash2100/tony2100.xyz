@@ -302,14 +302,15 @@ export default function MdContent({ html, className = '' }) {
   const ref = useRef(null);
   const [lightbox, setLightbox] = useState(null); // { src, alt } | null
 
-  // Inject a copy button into every code block.
+  // Inject a copy button into every code block. Deferred past the entrance
+  // animation so the DOM writes don't compete with it for frames.
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
     const timers = new Set();
     const buttons = [];
 
-    root.querySelectorAll('pre').forEach((pre) => {
+    const run = () => root.querySelectorAll('pre').forEach((pre) => {
       let wrap = pre.parentElement?.classList.contains('code-block') ? pre.parentElement : null;
       if (wrap?.querySelector('.code-copy')) return;
       if (!wrap) {
@@ -343,8 +344,10 @@ export default function MdContent({ html, className = '' }) {
       wrap.appendChild(btn);
       buttons.push(btn);
     });
+    const deferId = setTimeout(run, 320);
 
     return () => {
+      clearTimeout(deferId);
       timers.forEach(clearTimeout);
       buttons.forEach((b) => b.remove());
     };
@@ -365,11 +368,11 @@ export default function MdContent({ html, className = '' }) {
 
   // Hydrate poll widgets (```poll blocks): votes live in the reader's
   // localStorage — click to vote, click another option to change your vote.
+  // Deferred past the entrance animation.
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
-    const polls = root.querySelectorAll('.md-poll');
-    if (!polls.length) return;
+    let onClick = null;
 
     const render = (poll) => {
       const id = poll.dataset.poll;
@@ -391,10 +394,12 @@ export default function MdContent({ html, className = '' }) {
         o.classList.toggle('mine', state.mine === i);
       });
     };
-    polls.forEach(render);
-
-    const onClick = (e) => {
-      const btn = e.target.closest('.md-poll-opt');
+    const run = () => {
+      const polls = root.querySelectorAll('.md-poll');
+      if (!polls.length) return;
+      polls.forEach(render);
+      onClick = (e) => {
+        const btn = e.target.closest('.md-poll-opt');
       if (!btn || !root.contains(btn)) return;
       const poll = btn.closest('.md-poll');
       const id = poll.dataset.poll;
@@ -413,23 +418,31 @@ export default function MdContent({ html, className = '' }) {
       if (state.mine === i) return; // already voted for this option
       if (state.mine != null && votes[state.mine] > 0) votes[state.mine] -= 1;
       votes[i] += 1;
-      try {
-        localStorage.setItem(`md-poll-${id}`, JSON.stringify({ votes, mine: i }));
-      } catch {
-        /* ignore */
-      }
-      render(poll);
+        try {
+          localStorage.setItem(`md-poll-${id}`, JSON.stringify({ votes, mine: i }));
+        } catch {
+          /* ignore */
+        }
+        render(poll);
+      };
+      root.addEventListener('click', onClick);
     };
-    root.addEventListener('click', onClick);
-    return () => root.removeEventListener('click', onClick);
+    const deferId = setTimeout(run, 320);
+    return () => {
+      clearTimeout(deferId);
+      if (onClick) root.removeEventListener('click', onClick);
+    };
   }, [html]);
 
   // Hydrate countdown (live day count) and before/after compare sliders.
+  // Deferred past the entrance animation.
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
+    const cleanups = [];
 
-    root.querySelectorAll('.md-countdown').forEach((el) => {
+    const run = () => {
+      root.querySelectorAll('.md-countdown').forEach((el) => {
       const d = new Date(`${el.dataset.date}T00:00:00`);
       if (isNaN(d.getTime())) return;
       const today = new Date();
@@ -447,16 +460,20 @@ export default function MdContent({ html, className = '' }) {
       }
     });
 
-    const cleanups = [];
-    root.querySelectorAll('.md-compare').forEach((el) => {
-      const range = el.querySelector('.md-compare-range');
-      if (!range) return;
-      const set = () => el.style.setProperty('--pos', `${range.value}%`);
-      set();
-      range.addEventListener('input', set);
-      cleanups.push(() => range.removeEventListener('input', set));
-    });
-    return () => cleanups.forEach((f) => f());
+      root.querySelectorAll('.md-compare').forEach((el) => {
+        const range = el.querySelector('.md-compare-range');
+        if (!range) return;
+        const set = () => el.style.setProperty('--pos', `${range.value}%`);
+        set();
+        range.addEventListener('input', set);
+        cleanups.push(() => range.removeEventListener('input', set));
+      });
+    };
+    const deferId = setTimeout(run, 320);
+    return () => {
+      clearTimeout(deferId);
+      cleanups.forEach((f) => f());
+    };
   }, [html]);
 
   return (

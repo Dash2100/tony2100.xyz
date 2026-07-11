@@ -191,6 +191,23 @@ html.is-navigating #page-height-extend {
     animation: fade-in-up 0.3s ease-out forwards;
 }
 
+/* Heavy children (huge subtrees, big blurred layers) fade in WITHOUT the
+   translate: moving a large blur/backdrop-filter layer every frame is the
+   main source of entrance jank. */
+@keyframes fade-in-only {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.page-onload>.onload-heavy {
+    animation-name: fade-in-only;
+}
+
 .page-onload>*:not(.no-onload):nth-child(1) {
     animation-delay: 0ms;
 }
