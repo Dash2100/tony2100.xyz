@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Page from '../components/Page.jsx';
 import PostCard from '../components/PostCard.jsx';
 import useTypewriter from '../hooks/useTypewriter.js';
+import useSeo from '../seo.js';
 import { posts, getFeatured, getAllTags } from '../posts.js';
 
 const TYPE_TEXTS = [
@@ -27,6 +28,7 @@ export default function Home() {
   const typed = useTypewriter(TYPE_TEXTS);
   const featured = getFeatured(3);
   const tags = getAllTags();
+  useSeo({ path: '/', keywords: tags.map((t) => t.tag) });
 
   return (
     <Page className="w-full items-center px-5 py-6 sm:p-8 lg:p-16 max-w-325 mx-auto flex flex-col gap-5 md:gap-8">

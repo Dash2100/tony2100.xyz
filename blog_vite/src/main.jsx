@@ -1,15 +1,15 @@
 import { createRoot } from 'react-dom/client';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 
-// Scroll restoration on back/forward is implemented by the app itself
-// (NavigationScroll in App.jsx): the browser's built-in restore fires while
-// the outgoing page is still animating and gets clamped/cancelled by the
-// content swap, so we take full ownership instead.
-if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+// Legacy hash URLs (/#/post/xxx) redirect to the real paths so every link
+// shared before the SEO migration keeps working.
+if (window.location.hash.startsWith('#/')) {
+  window.history.replaceState(null, '', window.location.hash.slice(1));
+}
 
 createRoot(document.getElementById('root')).render(
-  <HashRouter>
+  <BrowserRouter>
     <App />
-  </HashRouter>
+  </BrowserRouter>
 );

@@ -2,7 +2,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { basename } from 'node:path';
+import { basename, join, resolve } from 'node:path';
+import {
+  readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, copyFileSync,
+} from 'node:fs';
 import matter from 'gray-matter';
 import { Marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
@@ -481,10 +484,175 @@ function blogMarkdownPlugin() {
   };
 }
 
+/* ---------- SEO prerender (runs after build) ----------
+   Emits a static HTML shell per route with full per-page metadata, so every
+   article is individually crawlable and shareable:
+     /posts/index.html  /notes/index.html  /post/<slug>/index.html
+   plus sitemap.xml, robots.txt and a 404.html SPA fallback. */
+
+const SITE_ORIGIN = 'https://blog.tony2100.xyz';
+const SITE_NAME = "Tony2100's Life Log";
+const BASE_KEYWORDS = [
+  'tony2100', 'Tony2100', "Tony2100's Life Log", '部落格', '技術筆記', '生活紀錄',
+];
+
+function seoPrerenderPlugin() {
+  let outDir = '';
+  return {
+    name: 'seo-prerender',
+    apply: 'build',
+    configResolved(config) {
+      outDir = resolve(config.root, config.build.outDir);
+    },
+    closeBundle() {
+      const tplPath = join(outDir, 'index.html');
+      if (!existsSync(tplPath)) return;
+      const tpl = readFileSync(tplPath, 'utf8');
+
+      const inject = (o) => {
+        let h = tpl;
+        const byName = (n, v) => {
+          h = h.replace(
+            new RegExp(`(<meta name="${n}" content=")[^"]*(")`),
+            `$1${escHtml(v)}$2`
+          );
+        };
+        const byProp = (p, v) => {
+          h = h.replace(
+            new RegExp(`(<meta property="${p.replace(':', '\\:')}" content=")[^"]*(")`),
+            `$1${escHtml(v)}$2`
+          );
+        };
+        h = h.replace(/<title>[\s\S]*?<\/title>/, `<title>${escHtml(o.title)}</title>`);
+        byName('description', o.description);
+        byName('keywords', o.keywords.join(', '));
+        h = h.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${o.url}$2`);
+        byProp('og:title', o.title);
+        byProp('og:description', o.description);
+        byProp('og:url', o.url);
+        byProp('og:image', o.image);
+        byProp('og:type', o.type);
+        byName('twitter:title', o.title);
+        byName('twitter:description', o.description);
+        byName('twitter:image', o.image);
+        if (o.jsonld) {
+          h = h.replace(
+            '</head>',
+            `<script type="application/ld+json">${JSON.stringify(o.jsonld)}</script>\n</head>`
+          );
+        }
+        return h;
+      };
+
+      const write = (relDir, html) => {
+        const dir = join(outDir, relDir);
+        mkdirSync(dir, { recursive: true });
+        writeFileSync(join(dir, 'index.html'), html);
+      };
+
+      // posts straight from the markdown sources
+      const postsDir = resolve(__dirname, 'posts');
+      const posts = readdirSync(postsDir)
+        .filter((f) => f.endsWith('.md'))
+        .map((f) => {
+          const { data, content } = matter(readFileSync(join(postsDir, f), 'utf8'));
+          const slug = (data.slug || f.replace(/\.md$/, '')).toString();
+          const date = data.date ? new Date(data.date) : null;
+          return {
+            slug,
+            title: String(data.title ?? slug),
+            excerpt: (data.excerpt ? String(data.excerpt) : stripMarkdown(content).slice(0, 120)).trim(),
+            tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+            cover: data.cover ? String(data.cover) : null,
+            dateIso: date && !isNaN(date.getTime()) ? date.toISOString().slice(0, 10) : null,
+          };
+        });
+
+      const allTags = [...new Set(posts.flatMap((p) => p.tags))];
+      const pages = [];
+
+      write('posts', inject({
+        title: `文章列表｜${SITE_NAME}`,
+        description: 'Tony2100 的所有文章：技術筆記、生活紀錄與隨筆。',
+        keywords: [...allTags, ...BASE_KEYWORDS],
+        url: `${SITE_ORIGIN}/posts`,
+        image: `${SITE_ORIGIN}/imgs/home-cover.png`,
+        type: 'website',
+      }));
+      pages.push({ loc: `${SITE_ORIGIN}/posts` });
+
+      write('notes', inject({
+        title: `筆記｜${SITE_NAME}`,
+        description: '那些不夠長到寫成一篇文章，卻又想記下來的事——Tony2100 的隨手筆記。',
+        keywords: BASE_KEYWORDS,
+        url: `${SITE_ORIGIN}/notes`,
+        image: `${SITE_ORIGIN}/imgs/home-cover.png`,
+        type: 'website',
+      }));
+      pages.push({ loc: `${SITE_ORIGIN}/notes` });
+
+      for (const p of posts) {
+        const url = `${SITE_ORIGIN}/post/${p.slug}`;
+        const image = SITE_ORIGIN + (p.cover || '/imgs/cover-default.png');
+        write(`post/${p.slug}`, inject({
+          title: `${p.title}｜${SITE_NAME}`,
+          description: p.excerpt,
+          keywords: [...p.tags, ...BASE_KEYWORDS],
+          url,
+          image,
+          type: 'article',
+          jsonld: {
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: p.title,
+            description: p.excerpt,
+            image: [image],
+            url,
+            mainEntityOfPage: url,
+            datePublished: p.dateIso || undefined,
+            dateModified: p.dateIso || undefined,
+            keywords: p.tags.join(', '),
+            inLanguage: 'zh-Hant',
+            author: {
+              '@type': 'Person',
+              name: 'Tony2100',
+              alternateName: 'tony2100',
+              url: 'https://tony2100.xyz',
+            },
+            publisher: { '@type': 'Person', name: 'Tony2100' },
+          },
+        }));
+        pages.push({ loc: url, lastmod: p.dateIso });
+      }
+
+      const urls = [{ loc: `${SITE_ORIGIN}/` }, ...pages];
+      writeFileSync(
+        join(outDir, 'sitemap.xml'),
+        `<?xml version="1.0" encoding="UTF-8"?>\n` +
+        `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+        urls
+          .map(
+            (u) =>
+              `  <url><loc>${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}</url>`
+          )
+          .join('\n') +
+        `\n</urlset>\n`
+      );
+      writeFileSync(
+        join(outDir, 'robots.txt'),
+        `User-agent: *\nAllow: /\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`
+      );
+      // SPA fallback for hosts like GitHub Pages (unknown paths → app shell)
+      copyFileSync(tplPath, join(outDir, '404.html'));
+    },
+  };
+}
+
 export default defineConfig({
   plugins: [
     blogMarkdownPlugin(),
     react(),
     tailwindcss(),
+    seoPrerenderPlugin(),
   ],
 });

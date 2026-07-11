@@ -1,5 +1,6 @@
 import Page from '../components/Page.jsx';
 import MdContent from '../components/MdContent.jsx';
+import useSeo from '../seo.js';
 import { notes } from '../notes.js';
 
 /**
@@ -7,6 +8,11 @@ import { notes } from '../notes.js';
  * with the date tucked into the bottom-right corner of each card.
  */
 export default function Notes() {
+  useSeo({
+    title: '筆記',
+    description: '那些不夠長到寫成一篇文章，卻又想記下來的事——Tony2100 的隨手筆記。',
+    path: '/notes',
+  });
   return (
     <Page className="w-full px-4 py-6 sm:p-8 lg:px-12 lg:py-16 max-w-300 mx-auto flex flex-col gap-5 md:gap-8">
       {/* Hero banner — same visual anchor as the home/article covers */}

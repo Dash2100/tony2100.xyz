@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Page from '../components/Page.jsx';
 import MdContent from '../components/MdContent.jsx';
 import useScrollSpy from '../hooks/useScrollSpy.js';
+import useSeo from '../seo.js';
 import { lockScroll, unlockScroll } from '../scrollLock.js';
 import { getPostBySlug } from '../posts.js';
 
@@ -31,6 +32,18 @@ export default function Article() {
   const ids = post ? post.toc.map((t) => t.id) : [];
   const [activeId, activate] = useScrollSpy(ids);
   const [tocOpen, setTocOpen] = useState(false);
+  useSeo(
+    post
+      ? {
+          title: post.title,
+          description: post.excerpt,
+          path: `/post/${post.slug}`,
+          keywords: post.tags,
+          image: post.cover,
+          type: 'article',
+        }
+      : { title: '找不到這篇文章', path: '/posts' }
+  );
 
   // Idempotent lock ownership for the mobile sheet: onTocClick unlocks
   // immediately (the page must scroll NOW), and the effect cleanup that runs

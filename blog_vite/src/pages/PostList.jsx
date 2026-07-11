@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Page from '../components/Page.jsx';
 import PostCard from '../components/PostCard.jsx';
+import useSeo from '../seo.js';
 import { posts, getAllTags, filterByTag } from '../posts.js';
 
 // Per-card entrance: same fade-in-up language as `.page-onload` (2rem rise,
@@ -31,6 +32,12 @@ export default function PostList() {
   const active = params.get('tag') || 'all';
   const tags = getAllTags();
   const filtered = filterByTag(active);
+  useSeo({
+    title: active === 'all' ? '文章列表' : `${active} 相關文章`,
+    description: 'Tony2100 的所有文章：技術筆記、生活紀錄與隨筆。',
+    path: '/posts',
+    keywords: tags.map((t) => t.tag),
+  });
 
   // First mount rides the page entrance (starts alongside the title/pills
   // cascade); tag switches respond immediately.
